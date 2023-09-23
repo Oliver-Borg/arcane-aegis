@@ -8,6 +8,8 @@ public class PlayerController : NetworkBehaviour
 
     [SerializeField] private Transform cube;
 
+    [SerializeField] private Camera playerCamera;
+
     private Vector3 velocity = Vector3.zero;
 
     private NetworkVariable<PlayerData> playerData = new NetworkVariable<PlayerData>(
@@ -29,6 +31,7 @@ public class PlayerController : NetworkBehaviour
     }
 
     public override void OnNetworkSpawn() {
+        playerCamera.enabled = IsOwner;
         playerData.OnValueChanged += (PlayerData previousValue, PlayerData newValue) => {
             Debug.Log($"Player {previousValue.name} changed name to {newValue.name}");
         };
@@ -42,11 +45,18 @@ public class PlayerController : NetworkBehaviour
 
         Vector3 movement = Vector3.zero;
 
-        if (Input.GetKey(KeyCode.W)) movement += Vector3.forward;
-        if (Input.GetKey(KeyCode.S)) movement += Vector3.back;
-        if (Input.GetKey(KeyCode.A)) movement += Vector3.left;
-        if (Input.GetKey(KeyCode.D)) movement += Vector3.right;
-        transform.position += movement * Time.deltaTime * speed;
+        float speed_mult = 1f;
+
+        if (Input.GetKey(KeyCode.W)) movement += playerCamera.transform.forward;
+        if (Input.GetKey(KeyCode.S)) movement -= playerCamera.transform.forward;
+        if (Input.GetKey(KeyCode.A)) movement -= playerCamera.transform.right;
+        if (Input.GetKey(KeyCode.D)) movement += playerCamera.transform.right;
+        if (Input.GetKey(KeyCode.LeftShift)) speed_mult = 2f;
+        transform.position += movement * Time.deltaTime * speed * speed_mult;
+
+        // Rotate camera
+        if (Input.GetKey(KeyCode.Q)) playerCamera.transform.Rotate(Vector3.up, -Time.deltaTime * 100f);
+        if (Input.GetKey(KeyCode.E)) playerCamera.transform.Rotate(Vector3.up, Time.deltaTime * 100f);
 
         // Jump
         if (transform.position.y > 0f) velocity += Vector3.down * Time.deltaTime * 10f;
@@ -63,7 +73,7 @@ public class PlayerController : NetworkBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             // Get ray
-            var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            var ray = playerCamera.ScreenPointToRay(Input.mousePosition);
             // Spawn cube at ray start
 
             if (Physics.Raycast(ray, out var hit))
