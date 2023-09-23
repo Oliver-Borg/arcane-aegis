@@ -12,24 +12,25 @@ public class PlayerController : NetworkBehaviour
 
     private NetworkVariable<PlayerData> playerData = new NetworkVariable<PlayerData>(
         new PlayerData {
-            health = 100f,
             name = "Player",
         }, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner
     ); 
 
+    private NetworkVariable<float> health = new NetworkVariable<float>(
+        100f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner
+    );
+
     public struct PlayerData : INetworkSerializable {
-        public float health;
         public FixedString32Bytes name;
 
         public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter {
-            serializer.SerializeValue(ref health);
             serializer.SerializeValue(ref name);
         }
     }
 
     public override void OnNetworkSpawn() {
         playerData.OnValueChanged += (PlayerData previousValue, PlayerData newValue) => {
-            Debug.Log($"Player {previousValue.name} health changed from {previousValue.health} to {newValue.health}");
+            Debug.Log($"Player {previousValue.name} changed name to {newValue.name}");
         };
     }
 
@@ -37,6 +38,7 @@ public class PlayerController : NetworkBehaviour
     {
         // Get input from key presses and move accordingly
         if (!IsOwner) return;
+        // NetworkLog.LogInfoServer("Player spawned with network ID " + NetworkObjectId + " and client ID " + OwnerClientId);
 
         Vector3 movement = Vector3.zero;
 
@@ -63,40 +65,36 @@ public class PlayerController : NetworkBehaviour
             // Get ray
             var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             // Spawn cube at ray start
-            SpawnProjectileServerRpc(ray.origin, ray.direction);
 
             if (Physics.Raycast(ray, out var hit))
             {
                 // Check if we hit a player
+                NetworkLog.LogInfoServer("Hit something at position " + hit.collider.transform);
                 var player = hit.collider.GetComponent<PlayerController>();
                 if (player != null)
                 {
-                    Debug.Log($"Hit player {player.playerData.Value.name}");
+                    var targetID = player.OwnerClientId; 
+                    NetworkLog.LogInfoServer($"Player {OwnerClientId} hit player {targetID}");
                     // Do damage
-                    DoDamageServerRpc(playerIndex: player.NetworkObjectId);
+                    NetworkLog.LogInfoServer("Calling ServerRpc to damage player " + targetID);
+                    DoDamageServerRpc(clientID: targetID);
                 }
             }
+            SpawnProjectileServerRpc(ray.origin, ray.direction);
         }
 
-        var localPlayerData = playerData.Value;
         // OOB damage
-        if (transform.position.y < -10f) localPlayerData.health -= 10f;
-
-        // Die
-        if (localPlayerData.health <= 0f)
-        {
-            localPlayerData.health = 100f;
-            transform.position = new Vector3(0f, 0f, 0f);
-        }
-        playerData.Value = localPlayerData;
+        if (transform.position.y < -10f) DoDamageServerRpc(clientID: OwnerClientId);
     }
 
     // TODO Fix damaging players
 
     [ServerRpc] // Runs on the server (sent by client)
-    private void DoDamageServerRpc(ulong playerIndex = 0, ServerRpcParams rpcParams = default) {
-        Debug.Log($"Trying to damage player {playerIndex}");
-        DoDamageClientRpc(new ClientRpcParams { Send = {TargetClientIds = new ulong[] { playerIndex } } });
+    private void DoDamageServerRpc(ulong clientID, ServerRpcParams rpcParams = default) {
+        NetworkLog.LogInfoServer("Received ServerRpc on " + OwnerClientId + " with network ID " + NetworkObjectId + " to damage player " + clientID);
+        NetworkObject client = NetworkManager.Singleton.ConnectedClients[clientID].PlayerObject;
+        PlayerController controller = client.GetComponent<PlayerController>();
+        controller.DoDamageClientRpc(new ClientRpcParams { Send = {TargetClientIds = new ulong[] { clientID } } });
     }
 
     [ServerRpc]
@@ -104,15 +102,24 @@ public class PlayerController : NetworkBehaviour
         var projectile = Instantiate(cube, position + direction, Quaternion.identity);
         projectile.GetComponent<NetworkObject>().Spawn();
         projectile.GetComponent<Rigidbody>().AddForce(direction * 10000f);
-        Debug.Log($"Spawned projectile at {position} with direction {direction}");
     }
 
     [ClientRpc] // Runs on all clients (sent from server). Can use ClientRpcParams to give a list of clients to run on
     private void DoDamageClientRpc(ClientRpcParams rpcParams = default) {
-        var localPlayerData = playerData.Value;
-        localPlayerData.health -= 10f;
-        playerData.Value = localPlayerData;
-    }
-        
+        if(!IsOwner) 
+        {
+            NetworkLog.LogInfoServer("Not owner");
+            return;
+        }
+        NetworkLog.LogInfoServer("Received ClientRpc on " + OwnerClientId + " with network ID " + NetworkObjectId + " to damage player " + OwnerClientId);
+        health.Value -= 50f;
+        // Die
+        if (health.Value <= 0f)
+        {
+            health.Value = 100f;
+            transform.position = new Vector3(0f, 0f, 0f);
+        }
+
+    }      
     
 }
