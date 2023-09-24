@@ -1,12 +1,15 @@
 using Unity.Netcode;
-using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.AI;
 public class EnemyAI : NetworkBehaviour
 {
     [SerializeField] private GameObject enemyModel;
 
-    [SerializeField] private AnimatorController animator;
+    [SerializeField] private RuntimeAnimatorController animator;
+
+    private NetworkVariable<float> health = new NetworkVariable<float>(
+        100f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner
+    );
 
     private GameObject model;
 
@@ -20,12 +23,6 @@ public class EnemyAI : NetworkBehaviour
         // Set model animation controller
         model.GetComponent<Animator>().runtimeAnimatorController = animator;
         // TODO Network animator
-        EnemySpawnServerRpc();
-    }
-
-    [ServerRpc]
-    private void EnemySpawnServerRpc() {
-        model.GetComponent<NetworkObject>().Spawn();
     }
 
     void Update()
@@ -34,8 +31,6 @@ public class EnemyAI : NetworkBehaviour
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
 
         if (players.Length == 0) return;
-
-        NetworkLog.LogInfoServer("Enemy AI is running");
         // Find closest player
         float closestDistance = 100000f;
         GameObject closestPlayer = null;
@@ -47,5 +42,19 @@ public class EnemyAI : NetworkBehaviour
             }
         }
         agent.SetDestination(closestPlayer.transform.position);
+    }
+
+    [ClientRpc]
+    public void TakeDamageClientRpc(float damage) {
+        health.Value -= damage;
+        if (health.Value <= 0) {
+            EnemyDeathServerRpc();
+        }
+    }
+
+    [ServerRpc]
+    private void EnemyDeathServerRpc() {
+        GetComponent<NetworkObject>().Despawn();
+        Destroy(gameObject);
     }
 }

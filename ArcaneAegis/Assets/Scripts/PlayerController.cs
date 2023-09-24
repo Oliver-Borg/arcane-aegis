@@ -89,6 +89,14 @@ public class PlayerController : NetworkBehaviour
                     NetworkLog.LogInfoServer("Calling ServerRpc to damage player " + targetID);
                     DoDamageServerRpc(clientID: targetID);
                 }
+                var enemy = hit.collider.GetComponent<EnemyAI>(); // TODO Change to mesh collider
+                if (enemy != null)
+                {
+                    NetworkLog.LogInfoServer($"Player {OwnerClientId} hit enemy");
+                    // Do damage
+                    NetworkLog.LogInfoServer("Calling ServerRpc to damage enemy");
+                    enemy.TakeDamageClientRpc(30f);
+                }
             }
             SpawnProjectileServerRpc(ray.origin, ray.direction);
         }
