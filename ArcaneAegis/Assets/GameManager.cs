@@ -6,11 +6,7 @@ public class GameManager : NetworkBehaviour {
 
     [SerializeField] private Transform [] enemySpawnPoints;
 
-    [SerializeField] private GameObject enemyPrefab;
-
-    [SerializeField] private GameObject [] enemyModels;
-
-    [SerializeField] private RuntimeAnimatorController [] enemyAnimators;
+    [SerializeField] private GameObject [] enemyPrefabs;
 
     [SerializeField] private int enemyCount = 0;
 
@@ -24,15 +20,18 @@ public class GameManager : NetworkBehaviour {
             // Get a random spawn point
             Transform spawnPoint = enemySpawnPoints[Random.Range(0, enemySpawnPoints.Length)];
             // Spawn enemy
-            GameObject enemy = Instantiate(enemyPrefab, spawnPoint.position, Quaternion.identity);
-            int enemyModelIndex = Random.Range(0, enemyModels.Length);
-            enemy.GetComponent<EnemyAI>().SetModelAndAnimator(
-                enemyModels[enemyModelIndex], enemyAnimators[enemyModelIndex]
-            );
-            // Spawn enemy on clients
-            enemy.GetComponent<NetworkObject>().Spawn();
-            NetworkLog.LogInfoServer("Spawned enemy");
-            
+            SpawnEnemyServerRpc(spawnPoint.position);
         }
+    }
+
+    [ServerRpc]
+    public void SpawnEnemyServerRpc(Vector3 spawnPoint, ServerRpcParams rpcParams = default) {
+        // Spawn enemy
+        int enemyModelIndex = Random.Range(0, enemyPrefabs.Length);
+        Debug.Log("Spawning enemy model " + enemyModelIndex);
+        GameObject enemy = Instantiate(enemyPrefabs[enemyModelIndex], spawnPoint, Quaternion.identity);
+        // Spawn enemy on clients
+        enemy.GetComponent<NetworkObject>().Spawn();
+        NetworkLog.LogInfoServer("Spawned enemy");
     }
 }

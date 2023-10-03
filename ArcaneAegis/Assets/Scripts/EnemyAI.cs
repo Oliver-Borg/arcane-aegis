@@ -4,10 +4,6 @@ using UnityEngine;
 using UnityEngine.AI;
 public class EnemyAI : NetworkBehaviour
 {
-    // [SerializeField] private GameObject enemyModel;
-
-    // [SerializeField] private RuntimeAnimatorController animator;
-
     // Range used for detection
     [SerializeField] private float attackRange = 2f;
 
@@ -34,7 +30,7 @@ public class EnemyAI : NetworkBehaviour
         100f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner
     );
 
-    private GameObject model;
+    [SerializeField] private GameObject model;
 
     private Animator animator;
 
@@ -68,7 +64,7 @@ public class EnemyAI : NetworkBehaviour
 
     void Update()
     {
-        if(!spawned || !alive) return;
+        if(!spawned || !alive || !IsServer) return;
         // Get list of PlayerController scripts in scene and their positions
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
 
@@ -116,14 +112,9 @@ public class EnemyAI : NetworkBehaviour
 
     [ServerRpc]
     public void DoAttackServerRpc() {
-        DoAttackClientRpc();
-    }
-
-    [ClientRpc]
-    public void DoAttackClientRpc() {
-
+        // DoAttackClientRpc();
         // Play attack animation
-        animator.SetTrigger("Attack");
+        animator.SetTrigger("Attack"); // TODO Network animator
 
         // Check if any players in attack range
         Collider [] hitPlayers = closePlayerList();
@@ -132,18 +123,18 @@ public class EnemyAI : NetworkBehaviour
             Debug.Log("Hit player");
             PlayerController playerController = player.GetComponent<PlayerController>();
             if(playerController == null) continue;
-            playerController.DoDamageServerRpc(playerController.OwnerClientId, attackDamage);
+            playerController.DoDamageClientRpc(attackDamage);
         }
     }
 
-    public void SetModelAndAnimator(GameObject modelPrefab, RuntimeAnimatorController animatorController) {
-        model = Instantiate(modelPrefab, transform.position, Quaternion.identity);
-        model.transform.parent = transform;
-        model.GetComponent<Animator>().runtimeAnimatorController = animatorController;
+    [ServerRpc]
+    public void TakeDamageServerRpc(float damage) {
+        TakeDamageClientRpc(damage);
     }
 
     [ClientRpc]
     public void TakeDamageClientRpc(float damage) {
+        if(!IsOwner) return;
         health.Value -= damage;
         if (health.Value <= 0 && alive) {
             alive = false;

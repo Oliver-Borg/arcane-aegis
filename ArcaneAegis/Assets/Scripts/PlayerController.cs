@@ -88,7 +88,7 @@ public class PlayerController : NetworkBehaviour
                     NetworkLog.LogInfoServer($"Player {OwnerClientId} hit player {targetID}");
                     // Do damage
                     NetworkLog.LogInfoServer("Calling ServerRpc to damage player " + targetID);
-                    DoDamageServerRpc(clientID: targetID);
+                    player.DoDamageClientRpc(30f);
                 }
                 var enemy = hit.collider.GetComponent<EnemyAI>(); // TODO Change to mesh collider
                 if (enemy != null)
@@ -96,14 +96,14 @@ public class PlayerController : NetworkBehaviour
                     NetworkLog.LogInfoServer($"Player {OwnerClientId} hit enemy");
                     // Do damage
                     NetworkLog.LogInfoServer("Calling ServerRpc to damage enemy");
-                    enemy.TakeDamageClientRpc(30f);
+                    enemy.TakeDamageServerRpc(50f);
                 }
             }
             SpawnProjectileServerRpc(ray.origin, ray.direction);
         }
 
         // OOB damage
-        if (transform.position.y < -10f) DoDamageServerRpc(clientID: OwnerClientId);
+        if (transform.position.y < -10f) DoDamageClientRpc(100f);
     }
 
     // TODO Fix damaging players

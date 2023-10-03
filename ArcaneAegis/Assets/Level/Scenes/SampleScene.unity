@@ -265,6 +265,7 @@ MonoBehaviour:
     Prefabs:
       NetworkPrefabsLists:
       - {fileID: 11400000, guid: 8c8c09ecc98a7134da463baaf4892607, type: 2}
+      - {fileID: 11400000, guid: c2972d3c834fb8e4e963b5d63fdfaced, type: 2}
     TickRate: 30
     ClientConnectionBufferTimeout: 10
     ConnectionApproval: 0
@@ -425,14 +426,10 @@ MonoBehaviour:
   - {fileID: 1552000363}
   - {fileID: 1456516581}
   - {fileID: 2146948111}
-  enemyPrefab: {fileID: 203226668972566776, guid: 560e26981c593a047957ac5064d6d17a, type: 3}
-  enemyModels:
-  - {fileID: 100146, guid: 1a8e3cc2789513844919cfcda16dfe5c, type: 3}
-  - {fileID: 100004, guid: 5bdb723f10fa9bd498f304f0a10f2ec4, type: 3}
-  enemyAnimators:
-  - {fileID: 9100000, guid: e7817c1aab1e63143a15a62ee6bc476a, type: 2}
-  - {fileID: 9100000, guid: 4a2c4dbee89a409448f8149b5657867f, type: 2}
-  enemyCount: 5
+  enemyPrefabs:
+  - {fileID: 203226668972566776, guid: 560e26981c593a047957ac5064d6d17a, type: 3}
+  - {fileID: 203226668972566776, guid: f3d84ee327036634ab325cbf55d6453e, type: 3}
+  enemyCount: 3
 --- !u!4 &814175981
 Transform:
   m_ObjectHideFlags: 0
