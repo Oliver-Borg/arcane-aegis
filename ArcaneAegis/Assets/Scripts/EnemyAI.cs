@@ -21,8 +21,11 @@ public class EnemyAI : NetworkBehaviour
 
     [SerializeField] private float spawnTime = 5f;
 
+    private bool alive = true;
+
     private bool spawned = false;
 
+    [SerializeField] private float despawnDelay = 5f;
     [SerializeField] private LayerMask playerLayer;
 
     
@@ -65,7 +68,7 @@ public class EnemyAI : NetworkBehaviour
 
     void Update()
     {
-        if(!spawned) return;
+        if(!spawned || !alive) return;
         // Get list of PlayerController scripts in scene and their positions
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
 
@@ -142,15 +145,26 @@ public class EnemyAI : NetworkBehaviour
     [ClientRpc]
     public void TakeDamageClientRpc(float damage) {
         health.Value -= damage;
-        if (health.Value <= 0) {
+        if (health.Value <= 0 && alive) {
+            alive = false;
             EnemyDeathServerRpc();
         }
     }
 
     [ServerRpc]
     private void EnemyDeathServerRpc() {
-        GetComponent<NetworkObject>().Despawn();
+        // Play death animation
+        animator.SetTrigger("Die");
+        GetComponent<NavMeshAgent>().enabled = false;
+        GetComponent<Collider>().enabled = false; // TODO Create ragdoll
+        StartCoroutine(DespawnCoroutine());
+    }
+
+    IEnumerator DespawnCoroutine() {
+        yield return new WaitForSeconds(despawnDelay);
+        Destroy(model);
         Destroy(gameObject);
+        GetComponent<NetworkObject>().Despawn();
     }
 
     void OnDrawGizmosSelected() {

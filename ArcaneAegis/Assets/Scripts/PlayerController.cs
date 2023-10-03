@@ -1,6 +1,7 @@
 using Unity.Netcode;
 using UnityEngine;
 using Unity.Collections;
+using System.Collections;
 
 public class PlayerController : NetworkBehaviour
 {
@@ -120,6 +121,12 @@ public class PlayerController : NetworkBehaviour
         var projectile = Instantiate(cube, position + direction, Quaternion.identity);
         projectile.GetComponent<NetworkObject>().Spawn();
         projectile.GetComponent<Rigidbody>().AddForce(direction * 10000f);
+        StartCoroutine(DespawnProjectileCoroutine(projectile));
+    }
+
+    IEnumerator DespawnProjectileCoroutine(Transform projectile) {
+        yield return new WaitForSeconds(1f);
+        projectile.GetComponent<NetworkObject>().Despawn();
     }
 
     [ClientRpc] // Runs on all clients (sent from server). Can use ClientRpcParams to give a list of clients to run on
