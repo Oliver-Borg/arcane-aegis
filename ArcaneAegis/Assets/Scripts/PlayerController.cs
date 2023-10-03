@@ -108,11 +108,11 @@ public class PlayerController : NetworkBehaviour
     // TODO Fix damaging players
 
     [ServerRpc] // Runs on the server (sent by client)
-    private void DoDamageServerRpc(ulong clientID, ServerRpcParams rpcParams = default) {
+    public void DoDamageServerRpc(ulong clientID, float damage=50f, ServerRpcParams rpcParams = default) {
         NetworkLog.LogInfoServer("Received ServerRpc on " + OwnerClientId + " with network ID " + NetworkObjectId + " to damage player " + clientID);
         NetworkObject client = NetworkManager.Singleton.ConnectedClients[clientID].PlayerObject;
         PlayerController controller = client.GetComponent<PlayerController>();
-        controller.DoDamageClientRpc(new ClientRpcParams { Send = {TargetClientIds = new ulong[] { clientID } } });
+        controller.DoDamageClientRpc(damage, new ClientRpcParams { Send = {TargetClientIds = new ulong[] { clientID } } });
     }
 
     [ServerRpc]
@@ -123,14 +123,14 @@ public class PlayerController : NetworkBehaviour
     }
 
     [ClientRpc] // Runs on all clients (sent from server). Can use ClientRpcParams to give a list of clients to run on
-    private void DoDamageClientRpc(ClientRpcParams rpcParams = default) {
+    public void DoDamageClientRpc(float damage = 50f, ClientRpcParams rpcParams = default) {
         if(!IsOwner) 
         {
             NetworkLog.LogInfoServer("Not owner");
             return;
         }
         NetworkLog.LogInfoServer("Received ClientRpc on " + OwnerClientId + " with network ID " + NetworkObjectId + " to damage player " + OwnerClientId);
-        health.Value -= 50f;
+        health.Value -= damage;
         // Die
         if (health.Value <= 0f)
         {

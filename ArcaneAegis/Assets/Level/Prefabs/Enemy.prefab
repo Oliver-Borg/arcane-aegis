@@ -50,8 +50,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bb3a706484093d4bb5a6c93a24b9b3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyModel: {fileID: 100146, guid: 1a8e3cc2789513844919cfcda16dfe5c, type: 3}
-  animator: {fileID: 9100000, guid: e7817c1aab1e63143a15a62ee6bc476a, type: 2}
+  attackRange: 1
+  hitRange: 0.1
+  attackDamage: 10
+  attackCooldown: 1
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 64
   agent: {fileID: 5813056974233844056}
 --- !u!114 &6159738099404402497
 MonoBehaviour:

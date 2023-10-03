@@ -8,6 +8,10 @@ public class GameManager : NetworkBehaviour {
 
     [SerializeField] private GameObject enemyPrefab;
 
+    [SerializeField] private GameObject [] enemyModels;
+
+    [SerializeField] private RuntimeAnimatorController [] enemyAnimators;
+
     [SerializeField] private int enemyCount = 0;
 
     void Update()
@@ -21,6 +25,10 @@ public class GameManager : NetworkBehaviour {
             Transform spawnPoint = enemySpawnPoints[Random.Range(0, enemySpawnPoints.Length)];
             // Spawn enemy
             GameObject enemy = Instantiate(enemyPrefab, spawnPoint.position, Quaternion.identity);
+            int enemyModelIndex = Random.Range(0, enemyModels.Length);
+            enemy.GetComponent<EnemyAI>().SetModelAndAnimator(
+                enemyModels[enemyModelIndex], enemyAnimators[enemyModelIndex]
+            );
             // Spawn enemy on clients
             enemy.GetComponent<NetworkObject>().Spawn();
             NetworkLog.LogInfoServer("Spawned enemy");
