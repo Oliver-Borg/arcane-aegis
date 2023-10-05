@@ -27,7 +27,7 @@ public class EnemyAI : NetworkBehaviour
     
 
     private NetworkVariable<float> health = new NetworkVariable<float>(
-        100f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner
+        100f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server
     );
 
     [SerializeField] private GameObject model;
@@ -123,18 +123,12 @@ public class EnemyAI : NetworkBehaviour
             Debug.Log("Hit player");
             PlayerController playerController = player.GetComponent<PlayerController>();
             if(playerController == null) continue;
-            playerController.DoDamageClientRpc(attackDamage);
+            playerController.DoDamageServerRpc(attackDamage);
         }
     }
 
-    [ServerRpc]
+    [ServerRpc(Delivery = default, RequireOwnership = false)]
     public void TakeDamageServerRpc(float damage) {
-        TakeDamageClientRpc(damage);
-    }
-
-    [ClientRpc]
-    public void TakeDamageClientRpc(float damage) {
-        if(!IsOwner) return;
         health.Value -= damage;
         if (health.Value <= 0 && alive) {
             alive = false;
@@ -142,7 +136,7 @@ public class EnemyAI : NetworkBehaviour
         }
     }
 
-    [ServerRpc]
+    [ServerRpc(Delivery = default, RequireOwnership = false)]
     private void EnemyDeathServerRpc() {
         // Play death animation
         animator.SetTrigger("Die");

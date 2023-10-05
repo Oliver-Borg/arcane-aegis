@@ -16,6 +16,8 @@ GameObject:
   - component: {fileID: 920761405537985079}
   - component: {fileID: 5813056974233844056}
   - component: {fileID: -3052739149118136331}
+  - component: {fileID: 1860384847528422784}
+  - component: {fileID: 5007996439651941236}
   m_Layer: 0
   m_Name: SkeletonKnight
   m_TagString: Enemy
@@ -196,6 +198,41 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!95 &1860384847528422784
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 203226668972566776}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &5007996439651941236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 203226668972566776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14dac72a073d61a48accd6011905bbd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TransitionStateInfoList: []
+  m_Animator: {fileID: 3758394950313441122}
 --- !u!1001 &4169725736509469888
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -253,6 +290,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 24482ef7632aa6042b45735370df80ec, type: 3}
+--- !u!95 &3758394950313441122 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 1005806008951276450, guid: 24482ef7632aa6042b45735370df80ec, type: 3}
+  m_PrefabInstance: {fileID: 4169725736509469888}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3758394950322690182 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1005806008958217286, guid: 24482ef7632aa6042b45735370df80ec, type: 3}
