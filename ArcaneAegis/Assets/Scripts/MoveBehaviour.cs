@@ -12,6 +12,8 @@ public class MoveBehaviour : GenericBehaviour
 	public float jumpHeight = 1.5f;                 // Default jump height.
 	public float jumpInertialForce = 10f;          // Default horizontal inertial force when jumping.
 
+	public float turnThreshold = 10f;              // Default turn threshold.
+
 	private float speed, speedSeeker;               // Moving speed.
 	private int jumpBool;                           // Animator variable related to jumping.
 	private int groundedBool;                       // Animator variable related to whether or not the player is on ground.
@@ -151,14 +153,28 @@ public class MoveBehaviour : GenericBehaviour
 
 		// Calculate target direction based on camera forward and direction key.
 		Vector3 right = new Vector3(forward.z, 0, -forward.x);
-		Vector3 targetDirection = forward * vertical + right * horizontal;
+		Vector3 targetDirection = forward; // * vertical + right * horizontal;
+
+		if (behaviourManager.IsSprinting())
+		{
+			targetDirection = forward * vertical + right * horizontal;
+		}
+
+		
 
 		// Lerp current direction to calculated target direction.
-		if ((behaviourManager.IsMoving() && targetDirection != Vector3.zero))
+		if ((targetDirection != Vector3.zero))
 		{
 			Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
 
 			Quaternion newRotation = Quaternion.Slerp(behaviourManager.GetRigidBody.rotation, targetRotation, behaviourManager.turnSmoothing);
+			// Check if player is turning.
+			bool turning = Quaternion.Angle(targetRotation, behaviourManager.GetRigidBody.rotation) > turnThreshold;
+			// Set speed to walkSpeed to get leg movement while in place
+			if (turning && speed < walkSpeed && behaviourManager.IsGrounded())
+				behaviourManager.GetAnim.SetFloat(speedFloat, walkSpeed, 0.1f, Time.deltaTime);
+			else if (!turning && speed < walkSpeed && behaviourManager.IsGrounded())
+				behaviourManager.GetAnim.SetFloat(speedFloat, speed, 0.1f, Time.deltaTime);
 			behaviourManager.GetRigidBody.MoveRotation(newRotation);
 			behaviourManager.SetLastDirection(targetDirection);
 		}
