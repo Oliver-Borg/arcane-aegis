@@ -25,9 +25,11 @@ public class PlayerAttack : NetworkBehaviour {
             animator.SetTrigger("Attack");
             // Spawn effect
             // Create raycast and set rotation to the direction from the player to the raycast hit point
-            Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
+            // Cast forward ray from camera in camera direction
+
+            Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
             if (Physics.Raycast(ray, out RaycastHit hit)) {
-                Vector3 spawnPoint = playerCamera.transform.position; //effectTransforms[effectIndex].position + transform.forward * 0.5f;
+                Vector3 spawnPoint = effectTransforms[effectIndex].position + transform.forward * 0.1f;
                 Vector3 direction = hit.point - spawnPoint;
                 Quaternion rotation = Quaternion.LookRotation(direction);
                 SpawnEffectServerRpc(effectIndex, spawnPoint, rotation);

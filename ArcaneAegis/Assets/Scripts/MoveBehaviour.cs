@@ -171,10 +171,10 @@ public class MoveBehaviour : GenericBehaviour
 			// Check if player is turning.
 			bool turning = Quaternion.Angle(targetRotation, behaviourManager.GetRigidBody.rotation) > turnThreshold;
 			// Set speed to walkSpeed to get leg movement while in place
-			if (turning && speed < walkSpeed && behaviourManager.IsGrounded())
-				behaviourManager.GetAnim.SetFloat(speedFloat, walkSpeed, 0.1f, Time.deltaTime);
-			else if (!turning && speed < walkSpeed && behaviourManager.IsGrounded())
-				behaviourManager.GetAnim.SetFloat(speedFloat, speed, 0.1f, Time.deltaTime);
+			// if (turning && speed < walkSpeed && behaviourManager.IsGrounded())
+			// 	behaviourManager.GetAnim.SetFloat(speedFloat, walkSpeed, 0.1f, Time.deltaTime);
+			// else if (!turning && speed < walkSpeed && behaviourManager.IsGrounded())
+			// 	behaviourManager.GetAnim.SetFloat(speedFloat, speed, 0.1f, Time.deltaTime);
 			behaviourManager.GetRigidBody.MoveRotation(newRotation);
 			behaviourManager.SetLastDirection(targetDirection);
 		}
