@@ -40,37 +40,15 @@ public class PlayerController : NetworkBehaviour
 
     void Update()
     {
-        // Get input from key presses and move accordingly
         if (!IsOwner) return;
-        // NetworkLog.LogInfoServer("Player spawned with network ID " + NetworkObjectId + " and client ID " + OwnerClientId);
-
-
-        // Get click
-        if (Input.GetMouseButtonDown(0))
-        {
-            // Get ray
-            var ray = playerCamera.ScreenPointToRay(Input.mousePosition);
-            // Spawn cube at ray start
-
-            if (Physics.Raycast(ray, out var hit))
-            {
-                var enemy = hit.collider.GetComponent<EnemyAI>(); // TODO Change to mesh collider
-                if (enemy != null)
-                {
-                    enemy.TakeDamageServerRpc(50f);
-                }
-            }
-            SpawnProjectileServerRpc(ray.origin, ray.direction);
-        }
-
         // OOB damage
-        if (transform.position.y < -10f) DoDamageServerRpc(100f);
+        if (transform.position.y < -10f) TakeDamageServerRpc(100f);
     }
 
     // TODO Fix damaging players
 
     [ServerRpc(Delivery = default, RequireOwnership = false)] // Runs on the server (sent by client)
-    public void DoDamageServerRpc(float damage=50f, ServerRpcParams rpcParams = default) {
+    public void TakeDamageServerRpc(float damage=50f, ServerRpcParams rpcParams = default) {
         health.Value -= damage;
         // Die
         if (health.Value <= 0f)

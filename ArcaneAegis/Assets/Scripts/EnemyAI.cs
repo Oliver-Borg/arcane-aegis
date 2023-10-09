@@ -123,7 +123,7 @@ public class EnemyAI : NetworkBehaviour
             Debug.Log("Hit player");
             PlayerController playerController = player.GetComponent<PlayerController>();
             if(playerController == null) continue;
-            playerController.DoDamageServerRpc(attackDamage);
+            playerController.TakeDamageServerRpc(attackDamage);
         }
     }
 
