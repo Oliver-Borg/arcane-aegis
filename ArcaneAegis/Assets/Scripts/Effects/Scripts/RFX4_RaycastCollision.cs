@@ -28,6 +28,13 @@ public class RFX4_RaycastCollision : MonoBehaviour
 
     public event EventHandler<RFX4_PhysicsMotion.RFX4_CollisionInfo> CollisionEnter;
 
+    private float damage = 10f;
+
+    public float Damage {
+        get { return damage; }
+        set { damage = value; }
+    }
+
     void Awake()
     {
         distanceParticles = transform.root.GetComponentsInChildren<ParticleSystem>();

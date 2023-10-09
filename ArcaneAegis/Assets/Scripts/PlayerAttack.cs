@@ -59,8 +59,16 @@ public class PlayerAttack : NetworkBehaviour {
         GameObject effect = Instantiate(spell.effectPrefab, handTransform.position, rotation);
         effect.GetComponent<NetworkObject>().Spawn();
         RFX4_PhysicsMotion physicsMotion = effect.GetComponentInChildren<RFX4_PhysicsMotion>(true);
-        physicsMotion.Damage = spell.damage;
-        if (physicsMotion != null) physicsMotion.CollisionEnter += CollisionEnter;
+        RFX4_RaycastCollision physicsRaycast = effect.GetComponentInChildren<RFX4_RaycastCollision>(true);
+        if (physicsRaycast != null) {
+            physicsRaycast.CollisionEnter += CollisionEnter;
+            physicsRaycast.Damage = spell.damage;
+        }
+        
+        if (physicsMotion != null) {
+            physicsMotion.CollisionEnter += CollisionEnter;
+            physicsMotion.Damage = spell.damage;
+        }
     }
 
     private void CollisionEnter(object sender, RFX4_PhysicsMotion.RFX4_CollisionInfo e)
@@ -69,14 +77,31 @@ public class PlayerAttack : NetworkBehaviour {
         Debug.Log(e.HitPoint); //a collision coordinates in world space
         Debug.Log(e.HitGameObject.name); //a collided gameobject
         Debug.Log(e.HitCollider.name); //a collided collider :)
-        RFX4_PhysicsMotion physicsMotion = (RFX4_PhysicsMotion) sender;
+
+        GameObject effect;
+        float damage;
+        try
+        {
+            RFX4_PhysicsMotion physicsMotion = (RFX4_PhysicsMotion) sender;
+            effect = physicsMotion.gameObject.transform.parent.gameObject;
+            damage = physicsMotion.Damage;
+        }
+        catch (System.InvalidCastException)
+        {
+            RFX4_RaycastCollision physicsRaycast = (RFX4_RaycastCollision) sender;
+            effect = physicsRaycast.gameObject.transform.parent.gameObject;
+            damage = physicsRaycast.Damage;
+        }
+
+
+
+        
         EnemyAI enemy = e.HitCollider.GetComponent<EnemyAI>(); // TODO Change to mesh collider
         if (enemy != null)
         {
-            enemy.TakeDamageServerRpc(physicsMotion.Damage);
+            enemy.TakeDamageServerRpc(damage);
         }
         // Delete effect and despawn
-        GameObject effect = physicsMotion.gameObject.transform.parent.gameObject;
         effect.GetComponent<NetworkObject>().Despawn(true);
     }
 

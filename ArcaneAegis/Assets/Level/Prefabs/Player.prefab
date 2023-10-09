@@ -1578,6 +1578,8 @@ MonoBehaviour:
   spellPrefabs:
   - {fileID: 6127773015960741330, guid: dbdfc01c876fbf24691b21d7c1d5bf72, type: 3}
   - {fileID: 5426147186305645650, guid: 50375dc38cebcbd4d99e623bff44621b, type: 3}
+  - {fileID: 5426147186305645650, guid: 17b5232a4c9de1d419914f7f890b6081, type: 3}
+  - {fileID: 5426147186305645650, guid: 31ef56c7558bb8843a5668a3fb409bbc, type: 3}
   handTransform: {fileID: 739230869707406292}
   playerCamera: {fileID: 739230869279755970}
   spellSlots: {fileID: 5092018959973951042}
