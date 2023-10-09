@@ -1,6 +1,6 @@
 using UnityEngine;
 using Unity.Netcode;
-
+using System.Collections;
 public class PlayerAttack : NetworkBehaviour {
     
     [SerializeField] private GameObject [] spellPrefabs;
@@ -15,6 +15,7 @@ public class PlayerAttack : NetworkBehaviour {
 
     private GameObject currentHandEffect;
 
+    private bool casting = false;
 
 
     public override void OnNetworkSpawn() {
@@ -25,11 +26,13 @@ public class PlayerAttack : NetworkBehaviour {
             GameObject spell = Instantiate(spellPrefabs[i], spellSlots);
             spells[i] = spell;
         }
-        CreateHandEffectServerRpc();
+        if (IsOwner)
+            CreateHandEffectServerRpc();
     }
 
     [ServerRpc]
     private void CreateHandEffectServerRpc () {
+        return;
         // TODO Fix this (extension)
         // Hand effects are designed as cast effects so looping needs to be done manually
         GameObject handEffect = spells[spellIndex].GetComponent<Spell>().handEffectPrefab;
@@ -38,24 +41,60 @@ public class PlayerAttack : NetworkBehaviour {
         currentHandEffect = Instantiate(handEffect, handTransform.position, handTransform.rotation, handTransform);
         currentHandEffect.GetComponent<NetworkObject>().Spawn();
     }
+
+    IEnumerator CastCoroutine(int index, Quaternion rotation) {
+        Spell spell = spells[index].GetComponent<Spell>();
+        casting = true;
+        yield return new WaitForSeconds(spell.castTime);
+        SpawnEffectServerRpc(index, rotation);
+        if (spell.handEffectPrefab != null)
+            Instantiate(spell.handEffectPrefab, handTransform);
+        casting = false;
+    }
+
+    [ServerRpc]
+    public void SpawnEffectServerRpc(int index, Quaternion rotation, ServerRpcParams rpcParams = default) {
+        NetworkLog.LogInfoServer("Spawning effect");
+        Spell spell = spells[index].GetComponent<Spell>();
+        GameObject effect = Instantiate(spell.effectPrefab, handTransform.position, rotation);
+        effect.GetComponent<NetworkObject>().Spawn();
+        RFX4_PhysicsMotion physicsMotion = effect.GetComponentInChildren<RFX4_PhysicsMotion>(true);
+        physicsMotion.Damage = spell.damage;
+        if (physicsMotion != null) physicsMotion.CollisionEnter += CollisionEnter;
+    }
+
+    private void CollisionEnter(object sender, RFX4_PhysicsMotion.RFX4_CollisionInfo e)
+    {
+        if (!IsServer) return; // Do hit detection on the server
+        Debug.Log(e.HitPoint); //a collision coordinates in world space
+        Debug.Log(e.HitGameObject.name); //a collided gameobject
+        Debug.Log(e.HitCollider.name); //a collided collider :)
+        RFX4_PhysicsMotion physicsMotion = (RFX4_PhysicsMotion) sender;
+        EnemyAI enemy = e.HitCollider.GetComponent<EnemyAI>(); // TODO Change to mesh collider
+        if (enemy != null)
+        {
+            enemy.TakeDamageServerRpc(physicsMotion.Damage);
+        }
+    }
+
     void Update()
     {   
         if (!IsOwner) return;
         // Use scroll wheel to change spell
         int oldSpellIndex = spellIndex;
-        if (Input.GetAxis("Mouse ScrollWheel") > 0f) {
-            spellIndex++;
+        // Check if CastCoroutine in progress
+        if (!casting) {
+            if (Input.GetAxis("Mouse ScrollWheel") > 0f) {
+                spellIndex++;
             if (spellIndex >= spells.Length) spellIndex = 0;
-        } else if (Input.GetAxis("Mouse ScrollWheel") < 0f) {
-            spellIndex--;
-            if (spellIndex < 0) spellIndex = spells.Length-1;
-        }
-        if (oldSpellIndex != spellIndex) {
-            CreateHandEffectServerRpc();
-        }
-
-
-
+            } else if (Input.GetAxis("Mouse ScrollWheel") < 0f) {
+                spellIndex--;
+                if (spellIndex < 0) spellIndex = spells.Length-1;
+            }
+            if (oldSpellIndex != spellIndex) {
+                CreateHandEffectServerRpc();
+            }
+        }   
 
         if (Input.GetKeyDown(KeyCode.Mouse0)) {
             // Spawn effect
@@ -70,18 +109,15 @@ public class PlayerAttack : NetworkBehaviour {
                 Quaternion rotation = Quaternion.LookRotation(direction);
                 Spell spell = spells[spellIndex].GetComponent<Spell>();
                 Debug.Log("Casting spell " + spell.name);
-                bool success = spell.Cast(spawnPoint, rotation);
+                bool success = spell.Cast(handTransform, rotation) && !casting;
                 Debug.Log("Success: " + success);
 
                 if (!success) return;
+                StartCoroutine(CastCoroutine(spellIndex, rotation));
 
                 animator.SetTrigger("Attack");
                 // For now use hitscan for damage TODO change to projectile
-                var enemy = hit.collider.GetComponent<EnemyAI>(); // TODO Change to mesh collider
-                if (enemy != null)
-                {
-                    enemy.TakeDamageServerRpc(50f);
-                }
+                
             }
         }
     }

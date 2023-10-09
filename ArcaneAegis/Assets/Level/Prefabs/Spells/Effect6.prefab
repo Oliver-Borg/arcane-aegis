@@ -4865,6 +4865,9 @@ MonoBehaviour:
   CollisionEffectInWorldSpace: 1
   LookAtNormal: 1
   CollisionEffectDestroyAfter: 5
+  colliderExcludeMask:
+    serializedVersion: 2
+    m_Bits: 118
   DeactivateObjectsAfterCollision:
   - {fileID: 1961783658640030}
   HUE: -1

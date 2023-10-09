@@ -25,6 +25,8 @@ public class RFX4_PhysicsMotion : MonoBehaviour
     public bool LookAtNormal = true;
     public float CollisionEffectDestroyAfter = 5;
 
+    public LayerMask colliderExcludeMask = -1;
+
     public GameObject[] DeactivateObjectsAfterCollision;
 
     [HideInInspector] public float HUE = -1;
@@ -41,6 +43,13 @@ public class RFX4_PhysicsMotion : MonoBehaviour
     bool isInitializedForce;
     float currentSpeedOffset;
     private RFX4_EffectSettings effectSettings;
+
+    private float damage = 10f;
+
+    public float Damage {
+        get { return damage; }
+        set { damage = value; }
+    }
 
     void OnEnable ()
     {
@@ -64,7 +73,7 @@ public class RFX4_PhysicsMotion : MonoBehaviour
             Debug.Log("UseCollisionDetection");
             collid = gameObject.AddComponent<SphereCollider>();
             collid.radius = ColliderRadius;
-            // TODO Fix collisions with player
+            collid.excludeLayers = colliderExcludeMask;
         }
 
         isInitializedForce = false;

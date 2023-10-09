@@ -30,25 +30,13 @@ public class Spell : MonoBehaviour
         }
     }
 
-    public bool Cast(Vector3 position, Quaternion rotation) {
+    public bool Cast(Transform handTransform, Quaternion rotation) {
         Debug.Log("Casting spell" + name + " with charge " + currentCharge + " and cost " + chargeCost);
         if (onCooldown || chargeCost > currentCharge) return false;
         onCooldown = true;
         StartCoroutine(CooldownCoroutine());
-        StartCoroutine(CastCoroutine(position, rotation));
         currentCharge -= chargeCost;
         return true;
-    }
-
-    IEnumerator CastCoroutine(Vector3 position, Quaternion rotation) {
-        yield return new WaitForSeconds(castTime);
-        SpawnEffectServerRpc(position, rotation);
-    }
-
-    [ServerRpc]
-    public void SpawnEffectServerRpc(Vector3 position, Quaternion rotation, ServerRpcParams rpcParams = default) {
-        GameObject effect = Instantiate(effectPrefab, position, rotation);
-        effect.GetComponent<NetworkObject>().Spawn();
     }
 
     IEnumerator CooldownCoroutine() {

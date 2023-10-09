@@ -10,6 +10,8 @@ public class NetworkCommandLine : MonoBehaviour
    {
        netManager = GetComponentInParent<NetworkManager>();
 
+       netManager.LogLevel = LogLevel.Normal;
+
        if (Application.isEditor) return;
 
        var args = GetCommandlineArgs();

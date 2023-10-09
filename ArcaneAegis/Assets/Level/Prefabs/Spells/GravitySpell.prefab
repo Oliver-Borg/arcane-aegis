@@ -70,7 +70,7 @@ MonoBehaviour:
   chargeCost: 10
   fullCharge: 100
   rechargeRate: 10
-  castTime: 0.5
+  castTime: 0.1
   onCooldown: 0
   effectPrefab: {fileID: 1520786051656894, guid: 60f067005042016479e156d2700edf0c, type: 3}
-  handEffectPrefab: {fileID: 0}
+  handEffectPrefab: {fileID: 125620, guid: 0370007f981a9c7408836062ad4d92d7, type: 3}
