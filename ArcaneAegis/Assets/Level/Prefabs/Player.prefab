@@ -1397,6 +1397,7 @@ Transform:
   - {fileID: 739230869707405854}
   - {fileID: 739230869279755971}
   - {fileID: 2161294636339458937}
+  - {fileID: 5092018959973951042}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &739230869700433022
@@ -1574,11 +1575,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6ba41b2e8360ca4a9ec6ebd41133baa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effects:
+  spellPrefabs:
   - {fileID: 6127773015960741330, guid: dbdfc01c876fbf24691b21d7c1d5bf72, type: 3}
-  effectTransforms:
-  - {fileID: 739230869707406292}
+  - {fileID: 5426147186305645650, guid: 50375dc38cebcbd4d99e623bff44621b, type: 3}
+  handTransform: {fileID: 739230869707406292}
   playerCamera: {fileID: 739230869279755970}
+  spellSlots: {fileID: 5092018959973951042}
 --- !u!114 &8803777133893185157
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2682,6 +2684,37 @@ Transform:
   m_Children:
   - {fileID: 739230869707406246}
   m_Father: {fileID: 739230869707406232}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6227980382306386000
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5092018959973951042}
+  m_Layer: 0
+  m_Name: SpellSlots
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5092018959973951042
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6227980382306386000}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 739230869707406238}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6228717977966394335
 GameObject:
