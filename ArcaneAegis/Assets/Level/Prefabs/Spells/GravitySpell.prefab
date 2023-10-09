@@ -65,7 +65,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25e60745d8d12b64aa3fbb7f4f79d927, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 10
+  damage: 50
   cooldown: 1
   chargeCost: 10
   fullCharge: 100

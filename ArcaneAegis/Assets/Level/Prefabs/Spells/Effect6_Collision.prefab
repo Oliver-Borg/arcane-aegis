@@ -4905,7 +4905,6 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 902a26a15a7e56545b24fa20a31a771d, type: 2}
-  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -19504,7 +19503,6 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: b7cb6f9edb5a89147962d93e0f1e0ef5, type: 2}
-  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -29811,7 +29809,7 @@ MonoBehaviour:
   GraphIntensityMultiplier: 1
   IsLoop: 0
   DestoryDistance: 1
-  UseDistanceScale: 1
+  UseDistanceScale: 0
   DistanceScaleCurve:
     serializedVersion: 2
     m_Curve:
