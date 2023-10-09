@@ -75,6 +75,9 @@ public class PlayerAttack : NetworkBehaviour {
         {
             enemy.TakeDamageServerRpc(physicsMotion.Damage);
         }
+        // Delete effect and despawn
+        GameObject effect = physicsMotion.gameObject.transform.parent.gameObject;
+        effect.GetComponent<NetworkObject>().Despawn(true);
     }
 
     void Update()
@@ -101,7 +104,10 @@ public class PlayerAttack : NetworkBehaviour {
             // Create raycast and set rotation to the direction from the player to the raycast hit point
             // Cast forward ray from camera in camera direction
 
-            Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
+            BasicBehaviour basicBehaviour = GetComponent<BasicBehaviour>();
+            if (basicBehaviour.IsSprinting()) return;
+
+            Ray ray = new Ray(handTransform.position, playerCamera.transform.forward);
             if (Physics.Raycast(ray, out RaycastHit hit)) {
 
                 Vector3 spawnPoint = handTransform.position + transform.forward * 0.1f;
