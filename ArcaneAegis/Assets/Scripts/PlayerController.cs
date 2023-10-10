@@ -45,7 +45,6 @@ public class PlayerController : NetworkBehaviour
         if (transform.position.y < -10f) TakeDamageServerRpc(100f);
     }
 
-    // TODO Fix damaging players
 
     [ServerRpc(Delivery = default, RequireOwnership = false)] // Runs on the server (sent by client)
     public void TakeDamageServerRpc(float damage=50f, ServerRpcParams rpcParams = default) {
@@ -53,9 +52,16 @@ public class PlayerController : NetworkBehaviour
         // Die
         if (health.Value <= 0f)
         {
+            RespawnClientRpc();
             health.Value = 100f;
-            transform.position = new Vector3(0f, 0f, 0f);
         }
+    }
+
+    [ClientRpc]
+    public void RespawnClientRpc() {
+        // TODO Fix this: Only owner can set their own position due to ClientNetworkTransform
+        if (!IsOwner) return;
+        transform.position = new Vector3(0f, 0f, 0f);
     }
 
     [ServerRpc]
@@ -70,5 +76,11 @@ public class PlayerController : NetworkBehaviour
         yield return new WaitForSeconds(1f);
         projectile.GetComponent<NetworkObject>().Despawn();
     }    
+
+    // Show GUI with health
+    void OnGUI() {
+        if (!IsOwner) return;
+        GUI.Label(new Rect(10, 10, 100, 20), $"Health: {health.Value}");
+    }
     
 }

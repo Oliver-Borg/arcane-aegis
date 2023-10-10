@@ -33,13 +33,8 @@ public class PlayerAttack : NetworkBehaviour {
     [ServerRpc]
     private void CreateHandEffectServerRpc () {
         return;
-        // TODO Fix this (extension)
+        // TODO Implement this (extension)
         // Hand effects are designed as cast effects so looping needs to be done manually
-        GameObject handEffect = spells[spellIndex].GetComponent<Spell>().handEffectPrefab;
-        if (handEffect == null) return;
-        if (currentHandEffect != null) handEffect.GetComponent<NetworkObject>().Despawn(true);
-        currentHandEffect = Instantiate(handEffect, handTransform.position, handTransform.rotation, handTransform);
-        currentHandEffect.GetComponent<NetworkObject>().Spawn();
     }
 
     IEnumerator CastCoroutine(int index, Quaternion rotation) {
@@ -74,9 +69,9 @@ public class PlayerAttack : NetworkBehaviour {
     private void CollisionEnter(object sender, RFX4_PhysicsMotion.RFX4_CollisionInfo e)
     {
         if (!IsServer) return; // Do hit detection on the server
-        Debug.Log(e.HitPoint); //a collision coordinates in world space
-        Debug.Log(e.HitGameObject.name); //a collided gameobject
-        Debug.Log(e.HitCollider.name); //a collided collider :)
+        // Debug.Log(e.HitPoint); //a collision coordinates in world space
+        // Debug.Log(e.HitGameObject.name); //a collided gameobject
+        // Debug.Log(e.HitCollider.name); //a collided collider :)
 
         GameObject effect;
         float damage;

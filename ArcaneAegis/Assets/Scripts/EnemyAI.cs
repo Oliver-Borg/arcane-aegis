@@ -30,20 +30,15 @@ public class EnemyAI : NetworkBehaviour
         100f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server
     );
 
-    [SerializeField] private GameObject model;
-
     private Animator animator;
 
     [SerializeField] private NavMeshAgent agent;
-    // Update is called once per frame
     private Coroutine attackCoroutine = null;
 
     private Coroutine spawnCoroutine = null;
 
-    private void Start() {
-        // TODO Network animator
-        animator = model.GetComponent<Animator>();
-
+    public override void OnNetworkSpawn() {
+        animator = GetComponent<Animator>();
         // Start spawn coroutine
         spawnCoroutine = StartCoroutine(SpawnCoroutine());
 
@@ -64,6 +59,7 @@ public class EnemyAI : NetworkBehaviour
 
     void Update()
     {
+        // Enemies are completely controlled by the server
         if(!spawned || !alive || !IsServer) return;
         // Get list of PlayerController scripts in scene and their positions
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
@@ -73,9 +69,8 @@ public class EnemyAI : NetworkBehaviour
         // Check if any players in attack range
         Collider [] hitPlayers = hitPlayerList();
         if (hitPlayers.Length > 0) {
-            Debug.Log("Hit player");
             agent.ResetPath(); // Stop agent
-            animator.SetBool("Walking", false);
+            SetAnimationBoolClientRpc("Walking", false);
             Attack();
             return;
         }
@@ -91,7 +86,7 @@ public class EnemyAI : NetworkBehaviour
             }
         }
         agent.SetDestination(closestPlayer.transform.position);
-        animator.SetBool("Walking", true);
+        SetAnimationBoolClientRpc("Walking", true);
     }
 
 
@@ -112,15 +107,13 @@ public class EnemyAI : NetworkBehaviour
 
     [ServerRpc]
     public void DoAttackServerRpc() {
-        // DoAttackClientRpc();
-        // Play attack animation
-        animator.SetTrigger("Attack"); // TODO Network animator
-
         // Check if any players in attack range
         Collider [] hitPlayers = closePlayerList();
+        if (hitPlayers.Length == 0) return;
+        // Play attack animation
+        PlayAnimationClientRpc("Attack");
 
         foreach (Collider player in hitPlayers) {
-            Debug.Log("Hit player");
             PlayerController playerController = player.GetComponent<PlayerController>();
             if(playerController == null) continue;
             playerController.TakeDamageServerRpc(attackDamage);
@@ -139,21 +132,30 @@ public class EnemyAI : NetworkBehaviour
     [ServerRpc(Delivery = default, RequireOwnership = false)]
     private void EnemyDeathServerRpc() {
         // Play death animation
-        animator.SetTrigger("Die");
+        PlayAnimationClientRpc("Die");
         GetComponent<NavMeshAgent>().enabled = false;
         GetComponent<Collider>().enabled = false; // TODO Create ragdoll
         StartCoroutine(DespawnCoroutine());
     }
 
+    [ClientRpc]
+    private void PlayAnimationClientRpc(string animation) {
+        // TODO Try and get NetworkAnimator working instead
+        animator.SetTrigger(animation);
+    }
+
+    [ClientRpc]
+    private void SetAnimationBoolClientRpc(string animation, bool value) {
+        animator.SetBool(animation, value);
+    }
+
     IEnumerator DespawnCoroutine() {
         yield return new WaitForSeconds(despawnDelay);
-        Destroy(model);
         Destroy(gameObject);
         GetComponent<NetworkObject>().Despawn();
     }
 
     void OnDrawGizmosSelected() {
-        Debug.Log("Draw");
         Gizmos.DrawWireSphere(transform.position+transform.forward+transform.up, hitRange);
         Gizmos.DrawWireSphere(transform.position+transform.up, attackRange);
     }
