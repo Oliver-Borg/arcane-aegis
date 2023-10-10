@@ -429,6 +429,7 @@ MonoBehaviour:
   - {fileID: 2146948111}
   enemyPrefabs:
   - {fileID: 203226668972566776, guid: 560e26981c593a047957ac5064d6d17a, type: 3}
+  - {fileID: 203226668972566776, guid: f3d84ee327036634ab325cbf55d6453e, type: 3}
   enemyCount: 5
 --- !u!4 &814175981
 Transform:

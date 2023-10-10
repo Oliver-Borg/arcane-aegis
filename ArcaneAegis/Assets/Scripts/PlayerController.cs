@@ -11,6 +11,8 @@ public class PlayerController : NetworkBehaviour
 
     [SerializeField] private Camera playerCamera;
 
+    [SerializeField] private float regenRate = 10f;
+
     // private Vector3 velocity = Vector3.zero;
 
     private NetworkVariable<PlayerData> playerData = new NetworkVariable<PlayerData>(
@@ -40,9 +42,21 @@ public class PlayerController : NetworkBehaviour
 
     void Update()
     {
+        if (IsServer)
+        {
+            RegenHealth();
+        }
+
         if (!IsOwner) return;
         // OOB damage
         if (transform.position.y < -10f) TakeDamageServerRpc(100f);
+    }
+
+    void RegenHealth() {
+        if (health.Value >= 100f) return;
+        float regenAmnt = regenRate * Time.deltaTime;
+        health.Value += regenAmnt;
+        if (health.Value > 100f) health.Value = 100f;
     }
 
 

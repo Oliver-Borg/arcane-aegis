@@ -24,6 +24,8 @@ public class EnemyAI : NetworkBehaviour
     [SerializeField] private float despawnDelay = 5f;
     [SerializeField] private LayerMask playerLayer;
 
+    [SerializeField] private GameObject [] weapons;
+
     
 
     private NetworkVariable<float> health = new NetworkVariable<float>(
@@ -39,6 +41,12 @@ public class EnemyAI : NetworkBehaviour
 
     public override void OnNetworkSpawn() {
         animator = GetComponent<Animator>();
+        // Randomly choose weapon and disable others (enemies have multiple weapons by default)
+        int weaponIndex = Random.Range(0, weapons.Length);
+        for (int i = 0; i < weapons.Length; i++) {
+            if (i == weaponIndex) continue;
+            weapons[i].SetActive(false);
+        }
         // Start spawn coroutine
         spawnCoroutine = StartCoroutine(SpawnCoroutine());
 
@@ -75,6 +83,18 @@ public class EnemyAI : NetworkBehaviour
             return;
         }
 
+        // Check if players close and start rotating towards them if so
+        Collider [] closePlayers = closePlayerList();
+        if (closePlayers.Length > 0) {
+            agent.ResetPath(); // Stop agent
+            // Rotate the enemy towards the player in small steps
+            Vector3 direction = (closePlayers[0].transform.position - transform.position).normalized;
+            Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0f, direction.z));
+            float lookspeed = agent.angularSpeed/180*Mathf.PI;
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * lookspeed);
+            return;
+        }
+
         // Find closest player
         float closestDistance = 100000f;
         GameObject closestPlayer = null;
@@ -107,8 +127,9 @@ public class EnemyAI : NetworkBehaviour
 
     [ServerRpc]
     public void DoAttackServerRpc() {
+        // TODO Improve this behaviour either using delayed attacks, or by using a trigger collider
         // Check if any players in attack range
-        Collider [] hitPlayers = closePlayerList();
+        Collider [] hitPlayers = hitPlayerList();
         if (hitPlayers.Length == 0) return;
         // Play attack animation
         PlayAnimationClientRpc("Attack");
