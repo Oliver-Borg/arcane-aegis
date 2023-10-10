@@ -8,6 +8,8 @@ public class PlayerAttack : NetworkBehaviour {
     [SerializeField] private Camera playerCamera;
     [SerializeField] private Transform spellSlots;
 
+    private Upgrade [] upgrades = new Upgrade[5];
+
     private int spellIndex = 0;
     private GameObject [] spells;
 
@@ -57,12 +59,12 @@ public class PlayerAttack : NetworkBehaviour {
         RFX4_RaycastCollision physicsRaycast = effect.GetComponentInChildren<RFX4_RaycastCollision>(true);
         if (physicsRaycast != null) {
             physicsRaycast.CollisionEnter += CollisionEnter;
-            physicsRaycast.Damage = spell.damage;
+            physicsRaycast.Damage = spell.Damage;
         }
         
         if (physicsMotion != null) {
             physicsMotion.CollisionEnter += CollisionEnter;
-            physicsMotion.Damage = spell.damage;
+            physicsMotion.Damage = spell.Damage;
         }
     }
 
@@ -99,6 +101,33 @@ public class PlayerAttack : NetworkBehaviour {
         // Delete effect and despawn
         effect.GetComponent<NetworkObject>().Despawn(true);
     }
+
+    public void AddUpgrade(Upgrade upgrade) {
+        for (int i = 0; i < upgrades.Length-1; i++) {
+            upgrades[i] = null;
+            upgrades[i] = upgrades[i+1];
+        }
+        upgrades[upgrades.Length-1] = upgrade;
+        Spell current = GetSpellOfElement(upgrade.upGradeElement);
+        current.AddUpgrade(upgrade.upgradeType);
+    }
+
+    public void RemoveUpgrade(Upgrade upgrade) {
+        Spell current = GetSpellOfElement(upgrade.upGradeElement);
+        current.RemoveUpgrade(upgrade.upgradeType);
+    }
+    
+
+    private Spell GetSpellOfElement(ElementEnum element) {
+        for (int i = 0; i < spells.Length; i++) {
+            Spell current = spells[i].GetComponent<Spell>();
+            if (current.element == element) {
+                return current;
+            }
+        }
+        return null;
+    }
+
 
     void Update()
     {   
@@ -140,7 +169,8 @@ public class PlayerAttack : NetworkBehaviour {
 
                 if (!success) return;
                 StartCoroutine(CastCoroutine(spellIndex, rotation));
-
+                
+                // TODO Increase animation speed based on upgrades
                 animator.SetTrigger("Attack");
                 // For now use hitscan for damage TODO change to projectile
                 

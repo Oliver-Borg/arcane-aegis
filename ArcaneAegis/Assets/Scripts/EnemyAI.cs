@@ -26,7 +26,9 @@ public class EnemyAI : NetworkBehaviour
 
     [SerializeField] private GameObject [] weapons;
 
-    
+    [SerializeField] private GameObject [] upgrades;
+
+    [SerializeField] private float dropChance = 0.5f;
 
     private NetworkVariable<float> health = new NetworkVariable<float>(
         100f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server
@@ -156,7 +158,15 @@ public class EnemyAI : NetworkBehaviour
         PlayAnimationClientRpc("Die");
         GetComponent<NavMeshAgent>().enabled = false;
         GetComponent<Collider>().enabled = false; // TODO Create ragdoll
+        DropUpgradeServerRpc();
         StartCoroutine(DespawnCoroutine());
+    }
+
+    [ServerRpc]
+    private void DropUpgradeServerRpc() {
+        if (Random.Range(0f, 1f) > dropChance) return;
+        GameObject upgrade = Instantiate(upgrades[Random.Range(0, upgrades.Length)], transform.position, Quaternion.identity);
+        upgrade.GetComponent<NetworkObject>().Spawn();
     }
 
     [ClientRpc]

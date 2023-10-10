@@ -84,6 +84,12 @@ MonoBehaviour:
   - {fileID: 8657840930217820938}
   - {fileID: 8657840930217820936}
   - {fileID: 8657840930217820940}
+  upgrades:
+  - {fileID: 5141862177401682794, guid: b60330d99db0bbf4ca7b38ab100ae187, type: 3}
+  - {fileID: 5141862177401682794, guid: 87510d73fe0d8004c9dc5c716a6cc84c, type: 3}
+  - {fileID: 5141862177401682794, guid: 970f9bd56c3fb8e4fa01595c974a3c10, type: 3}
+  - {fileID: 5141862177401682794, guid: 5f43ff91bcadc5549938f0e6292e4520, type: 3}
+  dropChance: 0.75
   agent: {fileID: 5813056974233844056}
 --- !u!114 &6159738099404402497
 MonoBehaviour:
