@@ -1561,8 +1561,8 @@ NavMeshObstacle:
   m_Shape: 0
   m_Extents: {x: 0.28, y: 0.9, z: 0.28}
   m_MoveThreshold: 0.1
-  m_Carve: 1
-  m_CarveOnlyStationary: 1
+  m_Carve: 0
+  m_CarveOnlyStationary: 0
   m_Center: {x: 0, y: 0.89, z: 0}
   m_TimeToStationary: 0.5
 --- !u!114 &7440399181864701900
@@ -3005,8 +3005,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 16
+  m_fontSizeBase: 16
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

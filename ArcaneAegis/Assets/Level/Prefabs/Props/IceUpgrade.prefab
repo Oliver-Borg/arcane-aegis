@@ -4876,7 +4876,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84539f72298843b4090fc3681aae66a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  upGradeElement: 0
+  upGradeElement: 3
   baseColour: {r: 0, g: 0.8509804, b: 0.84297055, a: 0}
   sphere: {fileID: 7333623613012117048}
   upgradeType: 0

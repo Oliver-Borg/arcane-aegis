@@ -1,6 +1,7 @@
 using UnityEngine;
 using Unity.Netcode;
 using System.Collections;
+using System;
 public class PlayerAttack : NetworkBehaviour {
     
     [SerializeField] private GameObject [] spellPrefabs;
@@ -8,7 +9,7 @@ public class PlayerAttack : NetworkBehaviour {
     [SerializeField] private Camera playerCamera;
     [SerializeField] private Transform spellSlots;
 
-    private Upgrade [] upgrades = new Upgrade[5];
+    private Tuple<UpgradeEnum, ElementEnum> [] upgrades = new Tuple<UpgradeEnum, ElementEnum>[5];
 
     private int spellIndex = 0;
     private GameObject [] spells;
@@ -103,18 +104,20 @@ public class PlayerAttack : NetworkBehaviour {
     }
 
     public void AddUpgrade(Upgrade upgrade) {
+        RemoveUpgrade(upgrades[0]);
         for (int i = 0; i < upgrades.Length-1; i++) {
             upgrades[i] = null;
             upgrades[i] = upgrades[i+1];
         }
-        upgrades[upgrades.Length-1] = upgrade;
+        upgrades[upgrades.Length-1] = new Tuple<UpgradeEnum, ElementEnum>(upgrade.upgradeType, upgrade.upGradeElement);
         Spell current = GetSpellOfElement(upgrade.upGradeElement);
         current.AddUpgrade(upgrade.upgradeType);
     }
 
-    public void RemoveUpgrade(Upgrade upgrade) {
-        Spell current = GetSpellOfElement(upgrade.upGradeElement);
-        current.RemoveUpgrade(upgrade.upgradeType);
+    public void RemoveUpgrade(Tuple<UpgradeEnum, ElementEnum> upgrade) {
+        if (upgrade == null) return;
+        Spell current = GetSpellOfElement(upgrade.Item2);
+        current.RemoveUpgrade(upgrade.Item1);
     }
     
 

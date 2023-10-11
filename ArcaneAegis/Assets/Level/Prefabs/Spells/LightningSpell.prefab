@@ -74,3 +74,4 @@ MonoBehaviour:
   onCooldown: 0
   effectPrefab: {fileID: 1590966373120196, guid: ac8a539a7136cf44eb1cadc5a92698fe, type: 3}
   handEffectPrefab: {fileID: 139548, guid: 8ec3c7cf5743aba4d8e254b8bdf0aa8e, type: 3}
+  element: 1
