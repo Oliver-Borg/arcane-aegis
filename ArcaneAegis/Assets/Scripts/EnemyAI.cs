@@ -17,6 +17,8 @@ public class EnemyAI : NetworkBehaviour
 
     [SerializeField] private float spawnTime = 5f;
 
+    public float spawnWeight = 1f;
+
     private bool alive = true;
 
     private bool spawned = false;
