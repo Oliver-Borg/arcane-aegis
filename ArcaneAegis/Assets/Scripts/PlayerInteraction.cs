@@ -30,6 +30,21 @@ public class PlayerInteraction : NetworkBehaviour
                     upgrade.PickupUpgradeServerRpc();
                 }
             }
+            else if (hit.transform.parent != null && hit.transform.parent.TryGetComponent(out Door door))
+            {
+                if (door.open) return;
+                PlayerInventory inventory = GetComponent<PlayerInventory>();
+                interactionText.text = "Press E to open door " + inventory.GetKeys() + " / 1 key";
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    
+                    if (inventory.GetKeys() > 0)
+                    {
+                        inventory.UseKeyServerRpc();
+                        door.OpenServerRpc();
+                    }
+                }
+            }
             else
             {
                 interactionText.text = "";

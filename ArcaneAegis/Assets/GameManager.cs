@@ -30,6 +30,8 @@ public class GameManager : NetworkBehaviour {
 
     [SerializeField] private int maxUniqueEnemiesPerRound = 3;
 
+    [SerializeField] private bool peaceful = false;
+
 
 
     private int round = 0;
@@ -98,7 +100,7 @@ public class GameManager : NetworkBehaviour {
     }
 
     IEnumerator StartRound() {
-        if (roundStarted) yield break;
+        if (roundStarted || peaceful) yield break;
         roundStarted = true;
         yield return new WaitForSeconds(roundStartDelay);
         round++;
