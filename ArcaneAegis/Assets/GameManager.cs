@@ -115,7 +115,7 @@ public class GameManager : NetworkBehaviour {
                 GameObject [] activeSpawnpoints = GetActiveSpawnpoints();
                 if (activeSpawnpoints.Length == 0) return 0;
                 int spawnPointIndex = Random.Range(0, activeSpawnpoints.Length);
-                Vector3 spawnPoint = activeSpawnpoints[spawnPointIndex].transform.position;
+                Vector3 spawnPoint = activeSpawnpoints[spawnPointIndex].GetComponent<SpawnPoint>().GetSpawnPosition();
 
                 SpawnEnemyServerRpc(i, spawnPoint);
                 return enemyPrefabs[i].GetComponent<EnemyAI>().spawnWeight;
