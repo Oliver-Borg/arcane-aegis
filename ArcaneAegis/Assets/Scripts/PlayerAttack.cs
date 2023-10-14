@@ -1,12 +1,15 @@
 using UnityEngine;
 using Unity.Netcode;
 using System.Collections;
+using System;
 public class PlayerAttack : NetworkBehaviour {
     
     [SerializeField] private GameObject [] spellPrefabs;
     [SerializeField] private Transform handTransform;
     [SerializeField] private Camera playerCamera;
     [SerializeField] private Transform spellSlots;
+
+    private Tuple<UpgradeEnum, ElementEnum> [] upgrades = new Tuple<UpgradeEnum, ElementEnum>[5];
 
     private int spellIndex = 0;
     private GameObject [] spells;
@@ -33,13 +36,8 @@ public class PlayerAttack : NetworkBehaviour {
     [ServerRpc]
     private void CreateHandEffectServerRpc () {
         return;
-        // TODO Fix this (extension)
+        // TODO Implement this (extension)
         // Hand effects are designed as cast effects so looping needs to be done manually
-        GameObject handEffect = spells[spellIndex].GetComponent<Spell>().handEffectPrefab;
-        if (handEffect == null) return;
-        if (currentHandEffect != null) handEffect.GetComponent<NetworkObject>().Despawn(true);
-        currentHandEffect = Instantiate(handEffect, handTransform.position, handTransform.rotation, handTransform);
-        currentHandEffect.GetComponent<NetworkObject>().Spawn();
     }
 
     IEnumerator CastCoroutine(int index, Quaternion rotation) {
@@ -62,21 +60,21 @@ public class PlayerAttack : NetworkBehaviour {
         RFX4_RaycastCollision physicsRaycast = effect.GetComponentInChildren<RFX4_RaycastCollision>(true);
         if (physicsRaycast != null) {
             physicsRaycast.CollisionEnter += CollisionEnter;
-            physicsRaycast.Damage = spell.damage;
+            physicsRaycast.Damage = spell.Damage;
         }
         
         if (physicsMotion != null) {
             physicsMotion.CollisionEnter += CollisionEnter;
-            physicsMotion.Damage = spell.damage;
+            physicsMotion.Damage = spell.Damage;
         }
     }
 
     private void CollisionEnter(object sender, RFX4_PhysicsMotion.RFX4_CollisionInfo e)
     {
         if (!IsServer) return; // Do hit detection on the server
-        Debug.Log(e.HitPoint); //a collision coordinates in world space
-        Debug.Log(e.HitGameObject.name); //a collided gameobject
-        Debug.Log(e.HitCollider.name); //a collided collider :)
+        // Debug.Log(e.HitPoint); //a collision coordinates in world space
+        // Debug.Log(e.HitGameObject.name); //a collided gameobject
+        // Debug.Log(e.HitCollider.name); //a collided collider :)
 
         GameObject effect;
         float damage;
@@ -104,6 +102,35 @@ public class PlayerAttack : NetworkBehaviour {
         // Delete effect and despawn
         effect.GetComponent<NetworkObject>().Despawn(true);
     }
+
+    public void AddUpgrade(Upgrade upgrade) {
+        RemoveUpgrade(upgrades[0]);
+        for (int i = 0; i < upgrades.Length-1; i++) {
+            upgrades[i] = null;
+            upgrades[i] = upgrades[i+1];
+        }
+        upgrades[upgrades.Length-1] = new Tuple<UpgradeEnum, ElementEnum>(upgrade.upgradeType, upgrade.upGradeElement);
+        Spell current = GetSpellOfElement(upgrade.upGradeElement);
+        current.AddUpgrade(upgrade.upgradeType);
+    }
+
+    public void RemoveUpgrade(Tuple<UpgradeEnum, ElementEnum> upgrade) {
+        if (upgrade == null) return;
+        Spell current = GetSpellOfElement(upgrade.Item2);
+        current.RemoveUpgrade(upgrade.Item1);
+    }
+    
+
+    private Spell GetSpellOfElement(ElementEnum element) {
+        for (int i = 0; i < spells.Length; i++) {
+            Spell current = spells[i].GetComponent<Spell>();
+            if (current.element == element) {
+                return current;
+            }
+        }
+        return null;
+    }
+
 
     void Update()
     {   
@@ -145,7 +172,8 @@ public class PlayerAttack : NetworkBehaviour {
 
                 if (!success) return;
                 StartCoroutine(CastCoroutine(spellIndex, rotation));
-
+                
+                // TODO Increase animation speed based on upgrades
                 animator.SetTrigger("Attack");
                 // For now use hitscan for damage TODO change to projectile
                 
