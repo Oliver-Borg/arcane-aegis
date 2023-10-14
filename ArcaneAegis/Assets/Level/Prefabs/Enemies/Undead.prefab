@@ -73,7 +73,9 @@ MonoBehaviour:
   hitRange: 0.2
   attackDamage: 20
   attackCooldown: 1
+  maxHealth: 100
   spawnTime: 5
+  spawnWeight: 1
   despawnDelay: 5
   playerLayer:
     serializedVersion: 2
@@ -89,7 +91,7 @@ MonoBehaviour:
   - {fileID: 5141862177401682794, guid: 87510d73fe0d8004c9dc5c716a6cc84c, type: 3}
   - {fileID: 5141862177401682794, guid: 970f9bd56c3fb8e4fa01595c974a3c10, type: 3}
   - {fileID: 5141862177401682794, guid: 5f43ff91bcadc5549938f0e6292e4520, type: 3}
-  dropChance: 0.75
+  dropChance: 0.15
   agent: {fileID: 5813056974233844056}
 --- !u!114 &6159738099404402497
 MonoBehaviour:
@@ -150,11 +152,11 @@ NavMeshAgent:
   m_GameObject: {fileID: 203226668972566776}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 0.3
   m_Speed: 2
   m_Acceleration: 8
   avoidancePriority: 50
-  m_AngularSpeed: 360
+  m_AngularSpeed: 240
   m_StoppingDistance: 0.28
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
@@ -182,7 +184,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.3
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}

@@ -13,6 +13,8 @@ public class EnemyAI : NetworkBehaviour
     [SerializeField] private float attackDamage = 10f;
 
     [SerializeField] private float attackCooldown = 1f;
+
+    [SerializeField] private float maxHealth = 100f;
     private bool onCooldown = false;
 
     [SerializeField] private float spawnTime = 5f;
@@ -53,7 +55,7 @@ public class EnemyAI : NetworkBehaviour
         }
         // Start spawn coroutine
         spawnCoroutine = StartCoroutine(SpawnCoroutine());
-
+        if (IsServer) health.Value = maxHealth;
     }
 
     IEnumerator SpawnCoroutine() {
@@ -66,7 +68,7 @@ public class EnemyAI : NetworkBehaviour
     }
 
     private Collider [] hitPlayerList() {
-        return Physics.OverlapSphere(transform.position+transform.forward+transform.up, hitRange, playerLayer);
+        return Physics.OverlapSphere(transform.position+transform.forward*attackRange+transform.up, hitRange, playerLayer);
     }
 
     void Update()
@@ -189,7 +191,7 @@ public class EnemyAI : NetworkBehaviour
     }
 
     void OnDrawGizmosSelected() {
-        Gizmos.DrawWireSphere(transform.position+transform.forward+transform.up, hitRange);
+        Gizmos.DrawWireSphere(transform.position+transform.forward*attackRange+transform.up, hitRange);
         Gizmos.DrawWireSphere(transform.position+transform.up, attackRange);
     }
 }
