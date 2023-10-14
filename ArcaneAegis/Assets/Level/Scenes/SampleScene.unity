@@ -558,14 +558,15 @@ MonoBehaviour:
   - {fileID: 203226668972566776, guid: f3d84ee327036634ab325cbf55d6453e, type: 3}
   - {fileID: 203226668972566776, guid: 560e26981c593a047957ac5064d6d17a, type: 3}
   enemyCount: 20
-  maxRound: 10
+  maxRound: 25
   roundTime: 10
   maxEnemies: 25
   minEnemies: 10
-  roundStartSpawnRatio: 0.5
+  roundStartSpawnRatio: 1
   roundStartSpawnDelay: 0.1
-  roundStartDelay: 1
-  roundEndDelay: 1
+  roundStartDelay: 0
+  roundEndDelay: 0
+  maxUniqueEnemiesPerRound: 3
 --- !u!4 &814175981
 Transform:
   m_ObjectHideFlags: 0

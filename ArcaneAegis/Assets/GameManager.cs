@@ -28,6 +28,8 @@ public class GameManager : NetworkBehaviour {
 
     [SerializeField] private float roundEndDelay = 5f;
 
+    [SerializeField] private int maxUniqueEnemiesPerRound = 3;
+
 
 
     private int round = 0;
@@ -61,7 +63,7 @@ public class GameManager : NetworkBehaviour {
         // TODO improve distribution
         for (int i = 0; i < enemyPrefabs.Length; i++) {
             EnemyAI enemyAI = enemyPrefabs[i].GetComponent<EnemyAI>();
-            weights[i] = (i + 1 + Mathf.Pow(round, 2) / maxRound) / enemyAI.spawnWeight;
+            weights[i] = (i + 1 + Mathf.Pow(round, 2) / maxRound) / Mathf.Sqrt(enemyAI.spawnWeight);
         }
 
         // Normalize weights
@@ -77,20 +79,22 @@ public class GameManager : NetworkBehaviour {
     } 
 
     private int NumberOfEnemies (int round) {
-        return Mathf.RoundToInt(Mathf.Lerp(minEnemies, maxEnemies, round / maxRound));
+        int numPlayers = GameObject.FindGameObjectsWithTag("Player").Length;
+        return Mathf.RoundToInt(Mathf.Lerp(minEnemies, maxEnemies, round / maxRound))*numPlayers;
     }
 
-    private void SpawnEnemy(float [] weights) {
+    private float SpawnEnemy(float [] weights) {
         float random = Random.Range(0f, 1f);
         float sum = 0;
         for (int i = 0; i < weights.Length; i++) {
             sum += weights[i];
             if (random < sum) {
-                Debug.Log("Spawning enemy model " + i + " with weight " + weights[i] + " in round " + round);
+                // Debug.Log("Spawning enemy model " + i + " with weight " + weights[i] + " in round " + round);
                 SpawnEnemyServerRpc(i, enemySpawnPoints[Random.Range(0, enemySpawnPoints.Length)].position);
-                break;
+                return enemyPrefabs[i].GetComponent<EnemyAI>().spawnWeight;
             }
         }
+        return 0;
     }
 
     IEnumerator StartRound() {
@@ -100,18 +104,68 @@ public class GameManager : NetworkBehaviour {
         round++;
         enemyCount = NumberOfEnemies(round);
         float [] weights = SpawnWeights(round);
-        int startEnemies = Mathf.RoundToInt(enemyCount*roundStartSpawnRatio);
-        for (int i = 0; i < startEnemies; i++) {
-            yield return new WaitForSeconds(roundStartSpawnDelay);
-            SpawnEnemy(weights);
+
+        int uniqueEnemiesThisRound = Random.Range(1, maxUniqueEnemiesPerRound + 1);
+
+        NetworkLog.LogInfoServer("Spawning " + enemyCount + " enemies in round " + round);
+        NetworkLog.LogInfoServer("from " + uniqueEnemiesThisRound + " unique enemies types");
+        
+
+        int excluded = weights.Length - uniqueEnemiesThisRound;
+
+        // Rebalance weights to exclude smallest weights
+        // for (int i = 0; i < excluded; i++) {
+        //     float min = Mathf.Infinity;
+        //     int minIndex = 0;
+        //     for (int j = 0; j < weights.Length; j++) {
+        //         if (weights[j] < min && weights[j] != 0) {
+        //             min = weights[j];
+        //             minIndex = j;
+        //         }
+        //     }
+        //     weights[minIndex] = 0;
+        // }
+
+        float [] buckets = new float [weights.Length];
+        buckets[0] = weights[0];
+        for (int i = 1; i < weights.Length; i++) {
+            buckets[i] = weights[i] + buckets[i-1];
         }
 
-        int remainingEnemies = enemyCount - startEnemies;
+        float [] newWeights = new float [weights.Length];
 
-        while (remainingEnemies > 0) {
+        for (int i = 0; i < uniqueEnemiesThisRound; i++) {
+            float random = Random.Range(0f, 1f);
+            for (int j = 0; j < buckets.Length; j++) {
+                if (random < buckets[j]) {
+                    newWeights[j] = weights[j];
+                    break;
+                }
+            }
+        }
+        weights = newWeights;
+
+        // Renormalize weights
+        float sum = 0;
+        for (int i = 0; i < weights.Length; i++) sum += weights[i];
+        for (int i = 0; i < weights.Length; i++) weights[i] /= sum;
+
+        for (int i = 0; i < weights.Length; i++) {
+            NetworkLog.LogInfoServer("Enemy model " + i + " has weight " + weights[i]);
+        }
+
+        float startEnemyMass = enemyCount*roundStartSpawnRatio;
+        float remainingEnemyMass = enemyCount - startEnemyMass;
+        while (startEnemyMass > 0) {
+            yield return new WaitForSeconds(roundStartSpawnDelay);
+            startEnemyMass -= SpawnEnemy(weights);
+        }
+
+        
+
+        while (remainingEnemyMass > 0) {
             yield return new WaitForSeconds(roundTime/enemyCount);
-            SpawnEnemy(weights);
-            remainingEnemies--;
+            remainingEnemyMass -= SpawnEnemy(weights);
         }
 
         yield return new WaitForSeconds(roundEndDelay);

@@ -55,11 +55,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackRange: 2
   hitRange: 0.5
-  attackDamage: 20
+  attackDamage: 30
   attackCooldown: 1
   maxHealth: 300
   spawnTime: 5
-  spawnWeight: 1
+  spawnWeight: 3
   despawnDelay: 5
   playerLayer:
     serializedVersion: 2
@@ -70,7 +70,7 @@ MonoBehaviour:
   - {fileID: 5141862177401682794, guid: 87510d73fe0d8004c9dc5c716a6cc84c, type: 3}
   - {fileID: 5141862177401682794, guid: 970f9bd56c3fb8e4fa01595c974a3c10, type: 3}
   - {fileID: 5141862177401682794, guid: 5f43ff91bcadc5549938f0e6292e4520, type: 3}
-  dropChance: 0.25
+  dropChance: 0.5
   agent: {fileID: 5813056974233844056}
 --- !u!114 &6159738099404402497
 MonoBehaviour:
