@@ -9,17 +9,25 @@ public class Door : NetworkBehaviour
     [SerializeField] private float openAngle = 90.0f;
     [SerializeField] private float openSpeed = 2.0f;
 
-    public bool open = false; // This is used to enable monster spawning
+    NetworkVariable<bool> openState = new NetworkVariable<bool>(
+        false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server
+    );
+
     [ServerRpc(Delivery = default, RequireOwnership = false)]
     public void OpenServerRpc(ServerRpcParams rpcParams = default)
     {
-        open = true;
+        openState.Value = true;
+    }
+
+    public bool IsOpen()
+    {
+        return openState.Value;
     }
 
     void Update()
     {
         if (!IsServer) return;
-        if (open)
+        if (openState.Value)
         {
             if (leftDoor != null)
                 leftDoor.localRotation = Quaternion.Slerp(leftDoor.localRotation, Quaternion.Euler(0, openAngle, 0), Time.deltaTime * openSpeed);
