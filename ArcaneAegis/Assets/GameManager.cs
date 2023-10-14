@@ -5,7 +5,7 @@ using System.Collections;
 
 public class GameManager : NetworkBehaviour {
 
-    [SerializeField] private Transform [] enemySpawnPoints;
+    [SerializeField] private GameObject [] enemySpawnPoints;
 
     // Put hardest first
     [SerializeField] private GameObject [] enemyPrefabs;
@@ -85,14 +85,39 @@ public class GameManager : NetworkBehaviour {
         return Mathf.RoundToInt(Mathf.Lerp(minEnemies, maxEnemies, round / maxRound))*numPlayers;
     }
 
+    public GameObject [] GetActiveSpawnpoints() {
+        
+        int j = 0;
+        for (int i = 0; i < enemySpawnPoints.Length; i++) {
+            if (enemySpawnPoints[i].GetComponent<SpawnPoint>().IsActive()) {
+                j++;
+            }
+        }
+        GameObject [] activeSpawnpoints = new GameObject [j];
+        j = 0;
+        for (int i = 0; i < enemySpawnPoints.Length; i++) {
+            if (enemySpawnPoints[i].GetComponent<SpawnPoint>().IsActive()) {
+                activeSpawnpoints[j] = enemySpawnPoints[i];
+                j++;
+            }
+        }
+        return activeSpawnpoints;
+    }
+
     private float SpawnEnemy(float [] weights) {
         float random = Random.Range(0f, 1f);
         float sum = 0;
+        
         for (int i = 0; i < weights.Length; i++) {
             sum += weights[i];
             if (random < sum) {
                 // Debug.Log("Spawning enemy model " + i + " with weight " + weights[i] + " in round " + round);
-                SpawnEnemyServerRpc(i, enemySpawnPoints[Random.Range(0, enemySpawnPoints.Length)].position);
+                GameObject [] activeSpawnpoints = GetActiveSpawnpoints();
+                if (activeSpawnpoints.Length == 0) return 0;
+                int spawnPointIndex = Random.Range(0, activeSpawnpoints.Length);
+                Vector3 spawnPoint = activeSpawnpoints[spawnPointIndex].transform.position;
+
+                SpawnEnemyServerRpc(i, spawnPoint);
                 return enemyPrefabs[i].GetComponent<EnemyAI>().spawnWeight;
             }
         }
