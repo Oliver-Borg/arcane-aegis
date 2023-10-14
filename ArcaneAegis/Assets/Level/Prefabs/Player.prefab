@@ -1550,6 +1550,12 @@ MonoBehaviour:
   cube: {fileID: 8443241918570745709, guid: 03e8c2a6cd1947e4eaa73b3307d74411, type: 3}
   playerCamera: {fileID: 739230869279755970}
   regenRate: 10
+  disableOnDeath:
+  - {fileID: 7440399181864701900}
+  - {fileID: 8803777133893185157}
+  - {fileID: 8016556972870435524}
+  - {fileID: 7385253705916671623}
+  - {fileID: 2580194083667724531}
 --- !u!208 &4940459207005601202
 NavMeshObstacle:
   m_ObjectHideFlags: 0

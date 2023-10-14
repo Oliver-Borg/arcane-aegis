@@ -57,6 +57,9 @@ public class GameManager : NetworkBehaviour {
         if (Input.GetKeyDown(KeyCode.K)) {
             KillAllEnemiesServerRpc();
         }
+        if (Input.GetKeyDown(KeyCode.L)) {
+            ReviveAllPlayersServerRpc();
+        }
     }
 
     private float [] SpawnWeights (int round) {
@@ -215,6 +218,18 @@ public class GameManager : NetworkBehaviour {
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
         foreach (GameObject enemy in enemies) {
             enemy.GetComponent<EnemyAI>().TakeDamageServerRpc(1000000f);
+        }
+    }
+
+    [ServerRpc]
+    public void ReviveAllPlayersServerRpc(ServerRpcParams rpcParams = default) {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("DeadPlayer");
+        foreach (GameObject player in players) {
+            PlayerController playerController = player.GetComponent<PlayerController>();
+            if (playerController.IsDead()) {
+                NetworkLog.LogInfoServer("Reviving player");
+                playerController.ReviveServerRpc();
+            }
         }
     }
 }

@@ -45,6 +45,22 @@ public class PlayerInteraction : NetworkBehaviour
                     }
                 }
             }
+            else if (hit.transform.parent != null && hit.transform.parent.TryGetComponent(out PlayerController player))
+            {
+                if (!player.IsDead()) return;
+                // TODO fix collider orientation
+                PlayerInventory inventory = GetComponent<PlayerInventory>();
+                interactionText.text = "Press E to revive player " + inventory.GetKeys() + " / 1 key";
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    
+                    if (inventory.GetKeys() > 0)
+                    {
+                        inventory.UseKeyServerRpc();
+                        player.ReviveServerRpc();
+                    }
+                }
+            }
             else
             {
                 interactionText.text = "";
