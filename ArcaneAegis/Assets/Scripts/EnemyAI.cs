@@ -4,6 +4,10 @@ using UnityEngine;
 using UnityEngine.AI;
 public class EnemyAI : NetworkBehaviour
 {
+
+    //AudioSource attackSound;
+    [SerializeField] private AudioSource attackSound;
+    [SerializeField] private AudioSource hitSound;
     // Range used for detection
     [SerializeField] private float attackRange = 2f;
 
@@ -133,7 +137,13 @@ public class EnemyAI : NetworkBehaviour
 
     [ServerRpc]
     public void DoAttackServerRpc() {
-        // TODO Improve this behaviour either using delayed attacks, or by using a trigger collider
+        // DoAttackClientRpc();
+        // Play attack animation
+        animator.SetTrigger("Attack"); // TODO Network animator
+
+        //play attack sound
+        attackSound.Play();
+
         // Check if any players in attack range
         Collider [] hitPlayers = hitPlayerList();
         if (hitPlayers.Length == 0) return;
@@ -141,6 +151,8 @@ public class EnemyAI : NetworkBehaviour
         PlayAnimationClientRpc("Attack");
 
         foreach (Collider player in hitPlayers) {
+            Debug.Log("Hit player");
+            hitSound.Play();
             PlayerController playerController = player.GetComponent<PlayerController>();
             if(playerController == null) continue;
             playerController.TakeDamageServerRpc(attackDamage);
