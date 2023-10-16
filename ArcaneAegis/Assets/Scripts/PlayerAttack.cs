@@ -5,13 +5,14 @@ using System;
 public class PlayerAttack : NetworkBehaviour {
     
     [SerializeField] private GameObject [] spellPrefabs;
-    [SerializeField] private Transform handTransform;
+    [SerializeField] private Transform rightHandTransform;
+    [SerializeField] private Transform leftHandTransform;
     [SerializeField] private Camera playerCamera;
     [SerializeField] private Transform spellSlots;
 
     private Tuple<UpgradeEnum, ElementEnum> [] upgrades = new Tuple<UpgradeEnum, ElementEnum>[5];
 
-    private int spellIndex = 0;
+    
     private GameObject [] spells;
 
     private Animator animator;
@@ -19,6 +20,9 @@ public class PlayerAttack : NetworkBehaviour {
     private GameObject currentHandEffect;
 
     private bool casting = false;
+
+    private int rightIndex = 0, leftIndex = 1;
+    private Spell rightSpell, leftSpell;
 
 
     public override void OnNetworkSpawn() {
@@ -31,6 +35,8 @@ public class PlayerAttack : NetworkBehaviour {
         }
         if (IsOwner)
             CreateHandEffectServerRpc();
+        rightSpell = spells[0].GetComponent<Spell>();
+        leftSpell = spells[1].GetComponent<Spell>();
     }
 
     [ServerRpc]
@@ -40,11 +46,15 @@ public class PlayerAttack : NetworkBehaviour {
         // Hand effects are designed as cast effects so looping needs to be done manually
     }
 
-    IEnumerator CastCoroutine(int index, Quaternion rotation) {
-        Spell spell = spells[index].GetComponent<Spell>();
+    IEnumerator CastCoroutine(HandEnum hand) {
+        Spell spell = hand == HandEnum.Right ? rightSpell : leftSpell;
         casting = true;
-        yield return new WaitForSeconds(spell.castTime);
-        // Do a fresh raycast to get the up to date rotation
+        animator.SetTrigger(spell.HandTrigger);
+        // If Both then just spawn effect on left hand
+        Transform handTransform = hand == HandEnum.Right ? rightHandTransform : leftHandTransform;
+        int index = hand == HandEnum.Right ? rightIndex : leftIndex;
+        yield return new WaitForSeconds(spell.CastDelay);
+        Quaternion rotation = playerCamera.transform.rotation;
         Ray ray = new Ray(handTransform.position, playerCamera.transform.forward);
         // Draw ray for debugging
         Debug.DrawRay(ray.origin, ray.direction * 100, Color.green, 2f);
@@ -54,6 +64,7 @@ public class PlayerAttack : NetworkBehaviour {
             rotation = Quaternion.LookRotation(direction);
         }
         SpawnEffectServerRpc(index, rotation);
+        yield return new WaitForSeconds(spell.CastTime);
         casting = false;
     }
     [ServerRpc]
@@ -67,6 +78,7 @@ public class PlayerAttack : NetworkBehaviour {
         NetworkLog.LogInfoServer("Spawning effect");
         
         Spell spell = spells[index].GetComponent<Spell>();
+        Transform handTransform = spell.hand == HandEnum.Right ? rightHandTransform : leftHandTransform;
         if (spell.handEffectPrefab != null)
             Instantiate(spell.handEffectPrefab, handTransform);
         GameObject effect = Instantiate(spell.effectPrefab, handTransform.position, rotation);
@@ -152,7 +164,7 @@ public class PlayerAttack : NetworkBehaviour {
     {   
         if (!IsOwner) return;
         // Use scroll wheel to change spell
-        int oldSpellIndex = spellIndex;
+        int spellIndex = rightIndex;
         // Check if CastCoroutine in progress
         if (!casting) {
             if (Input.GetAxis("Mouse ScrollWheel") > 0f) {
@@ -162,9 +174,15 @@ public class PlayerAttack : NetworkBehaviour {
                 spellIndex--;
                 if (spellIndex < 0) spellIndex = spells.Length-1;
             }
-            if (oldSpellIndex != spellIndex) {
+            if (rightIndex != spellIndex) {
                 CreateHandEffectServerRpc();
             }
+            rightIndex = spellIndex;
+            leftIndex = (spellIndex+1) % spells.Length;
+            rightSpell = spells[rightIndex].GetComponent<Spell>();
+            leftSpell = spells[leftIndex].GetComponent<Spell>();
+            rightSpell.ChangeHand(HandEnum.Right);
+            leftSpell.ChangeHand(HandEnum.Left);
         }   
 
         if (Input.GetKeyDown(KeyCode.Mouse0)) {
@@ -173,29 +191,26 @@ public class PlayerAttack : NetworkBehaviour {
             // Cast forward ray from camera in camera direction
 
             BasicBehaviour basicBehaviour = GetComponent<BasicBehaviour>();
-            if (basicBehaviour.IsSprinting()) return;
+            if (basicBehaviour.IsSprinting() || casting) return;
+            bool success = rightSpell.Cast();
+            Debug.Log("Success: " + success);
 
-            Ray ray = new Ray(handTransform.position, playerCamera.transform.forward);
-            // Draw ray for debugging
-            Debug.DrawRay(ray.origin, ray.direction * 100, Color.yellow, 2f);
-            if (Physics.Raycast(ray, out RaycastHit hit)) {
-
-                Vector3 spawnPoint = handTransform.position + transform.forward * 0.1f;
-                Vector3 direction = hit.point - spawnPoint;
-                Quaternion rotation = Quaternion.LookRotation(direction);
-                Spell spell = spells[spellIndex].GetComponent<Spell>();
-                Debug.Log("Casting spell " + spell.name);
-                bool success = spell.Cast(handTransform, rotation) && !casting;
-                Debug.Log("Success: " + success);
-
-                if (!success) return;
-                StartCoroutine(CastCoroutine(spellIndex, rotation));
-                
-                // TODO Increase animation speed based on upgrades
-                animator.SetTrigger("Attack");
-                // For now use hitscan for damage TODO change to projectile
-                
+            if (!success) return;
+            StartCoroutine(CastCoroutine(HandEnum.Right));
+            // TODO Increase animation speed based on upgrades
             }
+        
+        else if (Input.GetKeyDown(KeyCode.Mouse1)) {
+            // Spawn effect
+            // Create raycast and set rotation to the direction from the player to the raycast hit point
+            // Cast forward ray from camera in camera direction
+            BasicBehaviour basicBehaviour = GetComponent<BasicBehaviour>();
+            if (basicBehaviour.IsSprinting() || casting) return;
+            bool success = leftSpell.Cast();
+            Debug.Log("Success: " + success);
+            if (!success) return;
+            StartCoroutine(CastCoroutine(HandEnum.Left));
+            // TODO Increase animation speed based on upgrades
         }
     }
 

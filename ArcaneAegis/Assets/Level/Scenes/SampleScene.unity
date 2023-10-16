@@ -665,7 +665,7 @@ MonoBehaviour:
   roundStartDelay: 0
   roundEndDelay: 0
   maxUniqueEnemiesPerRound: 3
-  peaceful: 0
+  peaceful: 1
 --- !u!4 &814175981
 Transform:
   m_ObjectHideFlags: 0

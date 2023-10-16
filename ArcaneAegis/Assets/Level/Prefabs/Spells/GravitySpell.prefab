@@ -47,9 +47,11 @@ MonoBehaviour:
   damage: 50
   cooldown: 1
   chargeCost: 10
+  hand: 1
   fullCharge: 100
   rechargeRate: 10
-  castTime: 0.1
+  castTime: 1.15
+  castDelay: 0.1
   onCooldown: 0
   effectPrefab: {fileID: 1520786051656894, guid: 60f067005042016479e156d2700edf0c, type: 3}
   handEffectPrefab: {fileID: 125620, guid: 0370007f981a9c7408836062ad4d92d7, type: 3}

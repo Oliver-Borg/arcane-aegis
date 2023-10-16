@@ -4,15 +4,27 @@ using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
+public enum HandEnum {
+    Left,
+    Right,
+    Both
+}
+
 public class Spell : MonoBehaviour
 {
     [SerializeField] private float damage = 10f;
     [SerializeField] private float cooldown = 1f;
     [SerializeField] private float chargeCost = 10f;
+
+    public HandEnum hand = HandEnum.Right;
     public float fullCharge = 100f;
     public float rechargeRate = 10f;
-    public float castTime = 0.5f;
-    public bool onCooldown = false;
+    private float castTime = 0.5f;
+    [SerializeField] private float castDelay = 0.1f;
+    [SerializeField] private bool onCooldown = false;
+    [SerializeField] private float offHandDelay = 0.1f;
+
+    [SerializeField] private float offHandDamageMultiplier = 1.5f;
     public GameObject effectPrefab;
 
     public GameObject handEffectPrefab;
@@ -56,10 +68,30 @@ public class Spell : MonoBehaviour
         }
     }
 
+    public string HandTrigger {
+        get {
+            switch (hand) {
+                case HandEnum.Left:
+                    return "Attack1HL";
+                case HandEnum.Right:
+                    return "Attack1HR";
+                case HandEnum.Both:
+                    return "Attack2H";
+            }
+            return "";
+        }
+    }
+
+    public void ChangeHand(HandEnum newHand) {
+        if (hand == HandEnum.Both) return;
+        hand = newHand;
+    }
+
     // TODO Tweak these values
     // Right now damage is obvious choice
     public float Damage {
         get {
+            if (hand == HandEnum.Left) return damage * (1 + damageUpgrades * 0.5f) * offHandDamageMultiplier;
             return damage * (1 + damageUpgrades * 0.5f);
         }
     }
@@ -76,6 +108,19 @@ public class Spell : MonoBehaviour
         }
     }
 
+    public float CastDelay {
+        get {
+            if (hand == HandEnum.Left) return castDelay + offHandDelay;
+            return castDelay;
+        }
+    }
+
+    public float CastTime {
+        get {
+            return castTime;
+        }
+    }
+
     public void Start() {
         currentCharge = fullCharge;
     }    
@@ -87,7 +132,7 @@ public class Spell : MonoBehaviour
         }
     }
 
-    public bool Cast(Transform handTransform, Quaternion rotation) {
+    public bool Cast() {
         Debug.Log("Casting spell" + name + " with charge " + currentCharge + " and cost " + chargeCost);
         if (onCooldown || ChargeCost > currentCharge) return false;
         onCooldown = true;
