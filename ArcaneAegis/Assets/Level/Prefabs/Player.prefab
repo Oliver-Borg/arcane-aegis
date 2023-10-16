@@ -1263,6 +1263,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 739230869707406232}
+  - component: {fileID: 5342876318799388751}
+  - component: {fileID: 8770544504571093922}
   m_Layer: 6
   m_Name: Hips
   m_TagString: Untagged
@@ -1288,6 +1290,45 @@ Transform:
   - {fileID: 739230869707405852}
   m_Father: {fileID: 739230869707405854}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &5342876318799388751
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 739230869707696056}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.25
+  m_Height: 1.8
+  m_Direction: 1
+  m_Center: {x: 0, y: -0.15, z: 0}
+--- !u!208 &8770544504571093922
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 739230869707696056}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 0
+  m_Extents: {x: 0.28, y: 0.9, z: 0.28}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 0
+  m_Center: {x: 0, y: -0.151, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &739230869707696058
 GameObject:
   m_ObjectHideFlags: 0
@@ -1362,7 +1403,6 @@ GameObject:
   - component: {fileID: 739230869707406238}
   - component: {fileID: 739230869700433022}
   - component: {fileID: 739230870378781384}
-  - component: {fileID: 739230870378781387}
   - component: {fileID: -4011617903536900784}
   - component: {fileID: 4530699711203107105}
   - component: {fileID: -2219605281879452578}
@@ -1375,6 +1415,7 @@ GameObject:
   - component: {fileID: 7910744107183470897}
   - component: {fileID: 7385253705916671623}
   - component: {fileID: 2580194083667724531}
+  - component: {fileID: 1984291646753022666}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -1450,29 +1491,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 2
---- !u!136 &739230870378781387
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 739230869707696062}
-  m_Material: {fileID: 13400000, guid: 7a665289b8701a143a4d81cc38730390, type: 2}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.28
-  m_Height: 1.8
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.89, z: 0}
 --- !u!114 &-4011617903536900784
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1556,6 +1574,7 @@ MonoBehaviour:
   - {fileID: 8016556972870435524}
   - {fileID: 7385253705916671623}
   - {fileID: 2580194083667724531}
+  interactCollider: {fileID: 5342876318799388751}
 --- !u!208 &4940459207005601202
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -1707,6 +1726,29 @@ MonoBehaviour:
   startKeys: 10
   startPoints: 500
   keyCost: 500
+--- !u!136 &1984291646753022666
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 739230869707696062}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.28
+  m_Height: 1.8
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.89, z: 0}
 --- !u!1 &739230869707696064
 GameObject:
   m_ObjectHideFlags: 0

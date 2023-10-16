@@ -31,6 +31,10 @@ public class PlayerController : NetworkBehaviour
 
     [SerializeField] private MonoBehaviour [] disableOnDeath; 
 
+    [SerializeField] private Collider interactCollider;
+
+    private Animator animator;
+
     public struct PlayerData : INetworkSerializable {
         public FixedString32Bytes name;
 
@@ -44,6 +48,8 @@ public class PlayerController : NetworkBehaviour
         playerData.OnValueChanged += (PlayerData previousValue, PlayerData newValue) => {
             Debug.Log($"Player {previousValue.name} changed name to {newValue.name}");
         };
+        animator = GetComponent<Animator>();
+        animator.SetBool("isDead", isDead.Value);
     }
 
     public bool IsDead() {
@@ -60,6 +66,7 @@ public class PlayerController : NetworkBehaviour
         if (!IsOwner) return;
         // OOB damage
         if (transform.position.y < -10f) TakeDamageServerRpc(100f);
+        if (Input.GetKeyDown(KeyCode.J)) TakeDamageServerRpc(100f);
     }
 
     void RegenHealth() {
@@ -86,18 +93,18 @@ public class PlayerController : NetworkBehaviour
     [ClientRpc]
     public void DieClientRpc() {
         // Change layer of parent transform to Interaction
-        LayerMask layerMask = LayerMask.NameToLayer("Interaction");
-        transform.gameObject.layer = layerMask;
+        interactCollider.gameObject.layer = LayerMask.NameToLayer("Interaction");
+        transform.GetComponent<Collider>().excludeLayers = LayerMask.NameToLayer("Player");
         transform.tag = "DeadPlayer";
         // Disable components
         foreach (MonoBehaviour obj in disableOnDeath) {
             obj.enabled = false;
         }
-        Animator animator = GetComponent<Animator>();
-        animator.SetTrigger("Die");
+        // transform.GetComponent<Collider>().enabled = false;
+        animator.SetBool("isDead", true);
     }
 
-    [ServerRpc]
+    [ServerRpc(Delivery = default, RequireOwnership = false)]
     public void ReviveServerRpc(ServerRpcParams rpcParams = default) {
         isDead.Value = false;
         health.Value = 100f;
@@ -107,16 +114,13 @@ public class PlayerController : NetworkBehaviour
     [ClientRpc]
     public void RespawnClientRpc() {
         // TODO Fix this: Only owner can set their own position due to ClientNetworkTransform
-        LayerMask layerMask = LayerMask.NameToLayer("Player");
-        transform.gameObject.layer = layerMask;
+        interactCollider.gameObject.layer = LayerMask.NameToLayer("Player");
+        transform.GetComponent<Collider>().excludeLayers = 0;
         transform.tag = "Player";
         foreach (MonoBehaviour obj in disableOnDeath) {
             obj.enabled = true;
         }
-        Animator animator = GetComponent<Animator>();
-        animator.SetTrigger("Respawn");
-        if (!IsOwner) return;
-        transform.position = new Vector3(0f, 0f, 0f);
+        animator.SetBool("isDead", false);
     }
 
     [ServerRpc]

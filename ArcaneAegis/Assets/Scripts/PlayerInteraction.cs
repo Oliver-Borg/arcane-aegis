@@ -45,8 +45,9 @@ public class PlayerInteraction : NetworkBehaviour
                     }
                 }
             }
-            else if (hit.transform.parent != null && hit.transform.parent.TryGetComponent(out PlayerController player))
+            else if (hit.collider.GetComponentInParent<PlayerController>() != null)
             {
+                PlayerController player = hit.collider.GetComponentInParent<PlayerController>();
                 if (!player.IsDead()) return;
                 // TODO fix collider orientation
                 PlayerInventory inventory = GetComponent<PlayerInventory>();
