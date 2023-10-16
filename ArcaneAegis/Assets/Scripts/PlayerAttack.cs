@@ -44,6 +44,15 @@ public class PlayerAttack : NetworkBehaviour {
         Spell spell = spells[index].GetComponent<Spell>();
         casting = true;
         yield return new WaitForSeconds(spell.castTime);
+        // Do a fresh raycast to get the up to date rotation
+        Ray ray = new Ray(handTransform.position, playerCamera.transform.forward);
+        // Draw ray for debugging
+        Debug.DrawRay(ray.origin, ray.direction * 100, Color.green, 2f);
+        if (Physics.Raycast(ray, out RaycastHit hit)) {
+            Vector3 spawnPoint = handTransform.position + transform.forward * 0.1f;
+            Vector3 direction = hit.point - spawnPoint;
+            rotation = Quaternion.LookRotation(direction);
+        }
         SpawnEffectServerRpc(index, rotation);
         if (spell.handEffectPrefab != null)
             Instantiate(spell.handEffectPrefab, handTransform);
@@ -160,6 +169,8 @@ public class PlayerAttack : NetworkBehaviour {
             if (basicBehaviour.IsSprinting()) return;
 
             Ray ray = new Ray(handTransform.position, playerCamera.transform.forward);
+            // Draw ray for debugging
+            Debug.DrawRay(ray.origin, ray.direction * 100, Color.yellow, 2f);
             if (Physics.Raycast(ray, out RaycastHit hit)) {
 
                 Vector3 spawnPoint = handTransform.position + transform.forward * 0.1f;
