@@ -5,7 +5,7 @@ using System.Collections;
 
 public class GameManager : NetworkBehaviour {
 
-    [SerializeField] private Transform [] enemySpawnPoints;
+    [SerializeField] private GameObject [] enemySpawnPoints;
 
     // Put hardest first
     [SerializeField] private GameObject [] enemyPrefabs;
@@ -29,6 +29,8 @@ public class GameManager : NetworkBehaviour {
     [SerializeField] private float roundEndDelay = 5f;
 
     [SerializeField] private int maxUniqueEnemiesPerRound = 3;
+
+    [SerializeField] private bool peaceful = false;
 
 
 
@@ -54,6 +56,9 @@ public class GameManager : NetworkBehaviour {
         }
         if (Input.GetKeyDown(KeyCode.K)) {
             KillAllEnemiesServerRpc();
+        }
+        if (Input.GetKeyDown(KeyCode.L)) {
+            ReviveAllPlayersServerRpc();
         }
     }
 
@@ -83,14 +88,39 @@ public class GameManager : NetworkBehaviour {
         return Mathf.RoundToInt(Mathf.Lerp(minEnemies, maxEnemies, round / maxRound))*numPlayers;
     }
 
+    public GameObject [] GetActiveSpawnpoints() {
+        
+        int j = 0;
+        for (int i = 0; i < enemySpawnPoints.Length; i++) {
+            if (enemySpawnPoints[i].GetComponent<SpawnPoint>().IsActive()) {
+                j++;
+            }
+        }
+        GameObject [] activeSpawnpoints = new GameObject [j];
+        j = 0;
+        for (int i = 0; i < enemySpawnPoints.Length; i++) {
+            if (enemySpawnPoints[i].GetComponent<SpawnPoint>().IsActive()) {
+                activeSpawnpoints[j] = enemySpawnPoints[i];
+                j++;
+            }
+        }
+        return activeSpawnpoints;
+    }
+
     private float SpawnEnemy(float [] weights) {
         float random = Random.Range(0f, 1f);
         float sum = 0;
+        
         for (int i = 0; i < weights.Length; i++) {
             sum += weights[i];
             if (random < sum) {
                 // Debug.Log("Spawning enemy model " + i + " with weight " + weights[i] + " in round " + round);
-                SpawnEnemyServerRpc(i, enemySpawnPoints[Random.Range(0, enemySpawnPoints.Length)].position);
+                GameObject [] activeSpawnpoints = GetActiveSpawnpoints();
+                if (activeSpawnpoints.Length == 0) return 0;
+                int spawnPointIndex = Random.Range(0, activeSpawnpoints.Length);
+                Vector3 spawnPoint = activeSpawnpoints[spawnPointIndex].GetComponent<SpawnPoint>().GetSpawnPosition();
+
+                SpawnEnemyServerRpc(i, spawnPoint);
                 return enemyPrefabs[i].GetComponent<EnemyAI>().spawnWeight;
             }
         }
@@ -98,7 +128,7 @@ public class GameManager : NetworkBehaviour {
     }
 
     IEnumerator StartRound() {
-        if (roundStarted) yield break;
+        if (roundStarted || peaceful) yield break;
         roundStarted = true;
         yield return new WaitForSeconds(roundStartDelay);
         round++;
@@ -188,6 +218,18 @@ public class GameManager : NetworkBehaviour {
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
         foreach (GameObject enemy in enemies) {
             enemy.GetComponent<EnemyAI>().TakeDamageServerRpc(1000000f);
+        }
+    }
+
+    [ServerRpc]
+    public void ReviveAllPlayersServerRpc(ServerRpcParams rpcParams = default) {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("DeadPlayer");
+        foreach (GameObject player in players) {
+            PlayerController playerController = player.GetComponent<PlayerController>();
+            if (playerController.IsDead()) {
+                NetworkLog.LogInfoServer("Reviving player");
+                playerController.ReviveServerRpc();
+            }
         }
     }
 }

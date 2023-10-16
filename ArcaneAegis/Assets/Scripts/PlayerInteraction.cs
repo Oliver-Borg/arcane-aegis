@@ -30,6 +30,38 @@ public class PlayerInteraction : NetworkBehaviour
                     upgrade.PickupUpgradeServerRpc();
                 }
             }
+            else if (hit.transform.parent != null && hit.transform.parent.TryGetComponent(out Door door))
+            {
+                if (door.IsOpen()) return;
+                PlayerInventory inventory = GetComponent<PlayerInventory>();
+                interactionText.text = "Press E to open door " + inventory.GetKeys() + " / 1 key";
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    
+                    if (inventory.GetKeys() > 0)
+                    {
+                        inventory.UseKeyServerRpc();
+                        door.OpenServerRpc();
+                    }
+                }
+            }
+            else if (hit.collider.GetComponentInParent<PlayerController>() != null)
+            {
+                PlayerController player = hit.collider.GetComponentInParent<PlayerController>();
+                if (!player.IsDead()) return;
+                // TODO fix collider orientation
+                PlayerInventory inventory = GetComponent<PlayerInventory>();
+                interactionText.text = "Press E to revive player " + inventory.GetKeys() + " / 1 key";
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    
+                    if (inventory.GetKeys() > 0)
+                    {
+                        inventory.UseKeyServerRpc();
+                        player.ReviveServerRpc();
+                    }
+                }
+            }
             else
             {
                 interactionText.text = "";
