@@ -107,6 +107,7 @@ public class RFX4_PhysicsMotion : MonoBehaviour
                 // lastContactPoint = contact;
                 if (UseTargetPositionAfterCollision)
                 {
+                    // TODO try fix this
                     if (targetAnchor != null) Destroy(targetAnchor);
 
                     targetAnchor = new GameObject();

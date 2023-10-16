@@ -54,17 +54,22 @@ public class PlayerAttack : NetworkBehaviour {
             rotation = Quaternion.LookRotation(direction);
         }
         SpawnEffectServerRpc(index, rotation);
-        if (spell.handEffectPrefab != null)
-            Instantiate(spell.handEffectPrefab, handTransform);
         casting = false;
     }
-
     [ServerRpc]
     public void SpawnEffectServerRpc(int index, Quaternion rotation, ServerRpcParams rpcParams = default) {
+        SpawnEffectClientRpc(index, rotation);
+    }
+
+    [ClientRpc]
+    public void SpawnEffectClientRpc(int index, Quaternion rotation, ClientRpcParams rpcParams = default) {
+        // We just spawn the effects on the clients do prevent complexity
         NetworkLog.LogInfoServer("Spawning effect");
+        
         Spell spell = spells[index].GetComponent<Spell>();
+        if (spell.handEffectPrefab != null)
+            Instantiate(spell.handEffectPrefab, handTransform);
         GameObject effect = Instantiate(spell.effectPrefab, handTransform.position, rotation);
-        effect.GetComponent<NetworkObject>().Spawn();
         RFX4_PhysicsMotion physicsMotion = effect.GetComponentInChildren<RFX4_PhysicsMotion>(true);
         RFX4_RaycastCollision physicsRaycast = effect.GetComponentInChildren<RFX4_RaycastCollision>(true);
         if (physicsRaycast != null) {
@@ -81,6 +86,7 @@ public class PlayerAttack : NetworkBehaviour {
     private void CollisionEnter(object sender, RFX4_PhysicsMotion.RFX4_CollisionInfo e)
     {
         if (!IsServer) return; // Do hit detection on the server
+
         // Debug.Log(e.HitPoint); //a collision coordinates in world space
         // Debug.Log(e.HitGameObject.name); //a collided gameobject
         // Debug.Log(e.HitCollider.name); //a collided collider :)
@@ -108,8 +114,9 @@ public class PlayerAttack : NetworkBehaviour {
         {
             enemy.TakeDamageServerRpc(damage);
         }
-        // Delete effect and despawn
-        effect.GetComponent<NetworkObject>().Despawn(true);
+        // Delete effect
+        Destroy(effect);
+        
     }
 
     public void AddUpgrade(Upgrade upgrade) {

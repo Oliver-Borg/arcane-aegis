@@ -146,7 +146,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4660060631330338}
   - component: {fileID: 114548108279133696}
-  - component: {fileID: -7175174057743200695}
   m_Layer: 0
   m_Name: Effect12
   m_TagString: Untagged
@@ -196,26 +195,6 @@ MonoBehaviour:
   Speed: 25
   AirDrag: 0.1
   UseGravity: 0
---- !u!114 &-7175174057743200695
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1033462822675242}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 951099334
-  AlwaysReplicateAsRoot: 0
-  SynchronizeTransform: 1
-  ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 1
-  SpawnWithObservers: 1
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
 --- !u!1 &1129926050577732
 GameObject:
   m_ObjectHideFlags: 0
@@ -5071,11 +5050,11 @@ MonoBehaviour:
   MinSpeed: 0
   ColliderRadius: 0.05
   FreezeRotation: 0
-  UseTargetPositionAfterCollision: 0
+  UseTargetPositionAfterCollision: 1
   EffectOnCollision: {fileID: 167520, guid: f3b6bcc909e8cd2498f7c7e6191e0e98, type: 3}
   CollisionEffectInWorldSpace: 1
   LookAtNormal: 1
-  CollisionEffectDestroyAfter: 5
+  CollisionEffectDestroyAfter: 0.5
   colliderExcludeMask:
     serializedVersion: 2
     m_Bits: 118
@@ -9702,7 +9681,6 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 24d99c8733b5fd34aadaf77a07dcf96a, type: 2}
   - {fileID: 2100000, guid: 24d99c8733b5fd34aadaf77a07dcf96a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0

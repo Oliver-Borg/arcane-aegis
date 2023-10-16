@@ -276,7 +276,6 @@ MonoBehaviour:
       NetworkPrefabsLists:
       - {fileID: 11400000, guid: 8c8c09ecc98a7134da463baaf4892607, type: 2}
       - {fileID: 11400000, guid: c2972d3c834fb8e4e963b5d63fdfaced, type: 2}
-      - {fileID: 11400000, guid: d6b99e9dfd1ade5479dcb8e3c80c9784, type: 2}
       - {fileID: 11400000, guid: 83a67654a623ba04aa500ebe41eb4c9f, type: 2}
       - {fileID: 11400000, guid: 4456cc9ba1bc7094ab2a636ea6a54f2e, type: 2}
     TickRate: 30
@@ -659,14 +658,14 @@ MonoBehaviour:
   enemyCount: 20
   maxRound: 25
   roundTime: 10
-  maxEnemies: 25
-  minEnemies: 10
+  maxEnemies: 2
+  minEnemies: 1
   roundStartSpawnRatio: 1
   roundStartSpawnDelay: 0.1
   roundStartDelay: 0
   roundEndDelay: 0
   maxUniqueEnemiesPerRound: 3
-  peaceful: 1
+  peaceful: 0
 --- !u!4 &814175981
 Transform:
   m_ObjectHideFlags: 0
