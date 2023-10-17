@@ -5,22 +5,35 @@ namespace HelloWorld
 {
     public class HelloWorldManager : MonoBehaviour
     {
-        void OnGUI()
-        {
-            GUILayout.BeginArea(new Rect(10, 10, 300, 300));
-            if (!NetworkManager.Singleton.IsClient && !NetworkManager.Singleton.IsServer)
-            {
-                StartButtons();
-            }
+        // void OnGUI()
+        // {
+        //     GUILayout.BeginArea(new Rect(10, 10, 300, 300));
+        //     if (!NetworkManager.Singleton.IsClient && !NetworkManager.Singleton.IsServer)
+        //     {
+        //         StartButtons();
+        //     }
 
-            GUILayout.EndArea();
+        //     GUILayout.EndArea();
+        // }
+
+        // static void StartButtons()
+        // {
+        //     if (GUILayout.Button("Host")) NetworkManager.Singleton.StartHost();
+        //     if (GUILayout.Button("Client")) NetworkManager.Singleton.StartClient();
+        //     if (GUILayout.Button("Server")) NetworkManager.Singleton.StartServer();
+        // }
+
+        public static void Host()
+        {
+            NetworkManager.Singleton.StartHost();
         }
-
-        static void StartButtons()
+        public static void Client()
         {
-            if (GUILayout.Button("Host")) NetworkManager.Singleton.StartHost();
-            if (GUILayout.Button("Client")) NetworkManager.Singleton.StartClient();
-            if (GUILayout.Button("Server")) NetworkManager.Singleton.StartServer();
+            NetworkManager.Singleton.StartClient();
+        }
+        public static void Server()
+        {
+            NetworkManager.Singleton.StartServer();
         }
     }
 }
