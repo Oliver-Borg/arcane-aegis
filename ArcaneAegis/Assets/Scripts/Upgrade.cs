@@ -33,7 +33,7 @@ public class Upgrade : NetworkBehaviour
     {
         base.OnNetworkSpawn();
         sphere.GetComponent<Renderer>().material.color = baseColour;
-        upgradeType = (UpgradeEnum)UnityEngine.Random.Range(0, 3);
+        upgradeType = (UpgradeEnum)UnityEngine.Random.Range(1, 2);
     }
 
     public string GetUpgradeText() {

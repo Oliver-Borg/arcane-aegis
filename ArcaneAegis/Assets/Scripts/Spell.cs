@@ -19,8 +19,10 @@ public class Spell : MonoBehaviour
     public HandEnum hand = HandEnum.Right;
     public float fullCharge = 100f;
     public float rechargeRate = 10f;
-    private float castTime = 0.5f;
+    private float castSpeedMultiplier = 2f;
     [SerializeField] private float castDelay = 0.1f;
+
+    [SerializeField] private float animationTime = 2.08f;
     [SerializeField] private bool onCooldown = false;
     [SerializeField] private float offHandDelay = 0.1f;
 
@@ -100,9 +102,21 @@ public class Spell : MonoBehaviour
         }
     }
 
+    public float CastSpeedMultiplier {
+        get {
+            return castSpeedMultiplier + cooldownUpgrades * 0.2f;
+        }
+    }
+
+    public float AnimationTime {
+        get {
+            return (animationTime+offHandDelay) / CastSpeedMultiplier;
+        }
+    }
+
     public float Cooldown {
         get {
-            return cooldown * (1 - cooldownUpgrades * 0.2f);
+            return Mathf.Max(cooldown/CastSpeedMultiplier, AnimationTime);
         }
     }
 
@@ -114,14 +128,8 @@ public class Spell : MonoBehaviour
 
     public float CastDelay {
         get {
-            if (hand == HandEnum.Left) return castDelay + offHandDelay;
-            return castDelay;
-        }
-    }
-
-    public float CastTime {
-        get {
-            return castTime;
+            if (hand == HandEnum.Left) return (castDelay + offHandDelay)/CastSpeedMultiplier;
+            return castDelay/CastSpeedMultiplier;
         }
     }
 
@@ -146,7 +154,7 @@ public class Spell : MonoBehaviour
     }
 
     IEnumerator CooldownCoroutine() {
-        yield return new WaitForSeconds(Cooldown+castTime);
+        yield return new WaitForSeconds(Cooldown);
         onCooldown = false;
     }
 
