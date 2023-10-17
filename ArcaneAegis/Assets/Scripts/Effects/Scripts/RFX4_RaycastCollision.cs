@@ -16,6 +16,8 @@ public class RFX4_RaycastCollision : MonoBehaviour
     public bool IsWorldSpace = true;
     public bool RealTimeUpdateRaycast;
     public bool DestroyAfterDisabling;
+
+    public LayerMask raycastMask = 0;
     [HideInInspector]
     public float HUE = -1;
     [HideInInspector]
@@ -33,6 +35,13 @@ public class RFX4_RaycastCollision : MonoBehaviour
     public float Damage {
         get { return damage; }
         set { damage = value; }
+    }
+
+    private ElementEnum element;
+
+    public ElementEnum Element {
+        get { return element; }
+        set { element = value; }
     }
 
     void Awake()
@@ -70,8 +79,10 @@ public class RFX4_RaycastCollision : MonoBehaviour
     private void UpdateRaycast()
     {
         RaycastHit raycastHit;
-        if (Physics.Raycast(transform.position, transform.forward, out raycastHit, RaycastDistance)) {
+        if (Physics.Raycast(transform.position, transform.forward, out raycastHit, RaycastDistance, raycastMask)) {
             Vector3 position;
+            // Draw ray
+            Debug.DrawRay(transform.position, transform.forward * raycastHit.distance, Color.green, 2f);
             if (UsePivotPosition)
                 position = raycastHit.transform.position;
             else

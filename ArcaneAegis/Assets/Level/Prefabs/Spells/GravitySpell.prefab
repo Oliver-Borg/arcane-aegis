@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1265945335271273602}
-  - component: {fileID: 1937245231687928932}
   - component: {fileID: 4705592368188989399}
   m_Layer: 0
   m_Name: GravitySpell
@@ -33,26 +32,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1937245231687928932
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5426147186305645650}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 951099334
-  AlwaysReplicateAsRoot: 0
-  SynchronizeTransform: 1
-  ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 1
-  SpawnWithObservers: 1
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
 --- !u!114 &4705592368188989399
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -68,9 +47,11 @@ MonoBehaviour:
   damage: 50
   cooldown: 1
   chargeCost: 10
+  hand: 1
   fullCharge: 100
   rechargeRate: 10
-  castTime: 0.1
+  castTime: 1.15
+  castDelay: 0.1
   onCooldown: 0
   effectPrefab: {fileID: 1520786051656894, guid: 60f067005042016479e156d2700edf0c, type: 3}
   handEffectPrefab: {fileID: 125620, guid: 0370007f981a9c7408836062ad4d92d7, type: 3}

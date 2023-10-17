@@ -1263,6 +1263,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 739230869707406232}
+  - component: {fileID: 5342876318799388751}
+  - component: {fileID: 8770544504571093922}
   m_Layer: 6
   m_Name: Hips
   m_TagString: Untagged
@@ -1288,6 +1290,45 @@ Transform:
   - {fileID: 739230869707405852}
   m_Father: {fileID: 739230869707405854}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &5342876318799388751
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 739230869707696056}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.25
+  m_Height: 1.8
+  m_Direction: 1
+  m_Center: {x: 0, y: -0.15, z: 0}
+--- !u!208 &8770544504571093922
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 739230869707696056}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 0
+  m_Extents: {x: 0.28, y: 0.9, z: 0.28}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 0
+  m_Center: {x: 0, y: -0.151, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &739230869707696058
 GameObject:
   m_ObjectHideFlags: 0
@@ -1362,7 +1403,6 @@ GameObject:
   - component: {fileID: 739230869707406238}
   - component: {fileID: 739230869700433022}
   - component: {fileID: 739230870378781384}
-  - component: {fileID: 739230870378781387}
   - component: {fileID: -4011617903536900784}
   - component: {fileID: 4530699711203107105}
   - component: {fileID: -2219605281879452578}
@@ -1371,9 +1411,10 @@ GameObject:
   - component: {fileID: 7440399181864701900}
   - component: {fileID: 8803777133893185157}
   - component: {fileID: 8452273444150617975}
-  - component: {fileID: 8016556972870435524}
   - component: {fileID: 7910744107183470897}
   - component: {fileID: 7385253705916671623}
+  - component: {fileID: 2580194083667724531}
+  - component: {fileID: 1984291646753022666}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -1449,29 +1490,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 2
---- !u!136 &739230870378781387
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 739230869707696062}
-  m_Material: {fileID: 13400000, guid: 7a665289b8701a143a4d81cc38730390, type: 2}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.28
-  m_Height: 1.8
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.89, z: 0}
 --- !u!114 &-4011617903536900784
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1549,6 +1567,12 @@ MonoBehaviour:
   cube: {fileID: 8443241918570745709, guid: 03e8c2a6cd1947e4eaa73b3307d74411, type: 3}
   playerCamera: {fileID: 739230869279755970}
   regenRate: 10
+  disableOnDeath:
+  - {fileID: 7440399181864701900}
+  - {fileID: 8803777133893185157}
+  - {fileID: 7385253705916671623}
+  - {fileID: 2580194083667724531}
+  interactCollider: {fileID: 5342876318799388751}
 --- !u!208 &4940459207005601202
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -1580,9 +1604,10 @@ MonoBehaviour:
   spellPrefabs:
   - {fileID: 6127773015960741330, guid: dbdfc01c876fbf24691b21d7c1d5bf72, type: 3}
   - {fileID: 5426147186305645650, guid: 50375dc38cebcbd4d99e623bff44621b, type: 3}
-  - {fileID: 5426147186305645650, guid: 17b5232a4c9de1d419914f7f890b6081, type: 3}
-  - {fileID: 5426147186305645650, guid: 31ef56c7558bb8843a5668a3fb409bbc, type: 3}
-  handTransform: {fileID: 739230869707406292}
+  - {fileID: 5426147186305645650, guid: 2d1332c96a420ff48b891619599b1903, type: 3}
+  - {fileID: 5426147186305645650, guid: 14788498c6b35444092d40c2c3bde155, type: 3}
+  rightHandTransform: {fileID: 739230869707406292}
+  leftHandTransform: {fileID: 739230869707406224}
   playerCamera: {fileID: 739230869279755970}
   spellSlots: {fileID: 5092018959973951042}
 --- !u!114 &8803777133893185157
@@ -1621,24 +1646,6 @@ MonoBehaviour:
   turnSmoothing: 0.06
   sprintFOV: 100
   sprintButton: Sprint
---- !u!114 &8016556972870435524
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 739230869707696062}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6db337dcfb6733a40ab125fa1c54a409, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  aimButton: Aim
-  shoulderButton: Aim Shoulder
-  crosshair: {fileID: 0}
-  aimTurnSmoothing: 0.15
-  aimPivotOffset: {x: 0.5, y: 1.2, z: 0}
-  aimCamOffset: {x: 0, y: 0.4, z: -0.7}
 --- !u!114 &7910744107183470897
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1655,17 +1662,45 @@ MonoBehaviour:
   - IsCrossFadeExit: 0
     Layer: 2
     OriginatingState: -189062376
-    DestinationState: 2061895200
+    DestinationState: -1770248968
     TransitionDuration: 0
-    TriggerNameHash: 1080829965
+    TriggerNameHash: -1935438135
+    TransitionIndex: 0
+  - IsCrossFadeExit: 0
+    Layer: 2
+    OriginatingState: -189062376
+    DestinationState: -1812484158
+    TransitionDuration: 0
+    TriggerNameHash: 1421154807
+    TransitionIndex: 1
+  - IsCrossFadeExit: 0
+    Layer: 2
+    OriginatingState: -189062376
+    DestinationState: 1819482523
+    TransitionDuration: 0
+    TriggerNameHash: 1991029674
+    TransitionIndex: 2
+  - IsCrossFadeExit: 0
+    Layer: 3
+    OriginatingState: -189062376
+    DestinationState: 1819482523
+    TransitionDuration: 0
+    TriggerNameHash: 1991029674
     TransitionIndex: 0
   - IsCrossFadeExit: 0
     Layer: 3
     OriginatingState: -189062376
-    DestinationState: 2061895200
+    DestinationState: -1812484158
     TransitionDuration: 0
-    TriggerNameHash: 1080829965
-    TransitionIndex: 0
+    TriggerNameHash: 1421154807
+    TransitionIndex: 1
+  - IsCrossFadeExit: 0
+    Layer: 3
+    OriginatingState: -189062376
+    DestinationState: -1770248968
+    TransitionDuration: 0
+    TriggerNameHash: -1935438135
+    TransitionIndex: 2
   m_Animator: {fileID: 739230869700433022}
 --- !u!114 &7385253705916671623
 MonoBehaviour:
@@ -1685,6 +1720,44 @@ MonoBehaviour:
     m_Bits: 256
   playerCamera: {fileID: 739230869279755970}
   interactionText: {fileID: 2781193424780969015}
+--- !u!114 &2580194083667724531
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 739230869707696062}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd855b364b9f5cb4d847b971c9659f7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startKeys: 10
+  startPoints: 500
+  keyCost: 500
+--- !u!136 &1984291646753022666
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 739230869707696062}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.28
+  m_Height: 1.8
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.89, z: 0}
 --- !u!1 &739230869707696064
 GameObject:
   m_ObjectHideFlags: 0

@@ -34,6 +34,21 @@ public class EnemyAI : NetworkBehaviour
 
     [SerializeField] private float dropChance = 0.5f;
 
+    [SerializeField] private ElementEnum [] weaknesses;
+    [SerializeField] private float stunTime = 0.01f;
+
+    [SerializeField] private float stunCooldown = 0.05f;
+
+    [SerializeField] private float slowTime = 5f;
+
+    
+
+    private bool stunned = false;
+
+    private bool stunnable = true;
+
+    private bool slowed = false;
+
     private NetworkVariable<float> health = new NetworkVariable<float>(
         100f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server
     );
@@ -74,7 +89,7 @@ public class EnemyAI : NetworkBehaviour
     void Update()
     {
         // Enemies are completely controlled by the server
-        if(!spawned || !alive || !IsServer) return;
+        if(!spawned || !alive || !IsServer || stunned) return;
         // Get list of PlayerController scripts in scene and their positions
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
 
@@ -148,12 +163,54 @@ public class EnemyAI : NetworkBehaviour
     }
 
     [ServerRpc(Delivery = default, RequireOwnership = false)]
-    public void TakeDamageServerRpc(float damage) {
+    public void TakeDamageServerRpc(float damage, int elementIndex, ServerRpcParams rpcParams = default) {
+        ElementEnum element = (ElementEnum) elementIndex;
+        if (element == ElementEnum.Lightning) {
+            StartCoroutine(StunCoroutine());
+        }
+        else if (element == ElementEnum.Ice) {
+            StartCoroutine(SlowCoroutine());
+        }
+        // Check if element in weaknesses
+        foreach (ElementEnum weakness in weaknesses) {
+            if (weakness == element) {
+                damage *= 1.5f;
+                break;
+            }
+        }
+
         health.Value -= damage;
         if (health.Value <= 0 && alive) {
             alive = false;
             EnemyDeathServerRpc();
         }
+    }
+
+    IEnumerator StunCoroutine() {
+        if (!IsServer || !stunnable) yield break;
+        agent.isStopped = true;
+        stunned = true;
+        stunnable = false;
+        PlayAnimationClientRpc("Stun");
+        SetAnimationBoolClientRpc("Walking", false);
+        yield return new WaitForSeconds(stunTime);
+        stunned = false;
+        if (alive)
+            agent.isStopped = false;
+        SetAnimationBoolClientRpc("Walking", true);
+        yield return new WaitForSeconds(stunCooldown);
+        stunnable = true;
+    }
+
+    IEnumerator SlowCoroutine() {
+        if (!IsServer || slowed) yield break;
+        agent.speed /= 2;
+        slowed = true;
+        animator.speed /= 2;
+        yield return new WaitForSeconds(slowTime);
+        agent.speed *= 2;
+        animator.speed *= 2;
+        slowed = false;
     }
 
     [ServerRpc(Delivery = default, RequireOwnership = false)]
