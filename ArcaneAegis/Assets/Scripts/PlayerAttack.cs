@@ -146,7 +146,8 @@ public class PlayerAttack : NetworkBehaviour {
         if (enemy != null)
         {
             Debug.Log("Hit enemy for " + damage + " damage");
-            enemy.TakeDamageServerRpc(damage, elementIndex);
+            // Send player index to enemy so that we can track damage
+            enemy.TakeDamageServerRpc(damage, elementIndex, OwnerClientId);
         }
         // Delete effect
         // Destroy(effect);
