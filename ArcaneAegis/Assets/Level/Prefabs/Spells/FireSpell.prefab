@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 666362345958706307}
   - component: {fileID: 6070284582796504703}
-  - component: {fileID: 6494522231371292571}
   m_Layer: 0
   m_Name: FireSpell
   m_TagString: Untagged
@@ -48,29 +47,12 @@ MonoBehaviour:
   damage: 50
   cooldown: 1
   chargeCost: 10
+  hand: 1
   fullCharge: 100
   rechargeRate: 5
-  castTime: 0.1
+  castTime: 1.15
+  castDelay: 0.1
   onCooldown: 0
   effectPrefab: {fileID: 1033462822675242, guid: 43dbb3bbd1afeb24692c1d8f8b260845, type: 3}
   handEffectPrefab: {fileID: 1632418803800030, guid: 8adca8fa2391f0d40aa7a90b3beceaf4, type: 3}
---- !u!114 &6494522231371292571
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6127773015960741330}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 951099334
-  AlwaysReplicateAsRoot: 0
-  SynchronizeTransform: 1
-  ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 1
-  SpawnWithObservers: 1
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
+  element: 0

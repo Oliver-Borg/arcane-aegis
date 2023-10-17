@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1265945335271273602}
   - component: {fileID: 4705592368188989399}
   m_Layer: 0
-  m_Name: GravitySpell
+  m_Name: LightningAoe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 5426147186305645650}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -44,15 +44,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25e60745d8d12b64aa3fbb7f4f79d927, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 50
+  damage: 100
   cooldown: 1
   chargeCost: 10
-  hand: 1
+  hand: 2
   fullCharge: 100
   rechargeRate: 10
-  castTime: 1.15
-  castDelay: 0.1
+  castDelay: 0.15
   onCooldown: 0
-  effectPrefab: {fileID: 1520786051656894, guid: 60f067005042016479e156d2700edf0c, type: 3}
-  handEffectPrefab: {fileID: 125620, guid: 0370007f981a9c7408836062ad4d92d7, type: 3}
-  element: 2
+  offHandDelay: 0.1
+  offHandDamageMultiplier: 1.5
+  destroyAfter: 10
+  spawnOnFloor: 0
+  effectPrefab: {fileID: 190162, guid: c6342acfccda5a94bae465531baf3640, type: 3}
+  handEffectPrefab: {fileID: 0}
+  element: 1

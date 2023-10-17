@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1265945335271273602}
   - component: {fileID: 4705592368188989399}
   m_Layer: 0
-  m_Name: GravitySpell
+  m_Name: IceAoe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,14 +45,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 50
-  cooldown: 1
+  cooldown: 2
   chargeCost: 10
-  hand: 1
+  hand: 2
   fullCharge: 100
   rechargeRate: 10
-  castTime: 1.15
-  castDelay: 0.1
+  castDelay: 0.75
   onCooldown: 0
-  effectPrefab: {fileID: 1520786051656894, guid: 60f067005042016479e156d2700edf0c, type: 3}
-  handEffectPrefab: {fileID: 125620, guid: 0370007f981a9c7408836062ad4d92d7, type: 3}
-  element: 2
+  offHandDelay: 0.1
+  offHandDamageMultiplier: 1.5
+  spawnOnFloor: 1
+  effectPrefab: {fileID: 121928, guid: 313e5c5f850e5be429d4a6787a725f73, type: 3}
+  handEffectPrefab: {fileID: 0}
+  element: 3

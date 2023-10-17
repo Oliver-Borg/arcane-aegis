@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 3752697099338212460}
   - component: {fileID: 8673581289850860910}
   - component: {fileID: 2542277870362412627}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Werewolf
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -71,6 +71,10 @@ MonoBehaviour:
   - {fileID: 5141862177401682794, guid: 970f9bd56c3fb8e4fa01595c974a3c10, type: 3}
   - {fileID: 5141862177401682794, guid: 5f43ff91bcadc5549938f0e6292e4520, type: 3}
   dropChance: 0.5
+  weaknesses: 0000000001000000
+  stunTime: 0.5
+  stunCooldown: 0.1
+  slowTime: 5
   agent: {fileID: 5813056974233844056}
 --- !u!114 &6159738099404402497
 MonoBehaviour:
@@ -238,7 +242,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2171440825456186977}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WEREWOLF_ L Hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -273,7 +277,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2171440825456186979}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WEREWOLF_ L HorseLink
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -305,7 +309,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2171440825456186981}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WEREWOLF_ L Thigh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -337,7 +341,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2171440825456186983}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WEREWOLF_ L Toe0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -368,7 +372,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2171440825456186985}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WEREWOLF_ L Finger31
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -400,7 +404,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2171440825456186987}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WEREWOLF_ L Finger32
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -431,7 +435,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2171440825456186989}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WEREWOLF_ L Foot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -463,7 +467,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2171440825456186991}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WEREWOLF_ L Forearm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -495,7 +499,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2171440825456186993}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WEREWOLF_ Queue de cheval 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -526,7 +530,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2171440825456186995}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WEREWOLF_ R Calf
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -558,7 +562,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2171440825456186997}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WEREWOLF_ R Clavicle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -590,7 +594,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2171440825456186999}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WEREWOLF_ R Finger0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -622,7 +626,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2171440825456187001}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WEREWOLF_ L UpperArm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -654,7 +658,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2171440825456187003}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WEREWOLF_ Neck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -686,7 +690,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2171440825456187005}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WEREWOLF_ Neck1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -718,7 +722,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2171440825456187007}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WEREWOLF_ Pelvis
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -753,7 +757,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2171440825456186881}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WEREWOLF_ R Finger12
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -784,7 +788,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2171440825456186883}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WEREWOLF_ R Finger2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -816,7 +820,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2171440825456186885}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WEREWOLF_ R Finger21
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -848,7 +852,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2171440825456186887}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WEREWOLF_ R Finger22
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -879,7 +883,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2171440825456186889}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WEREWOLF_ R Finger01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -911,7 +915,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2171440825456186891}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WEREWOLF_ R Finger02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -942,7 +946,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2171440825456186893}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WEREWOLF_ R Finger1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -974,7 +978,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2171440825456186895}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WEREWOLF_ R Finger11
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1006,7 +1010,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2171440825456186897}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WEREWOLF_ R Forearm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1038,7 +1042,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2171440825456186899}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WEREWOLF_ R Hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1073,7 +1077,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2171440825456186901}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WEREWOLF_ R HorseLink
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1105,7 +1109,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2171440825456186903}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WEREWOLF_ R Thigh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1137,7 +1141,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2171440825456186905}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WEREWOLF_ R Finger3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1169,7 +1173,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2171440825456186907}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WEREWOLF_ R Finger31
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1201,7 +1205,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2171440825456186909}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WEREWOLF_ R Finger32
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1232,7 +1236,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2171440825456186911}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WEREWOLF_ R Foot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1264,7 +1268,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2171440825456186945}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WEREWOLF_ L Calf
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1296,7 +1300,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2171440825456186947}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WEREWOLF_ L Clavicle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1328,7 +1332,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2171440825456186949}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WEREWOLF_ L Finger0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1360,7 +1364,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2171440825456186951}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WEREWOLF_ L Finger01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1392,7 +1396,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2171440825456186957}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WEREWOLF_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1424,7 +1428,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2171440825456186959}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WEREWOLF_ Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1456,7 +1460,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2171440825456186961}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WEREWOLF_ L Finger2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1488,7 +1492,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2171440825456186963}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WEREWOLF_ L Finger21
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1520,7 +1524,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2171440825456186965}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WEREWOLF_ L Finger22
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1551,7 +1555,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2171440825456186967}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WEREWOLF_ L Finger3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1583,7 +1587,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2171440825456186969}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WEREWOLF_ L Finger02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1614,7 +1618,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2171440825456186971}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WEREWOLF_ L Finger1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1646,7 +1650,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2171440825456186973}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WEREWOLF_ L Finger11
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1678,7 +1682,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2171440825456186975}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WEREWOLF_ L Finger12
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1709,7 +1713,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2171440825456186913}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WEREWOLF_ Tail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1741,7 +1745,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2171440825456186915}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WEREWOLF_ Tail1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1773,7 +1777,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2171440825456186917}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WEREWOLF_ Tail2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1805,7 +1809,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2171440825456186919}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WEREWOLF_ Tail3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1837,7 +1841,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2171440825456186921}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WEREWOLF_ R Toe0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1868,7 +1872,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2171440825456186923}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WEREWOLF_ R UpperArm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1900,7 +1904,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2171440825456186925}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WEREWOLF_ Spine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1932,7 +1936,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2171440825456186927}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WEREWOLF_ Spine1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1966,7 +1970,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2171440825456186937}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WEREWOLF_ Tail4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1997,7 +2001,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2171440825456186939}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: root
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2030,7 +2034,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2171440825456186941}
   - component: {fileID: 2171440825468176235}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SK_Werewolf
   m_TagString: Untagged
   m_Icon: {fileID: 0}

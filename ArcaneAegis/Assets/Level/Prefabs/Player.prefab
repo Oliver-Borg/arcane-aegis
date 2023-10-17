@@ -1411,7 +1411,6 @@ GameObject:
   - component: {fileID: 7440399181864701900}
   - component: {fileID: 8803777133893185157}
   - component: {fileID: 8452273444150617975}
-  - component: {fileID: 8016556972870435524}
   - component: {fileID: 7910744107183470897}
   - component: {fileID: 7385253705916671623}
   - component: {fileID: 2580194083667724531}
@@ -1571,7 +1570,6 @@ MonoBehaviour:
   disableOnDeath:
   - {fileID: 7440399181864701900}
   - {fileID: 8803777133893185157}
-  - {fileID: 8016556972870435524}
   - {fileID: 7385253705916671623}
   - {fileID: 2580194083667724531}
   interactCollider: {fileID: 5342876318799388751}
@@ -1606,9 +1604,10 @@ MonoBehaviour:
   spellPrefabs:
   - {fileID: 6127773015960741330, guid: dbdfc01c876fbf24691b21d7c1d5bf72, type: 3}
   - {fileID: 5426147186305645650, guid: 50375dc38cebcbd4d99e623bff44621b, type: 3}
-  - {fileID: 5426147186305645650, guid: 17b5232a4c9de1d419914f7f890b6081, type: 3}
-  - {fileID: 5426147186305645650, guid: 31ef56c7558bb8843a5668a3fb409bbc, type: 3}
-  handTransform: {fileID: 739230869707406292}
+  - {fileID: 5426147186305645650, guid: 2d1332c96a420ff48b891619599b1903, type: 3}
+  - {fileID: 5426147186305645650, guid: 14788498c6b35444092d40c2c3bde155, type: 3}
+  rightHandTransform: {fileID: 739230869707406292}
+  leftHandTransform: {fileID: 739230869707406224}
   playerCamera: {fileID: 739230869279755970}
   spellSlots: {fileID: 5092018959973951042}
 --- !u!114 &8803777133893185157
@@ -1647,24 +1646,6 @@ MonoBehaviour:
   turnSmoothing: 0.06
   sprintFOV: 100
   sprintButton: Sprint
---- !u!114 &8016556972870435524
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 739230869707696062}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6db337dcfb6733a40ab125fa1c54a409, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  aimButton: Aim
-  shoulderButton: Aim Shoulder
-  crosshair: {fileID: 0}
-  aimTurnSmoothing: 0.15
-  aimPivotOffset: {x: 0.5, y: 1.2, z: 0}
-  aimCamOffset: {x: 0, y: 0.4, z: -0.7}
 --- !u!114 &7910744107183470897
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1681,17 +1662,45 @@ MonoBehaviour:
   - IsCrossFadeExit: 0
     Layer: 2
     OriginatingState: -189062376
-    DestinationState: 2061895200
+    DestinationState: -1770248968
     TransitionDuration: 0
-    TriggerNameHash: 1080829965
+    TriggerNameHash: -1935438135
+    TransitionIndex: 0
+  - IsCrossFadeExit: 0
+    Layer: 2
+    OriginatingState: -189062376
+    DestinationState: -1812484158
+    TransitionDuration: 0
+    TriggerNameHash: 1421154807
+    TransitionIndex: 1
+  - IsCrossFadeExit: 0
+    Layer: 2
+    OriginatingState: -189062376
+    DestinationState: 1819482523
+    TransitionDuration: 0
+    TriggerNameHash: 1991029674
+    TransitionIndex: 2
+  - IsCrossFadeExit: 0
+    Layer: 3
+    OriginatingState: -189062376
+    DestinationState: 1819482523
+    TransitionDuration: 0
+    TriggerNameHash: 1991029674
     TransitionIndex: 0
   - IsCrossFadeExit: 0
     Layer: 3
     OriginatingState: -189062376
-    DestinationState: 2061895200
+    DestinationState: -1812484158
     TransitionDuration: 0
-    TriggerNameHash: 1080829965
-    TransitionIndex: 0
+    TriggerNameHash: 1421154807
+    TransitionIndex: 1
+  - IsCrossFadeExit: 0
+    Layer: 3
+    OriginatingState: -189062376
+    DestinationState: -1770248968
+    TransitionDuration: 0
+    TriggerNameHash: -1935438135
+    TransitionIndex: 2
   m_Animator: {fileID: 739230869700433022}
 --- !u!114 &7385253705916671623
 MonoBehaviour:
