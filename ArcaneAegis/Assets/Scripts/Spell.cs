@@ -25,6 +25,10 @@ public class Spell : MonoBehaviour
     [SerializeField] private float offHandDelay = 0.1f;
 
     [SerializeField] private float offHandDamageMultiplier = 1.5f;
+
+    public float destroyAfter = 5f;
+
+    public bool spawnOnFloor = false;
     public GameObject effectPrefab;
 
     public GameObject handEffectPrefab;

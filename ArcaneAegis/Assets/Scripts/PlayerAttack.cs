@@ -51,29 +51,40 @@ public class PlayerAttack : NetworkBehaviour {
         casting = true;
         animator.SetTrigger(spell.HandTrigger);
         // If Both then just spawn effect on left hand
+        yield return new WaitForSeconds(spell.CastDelay);
         Transform handTransform = hand == HandEnum.Right ? rightHandTransform : leftHandTransform;
         int index = hand == HandEnum.Right ? rightIndex : leftIndex;
-        yield return new WaitForSeconds(spell.CastDelay);
         Quaternion rotation = playerCamera.transform.rotation;
         Ray ray = new Ray(handTransform.position, playerCamera.transform.forward);
         // Draw ray for debugging
         Debug.DrawRay(ray.origin, ray.direction * 100, Color.green, 2f);
+        Vector3 spawnPoint = handTransform.position + transform.forward * 0.1f;
         if (Physics.Raycast(ray, out RaycastHit hit)) {
-            Vector3 spawnPoint = handTransform.position + transform.forward * 0.1f;
             Vector3 direction = hit.point - spawnPoint;
             rotation = Quaternion.LookRotation(direction);
         }
-        SpawnEffectServerRpc(index, rotation);
+        if (spell.spawnOnFloor) {
+            rotation = Quaternion.Euler(0, 0, 0);
+            // Change spawn location of spell to floor below player
+            Ray floorRay = new Ray(transform.position, Vector3.down);
+            if (Physics.Raycast(floorRay, out RaycastHit floorHit)) {
+                spawnPoint = floorHit.point;
+            }
+        }
+        if (spell.hand == HandEnum.Both)
+            rotation = Quaternion.Euler(0, 0, 0);
+
+        SpawnEffectServerRpc(index, rotation, spawnPoint);
         yield return new WaitForSeconds(spell.CastTime);
         casting = false;
     }
     [ServerRpc]
-    public void SpawnEffectServerRpc(int index, Quaternion rotation, ServerRpcParams rpcParams = default) {
-        SpawnEffectClientRpc(index, rotation);
+    public void SpawnEffectServerRpc(int index, Quaternion rotation, Vector3 position, ServerRpcParams rpcParams = default) {
+        SpawnEffectClientRpc(index, rotation, position);
     }
 
     [ClientRpc]
-    public void SpawnEffectClientRpc(int index, Quaternion rotation, ClientRpcParams rpcParams = default) {
+    public void SpawnEffectClientRpc(int index, Quaternion rotation, Vector3 position, ClientRpcParams rpcParams = default) {
         // We just spawn the effects on the clients do prevent complexity
         NetworkLog.LogInfoServer("Spawning effect");
         
@@ -81,17 +92,22 @@ public class PlayerAttack : NetworkBehaviour {
         Transform handTransform = spell.hand == HandEnum.Right ? rightHandTransform : leftHandTransform;
         if (spell.handEffectPrefab != null)
             Instantiate(spell.handEffectPrefab, handTransform);
-        GameObject effect = Instantiate(spell.effectPrefab, handTransform.position, rotation);
+        GameObject effect = Instantiate(spell.effectPrefab, position, rotation);
         RFX4_PhysicsMotion physicsMotion = effect.GetComponentInChildren<RFX4_PhysicsMotion>(true);
         RFX4_RaycastCollision physicsRaycast = effect.GetComponentInChildren<RFX4_RaycastCollision>(true);
         if (physicsRaycast != null) {
             physicsRaycast.CollisionEnter += CollisionEnter;
             physicsRaycast.Damage = spell.Damage;
+            physicsRaycast.Element = spell.element;
         }
         
         if (physicsMotion != null) {
             physicsMotion.CollisionEnter += CollisionEnter;
             physicsMotion.Damage = spell.Damage;
+            physicsMotion.Element = spell.element;
+        }
+        if (spell.destroyAfter >= 0f) {
+            Destroy(effect, spell.destroyAfter);
         }
     }
 
@@ -101,21 +117,25 @@ public class PlayerAttack : NetworkBehaviour {
 
         // Debug.Log(e.HitPoint); //a collision coordinates in world space
         // Debug.Log(e.HitGameObject.name); //a collided gameobject
-        // Debug.Log(e.HitCollider.name); //a collided collider :)
+        Debug.Log(e.HitCollider.name); //a collided collider :)
 
         GameObject effect;
         float damage;
+        int elementIndex;
         try
         {
             RFX4_PhysicsMotion physicsMotion = (RFX4_PhysicsMotion) sender;
             effect = physicsMotion.gameObject.transform.parent.gameObject;
             damage = physicsMotion.Damage;
+            elementIndex = (int) physicsMotion.Element;
         }
         catch (System.InvalidCastException)
         {
             RFX4_RaycastCollision physicsRaycast = (RFX4_RaycastCollision) sender;
             effect = physicsRaycast.gameObject.transform.parent.gameObject;
-            damage = physicsRaycast.Damage;
+            damage = physicsRaycast.Damage*Time.deltaTime; 
+            elementIndex = (int) physicsRaycast.Element;
+            // Use delta time for raycast spells to simulate damage per second
         }
 
 
@@ -124,10 +144,11 @@ public class PlayerAttack : NetworkBehaviour {
         EnemyAI enemy = e.HitCollider.GetComponent<EnemyAI>(); // TODO Change to mesh collider
         if (enemy != null)
         {
-            enemy.TakeDamageServerRpc(damage);
+            Debug.Log("Hit enemy for " + damage + " damage");
+            enemy.TakeDamageServerRpc(damage, elementIndex);
         }
         // Delete effect
-        Destroy(effect);
+        // Destroy(effect);
         
     }
 

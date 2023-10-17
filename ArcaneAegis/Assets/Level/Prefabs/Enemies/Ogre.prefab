@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 3752697099338212460}
   - component: {fileID: 8673581289850860910}
   - component: {fileID: 2542277870362412627}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Ogre
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -72,6 +72,10 @@ MonoBehaviour:
   - {fileID: 5141862177401682794, guid: 970f9bd56c3fb8e4fa01595c974a3c10, type: 3}
   - {fileID: 5141862177401682794, guid: 5f43ff91bcadc5549938f0e6292e4520, type: 3}
   dropChance: 0.75
+  weaknesses: 0000000002000000
+  stunTime: 0.5
+  stunCooldown: 1
+  slowTime: 5
   agent: {fileID: 5813056974233844056}
 --- !u!114 &6159738099404402497
 MonoBehaviour:
@@ -239,7 +243,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2812209949784879137}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FAT_OGRE_ Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -273,7 +277,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2812209949784879139}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FAT_OGRE_ L Calf
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -306,7 +310,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2812209949784879141}
   - component: {fileID: 2812209949779173637}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FAT_OGRE
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -445,7 +449,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2812209949784879143}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FAT_OGRE_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -477,7 +481,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2812209949784879145}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FAT_OGRE_ L Finger01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -509,7 +513,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2812209949784879147}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FAT_OGRE_ L Finger02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -540,7 +544,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2812209949784879149}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FAT_OGRE_ L Clavicle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -572,7 +576,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2812209949784879151}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FAT_OGRE_ L Finger0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -604,7 +608,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2812209949784879153}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FAT_OGRE_ L Finger12
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -635,7 +639,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2812209949784879155}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FAT_OGRE_ L Finger2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -667,7 +671,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2812209949784879157}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FAT_OGRE_ L Finger1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -699,7 +703,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2812209949784879159}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FAT_OGRE_ L Finger11
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -731,7 +735,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2812209949784879161}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FAT_OGRE_ L Finger3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -763,7 +767,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2812209949784879163}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FAT_OGRE_ L Finger31
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -795,7 +799,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2812209949784879165}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FAT_OGRE_ L Finger21
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -827,7 +831,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2812209949784879167}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FAT_OGRE_ L Finger22
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -858,7 +862,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2812209949784879201}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FAT_OGRE_ R Finger1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -890,7 +894,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2812209949784879203}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FAT_OGRE_ R Finger11
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -922,7 +926,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2812209949784879205}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FAT_OGRE_ R Finger01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -954,7 +958,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2812209949784879207}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FAT_OGRE_ R Finger02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -985,7 +989,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2812209949784879209}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FAT_OGRE_ R Finger21
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1017,7 +1021,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2812209949784879211}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FAT_OGRE_ R Finger22
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1048,7 +1052,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2812209949784879213}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FAT_OGRE_ R Finger12
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1079,7 +1083,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2812209949784879215}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FAT_OGRE_ R Finger2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1111,7 +1115,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2812209949784879217}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FAT_OGRE_ R Finger32
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1142,7 +1146,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2812209949784879219}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FAT_OGRE_ R Finger4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1174,7 +1178,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2812209949784879221}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FAT_OGRE_ R Finger3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1206,7 +1210,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2812209949784879223}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FAT_OGRE_ R Finger31
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1238,7 +1242,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2812209949784879225}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FAT_OGRE_ R Foot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1270,7 +1274,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2812209949784879227}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FAT_OGRE_ R Forearm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1302,7 +1306,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2812209949784879229}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FAT_OGRE_ R Finger41
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1334,7 +1338,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2812209949784879231}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FAT_OGRE_ R Finger42
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1365,7 +1369,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2812209949784879105}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FAT_OGRE_ L Finger41
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1397,7 +1401,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2812209949784879107}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FAT_OGRE_ L Finger42
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1428,7 +1432,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2812209949784879109}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FAT_OGRE_ L Finger32
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1459,7 +1463,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2812209949784879111}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FAT_OGRE_ L Finger4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1491,7 +1495,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2812209949784879113}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FAT_OGRE_ L Hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1527,7 +1531,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2812209949784879115}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FAT_OGRE_ L Thigh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1559,7 +1563,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2812209949784879117}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FAT_OGRE_ L Foot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1591,7 +1595,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2812209949784879119}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FAT_OGRE_ L Forearm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1623,7 +1627,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2812209949784879121}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FAT_OGRE_ Neck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1655,7 +1659,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2812209949784879123}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FAT_OGRE_ Pelvis
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1690,7 +1694,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2812209949784879125}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FAT_OGRE_ L Toe0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1721,7 +1725,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2812209949784879127}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FAT_OGRE_ L UpperArm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1753,7 +1757,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2812209949784879129}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FAT_OGRE_ R Clavicle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1785,7 +1789,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2812209949784879131}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FAT_OGRE_ R Finger0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1817,7 +1821,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2812209949784879133}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FAT_OGRE_ Ponytail1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1848,7 +1852,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2812209949784879135}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FAT_OGRE_ R Calf
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1880,7 +1884,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2812209949784879169}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FAT_OGRE_ R Toe0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1911,7 +1915,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2812209949784879171}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FAT_OGRE_ R UpperArm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1943,7 +1947,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2812209949784879173}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FAT_OGRE_ R Hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1980,7 +1984,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2812209949784879175}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FAT_OGRE_ R Thigh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2012,7 +2016,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2812209949784879177}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FAT_OGRE_EYE_L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2043,7 +2047,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2812209949784879179}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FAT_OGRE_EYE_R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2074,7 +2078,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2812209949784879181}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FAT_OGRE_ Spine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2106,7 +2110,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2812209949784879183}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FAT_OGRE_ Spine1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2140,7 +2144,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2812209949784879185}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: root
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2172,7 +2176,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2812209949784879189}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FAT_OGRE_SAGGING_BELLY
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2205,7 +2209,7 @@ GameObject:
   - component: {fileID: 2812209949784879191}
   - component: {fileID: 2812209949781487621}
   - component: {fileID: 2812209949782454981}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: MORGENSTERN_TRUE
   m_TagString: Untagged
   m_Icon: {fileID: 0}

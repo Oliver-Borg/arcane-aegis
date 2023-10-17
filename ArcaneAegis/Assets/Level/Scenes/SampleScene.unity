@@ -658,14 +658,14 @@ MonoBehaviour:
   enemyCount: 20
   maxRound: 25
   roundTime: 10
-  maxEnemies: 2
-  minEnemies: 1
+  maxEnemies: 25
+  minEnemies: 10
   roundStartSpawnRatio: 1
   roundStartSpawnDelay: 0.1
   roundStartDelay: 0
   roundEndDelay: 0
   maxUniqueEnemiesPerRound: 3
-  peaceful: 1
+  peaceful: 0
 --- !u!4 &814175981
 Transform:
   m_ObjectHideFlags: 0

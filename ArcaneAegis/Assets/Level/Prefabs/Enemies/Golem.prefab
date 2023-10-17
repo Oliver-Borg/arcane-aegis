@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 3752697099338212460}
   - component: {fileID: 8673581289850860910}
   - component: {fileID: 2542277870362412627}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Golem
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -71,6 +71,10 @@ MonoBehaviour:
   - {fileID: 5141862177401682794, guid: 970f9bd56c3fb8e4fa01595c974a3c10, type: 3}
   - {fileID: 5141862177401682794, guid: 5f43ff91bcadc5549938f0e6292e4520, type: 3}
   dropChance: 1
+  weaknesses: 0200000003000000
+  stunTime: 0.5
+  stunCooldown: 1
+  slowTime: 5
   agent: {fileID: 5813056974233844056}
 --- !u!114 &6159738099404402497
 MonoBehaviour:
@@ -238,7 +242,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4074705950454583425}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: GOLEM_ L UpperArm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -270,7 +274,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4074705950454583427}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: GOLEM_ L Thigh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -302,7 +306,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4074705950454583429}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: GOLEM_ L Hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -336,7 +340,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4074705950454583431}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: GOLEM_ L Forearm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -368,7 +372,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4074705950454583433}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: GOLEM_ L Foot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -399,7 +403,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4074705950454583435}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: GOLEM_ L Finger21
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -430,7 +434,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4074705950454583437}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: GOLEM_ L Finger2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -462,7 +466,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4074705950454583439}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: GOLEM_ L Finger11
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -493,7 +497,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4074705950454583441}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: GOLEM_ L Finger1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -525,7 +529,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4074705950454583443}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: GOLEM_ L Finger01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -556,7 +560,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4074705950454583445}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: GOLEM_ L Finger0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -588,7 +592,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4074705950454583447}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: GOLEM_ L Clavicle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -620,7 +624,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4074705950454583449}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: GOLEM_ L Calf
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -652,7 +656,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4074705950454583451}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: GOLEM_ Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -684,7 +688,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4074705950454583453}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: GOLEM_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -716,7 +720,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4074705950454583457}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: GOLEM_ R UpperArm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -748,7 +752,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4074705950454583459}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: GOLEM_ R Thigh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -780,7 +784,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4074705950454583461}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: GOLEM_ R Hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -814,7 +818,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4074705950454583463}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: GOLEM_ R Forearm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -846,7 +850,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4074705950454583465}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: GOLEM_ R Foot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -877,7 +881,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4074705950454583467}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: GOLEM_ R Finger21
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -908,7 +912,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4074705950454583469}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: GOLEM_ R Finger2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -940,7 +944,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4074705950454583471}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: GOLEM_ R Finger11
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -971,7 +975,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4074705950454583473}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: GOLEM_ R Finger1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1003,7 +1007,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4074705950454583475}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: GOLEM_ R Finger01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1034,7 +1038,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4074705950454583477}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: GOLEM_ R Finger0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1066,7 +1070,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4074705950454583479}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: GOLEM_ R Clavicle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1098,7 +1102,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4074705950454583481}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: GOLEM_ R Calf
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1130,7 +1134,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4074705950454583483}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: GOLEM_ Queue de cheval 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1161,7 +1165,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4074705950454583485}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: GOLEM_ Pelvis
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1195,7 +1199,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4074705950454583487}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: GOLEM_ Neck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1228,7 +1232,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4074705950454583511}
   - component: {fileID: 4074705950468145597}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SK_Golem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1344,7 +1348,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4074705950454583513}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: root
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1376,7 +1380,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4074705950454583517}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: GOLEM_ Spine1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1410,7 +1414,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4074705950454583519}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: GOLEM_ Spine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
