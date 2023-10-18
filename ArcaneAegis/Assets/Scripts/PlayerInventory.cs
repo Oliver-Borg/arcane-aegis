@@ -1,5 +1,6 @@
 using UnityEngine;
 using Unity.Netcode;
+using TMPro;
 
 public class PlayerInventory : NetworkBehaviour
 {
@@ -17,6 +18,8 @@ public class PlayerInventory : NetworkBehaviour
     );
 
     [SerializeField] private float keyCost = 500f;
+    [SerializeField] private TextMeshProUGUI pointsText;
+    [SerializeField] private TextMeshProUGUI keysText;
 
     public override void OnNetworkSpawn() {
         if (IsServer) {
@@ -57,5 +60,9 @@ public class PlayerInventory : NetworkBehaviour
         keys.Value++;
     }
 
-    
+    void Update() {
+        if (!IsOwner) return;
+        pointsText.text = "Points: " + (int) points.Value;
+        keysText.text = "Keys: " + keys.Value;
+    }
 }

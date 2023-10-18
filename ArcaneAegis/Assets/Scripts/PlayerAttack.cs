@@ -49,6 +49,7 @@ public class PlayerAttack : NetworkBehaviour {
     IEnumerator CastCoroutine(HandEnum hand) {
         Spell spell = hand == HandEnum.Right ? rightSpell : leftSpell;
         casting = true;
+        animator.SetFloat("castMultiplier", spell.CastSpeedMultiplier);
         animator.SetTrigger(spell.HandTrigger);
         // If Both then just spawn effect on left hand
         yield return new WaitForSeconds(spell.CastDelay);
@@ -75,7 +76,7 @@ public class PlayerAttack : NetworkBehaviour {
             rotation = Quaternion.Euler(0, 0, 0);
 
         SpawnEffectServerRpc(index, rotation, spawnPoint);
-        yield return new WaitForSeconds(spell.CastTime);
+        yield return new WaitForSeconds(spell.AnimationTime-spell.CastDelay);
         casting = false;
     }
     [ServerRpc]
@@ -145,7 +146,8 @@ public class PlayerAttack : NetworkBehaviour {
         if (enemy != null)
         {
             Debug.Log("Hit enemy for " + damage + " damage");
-            enemy.TakeDamageServerRpc(damage, elementIndex);
+            // Send player index to enemy so that we can track damage
+            enemy.TakeDamageServerRpc(damage, elementIndex, OwnerClientId);
         }
         // Delete effect
         // Destroy(effect);

@@ -217,7 +217,7 @@ public class GameManager : NetworkBehaviour {
         // Get all game objects with tag "Enemy"
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
         foreach (GameObject enemy in enemies) {
-            enemy.GetComponent<EnemyAI>().TakeDamageServerRpc(1000000f, 0);
+            enemy.GetComponent<EnemyAI>().TakeDamageServerRpc(1000000f, 0, 0);
         }
     }
 

@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.AI;
@@ -49,6 +50,12 @@ public class EnemyAI : NetworkBehaviour
 
     private bool slowed = false;
 
+    private Dictionary<ElementEnum, float> damageTaken = new Dictionary<ElementEnum, float>();
+
+    private Dictionary<PlayerController, float> damagers = new Dictionary<PlayerController, float>();
+
+    private Dictionary<ElementEnum, GameObject> upgradePrefabs = new Dictionary<ElementEnum, GameObject>();
+
     private NetworkVariable<float> health = new NetworkVariable<float>(
         100f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server
     );
@@ -68,6 +75,13 @@ public class EnemyAI : NetworkBehaviour
             if (i == weaponIndex) continue;
             weapons[i].SetActive(false);
         }
+
+        // Assign upgrades correctly
+        foreach (GameObject upgrade in upgrades) {
+            Upgrade upgradeScript = upgrade.GetComponent<Upgrade>();
+            upgradePrefabs[upgradeScript.upGradeElement] = upgrade;
+        }
+
         // Start spawn coroutine
         spawnCoroutine = StartCoroutine(SpawnCoroutine());
         if (IsServer) health.Value = maxHealth;
@@ -163,7 +177,7 @@ public class EnemyAI : NetworkBehaviour
     }
 
     [ServerRpc(Delivery = default, RequireOwnership = false)]
-    public void TakeDamageServerRpc(float damage, int elementIndex, ServerRpcParams rpcParams = default) {
+    public void TakeDamageServerRpc(float damage, int elementIndex, ulong playerIndex, ServerRpcParams rpcParams = default) {
         ElementEnum element = (ElementEnum) elementIndex;
         if (element == ElementEnum.Lightning) {
             StartCoroutine(StunCoroutine());
@@ -177,6 +191,25 @@ public class EnemyAI : NetworkBehaviour
                 damage *= 1.5f;
                 break;
             }
+        }
+        // Check if player in damagers
+        PlayerController player = NetworkManager.Singleton.ConnectedClients[playerIndex].PlayerObject.GetComponent<PlayerController>();
+
+        if (damagers.ContainsKey(player)) {
+            damagers[player] += damage;
+        }
+        else {
+            damagers[player] = damage;
+        }
+
+        // Add element to damage taken
+        // This is kind of a bug cause we can overdamage enemies, 
+        // but I think this behaviour is nice for the drop chances
+        if (damageTaken.ContainsKey(element)) {
+            damageTaken[element] += damage;
+        }
+        else {
+            damageTaken[element] = damage;
         }
 
         health.Value -= damage;
@@ -220,13 +253,36 @@ public class EnemyAI : NetworkBehaviour
         GetComponent<NavMeshAgent>().enabled = false;
         GetComponent<Collider>().enabled = false; // TODO Create ragdoll
         DropUpgradeServerRpc();
+        // Give points to players
+        foreach (KeyValuePair<PlayerController, float> damager in damagers) {
+            GameObject playerObject = damager.Key.gameObject;
+            PlayerInventory playerInventory = playerObject.GetComponent<PlayerInventory>();
+            playerInventory.AddPointsServerRpc(damager.Value);
+        }
         StartCoroutine(DespawnCoroutine());
     }
 
     [ServerRpc]
     private void DropUpgradeServerRpc() {
         if (Random.Range(0f, 1f) > dropChance) return;
-        GameObject upgrade = Instantiate(upgrades[Random.Range(0, upgrades.Length)], transform.position, Quaternion.identity);
+        // Choose upgrade drop randomly based on amount of damage taken
+        float totalDamage = 0f;
+        foreach (float damage in damagers.Values) {
+            totalDamage += damage;
+        }
+        float randomDamage = Random.Range(0f, totalDamage);
+        float currentDamage = 0f;
+        ElementEnum upgradeElement = ElementEnum.Fire;
+        foreach (KeyValuePair<ElementEnum, float> damage in damageTaken) {
+            currentDamage += damage.Value;
+            if (currentDamage > randomDamage) {
+                upgradeElement = damage.Key;
+                break;
+            }
+        }
+        // Spawn upgrade
+        GameObject upgradePrefab = upgradePrefabs[upgradeElement];
+        GameObject upgrade = Instantiate(upgradePrefab, transform.position, Quaternion.identity);
         upgrade.GetComponent<NetworkObject>().Spawn();
     }
 
