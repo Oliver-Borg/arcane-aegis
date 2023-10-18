@@ -72,6 +72,14 @@ public class PlayerInteraction : NetworkBehaviour
                     }
                 }
             }
+            else if (hit.transform.TryGetComponent(out Teleporter teleporter)) {
+                interactionText.text = "Press E to teleport";
+                if (Input.GetKeyDown(KeyCode.E)) {
+                    Transform targetTransform = teleporter.GetTeleportTransform();
+                    transform.position = targetTransform.position;
+                    transform.rotation = targetTransform.rotation;
+                }
+            }
             else
             {
                 interactionText.text = "";
