@@ -27,13 +27,21 @@ public class PlayerInteraction : NetworkBehaviour
                         interactionText.text = "You already have a catalyst upgrade";
                         return;
                     }
+                } else if (upgrade.upgradeType == UpgradeEnum.TechRune) {
+                    if (GetComponent<PlayerInventory>().HasTechRune()) {
+                        interactionText.text = "You already have a tech rune";
+                        return;
+                    }
                 }
+                
                 interactionText.text = upgrade.GetUpgradeText();
                 if (Input.GetKeyDown(KeyCode.E))
                 {
                     // TODO Do this properly with a server rpc to prevent multiple players picking it up
                     if (upgrade.upgradeType == UpgradeEnum.Catalyst) {
                         GetComponent<PlayerInventory>().catalystUpgrade = upgrade.upGradeElement;
+                    } else if (upgrade.upgradeType == UpgradeEnum.TechRune) {
+                        GetComponent<PlayerInventory>().AddTechRuneServerRpc();
                     } else {
                         GetComponent<PlayerAttack>().AddUpgrade(upgrade);
                     }
@@ -76,6 +84,11 @@ public class PlayerInteraction : NetworkBehaviour
                 interactionText.text = "Press E to teleport";
                 if (Input.GetKeyDown(KeyCode.E)) {
                     Transform targetTransform = teleporter.GetTeleportTransform();
+                    teleporter.TeleportServerRpc();
+                    // Enable space station
+                    if (teleporter.spaceStation != null) {
+                        teleporter.spaceStation.SetActive(true);
+                    }
                     transform.position = targetTransform.position;
                     transform.rotation = targetTransform.rotation;
                 }

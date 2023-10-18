@@ -18,7 +18,8 @@ public enum UpgradeEnum
     Damage,
     Cooldown,
     Cost,
-    Catalyst
+    Catalyst,
+    TechRune
 }
 
 
@@ -35,11 +36,13 @@ public class Upgrade : NetworkBehaviour
     {
         base.OnNetworkSpawn();
         sphere.GetComponent<Renderer>().material.color = baseColour;
-        if (upgradeType != UpgradeEnum.Catalyst)
+        if (upgradeType != UpgradeEnum.Catalyst && upgradeType != UpgradeEnum.TechRune)
             upgradeType = (UpgradeEnum)UnityEngine.Random.Range(0, 3);
     }
 
     public string GetUpgradeText() {
+        if (upGradeElement == ElementEnum.None)
+            return upgradeType.ToString() + " Upgrade\nPress E to pick up";
         return upGradeElement.ToString() + " " + upgradeType.ToString() + " Upgrade\nPress E to pick up";
     }
 

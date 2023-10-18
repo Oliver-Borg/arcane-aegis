@@ -9,6 +9,8 @@ public class Teleporter : NetworkBehaviour
 
     [SerializeField] private Transform targetTransform;
 
+    public GameObject spaceStation;
+
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();

@@ -17,6 +17,12 @@ public class PlayerInventory : NetworkBehaviour
         0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server
     );
 
+    NetworkVariable<bool> techRune = new NetworkVariable<bool>(
+        false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server
+    );
+
+
+
     [SerializeField] private float keyCost = 500f;
     [SerializeField] private TextMeshProUGUI pointsText;
     [SerializeField] private TextMeshProUGUI keysText;
@@ -60,6 +66,20 @@ public class PlayerInventory : NetworkBehaviour
     [ServerRpc(Delivery = default, RequireOwnership = false)]
     public void AddKeyServerRpc(ServerRpcParams rpcParams = default) {
         keys.Value++;
+    }
+
+    [ServerRpc(Delivery = default, RequireOwnership = false)]
+    public void AddTechRuneServerRpc(ServerRpcParams rpcParams = default) {
+        techRune.Value = true;
+    }
+
+    [ServerRpc(Delivery = default, RequireOwnership = false)]
+    public void RemoveTechRuneServerRpc(ServerRpcParams rpcParams = default) {
+        techRune.Value = false;
+    }
+
+    public bool HasTechRune() {
+        return techRune.Value;
     }
 
     void Update() {
