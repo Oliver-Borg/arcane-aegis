@@ -9,14 +9,16 @@ public enum ElementEnum
     Fire,
     Lightning,
     Gravity,
-    Ice
+    Ice, 
+    None
 }
 
 public enum UpgradeEnum
 {
     Damage,
     Cooldown,
-    Cost
+    Cost,
+    Catalyst
 }
 
 
@@ -33,7 +35,8 @@ public class Upgrade : NetworkBehaviour
     {
         base.OnNetworkSpawn();
         sphere.GetComponent<Renderer>().material.color = baseColour;
-        upgradeType = (UpgradeEnum)UnityEngine.Random.Range(0, 3);
+        if (upgradeType != UpgradeEnum.Catalyst)
+            upgradeType = (UpgradeEnum)UnityEngine.Random.Range(0, 3);
     }
 
     public string GetUpgradeText() {

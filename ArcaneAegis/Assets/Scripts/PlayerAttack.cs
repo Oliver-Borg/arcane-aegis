@@ -76,7 +76,29 @@ public class PlayerAttack : NetworkBehaviour {
             rotation = Quaternion.Euler(0, 0, 0);
 
         SpawnEffectServerRpc(index, rotation, spawnPoint);
-        yield return new WaitForSeconds(spell.AnimationTime-spell.CastDelay);
+
+        PlayerInventory inventory = GetComponent<PlayerInventory>();
+        if (inventory.catalystUpgrade == spell.element) {
+            // TODO Implement catalyst upgrades
+            // Fire: ring of fire
+            // Ice: proper freeze
+            // Lightning: mobile lightning orb
+            // Gravity: black hole meteor
+
+            // For now just spawn a second effect after CastDelay
+            yield return new WaitForSeconds(spell.CastDelay);
+            SpawnEffectServerRpc(index, rotation, spawnPoint);
+            yield return new WaitForSeconds(spell.CastDelay);
+            SpawnEffectServerRpc(index, rotation, spawnPoint);
+            yield return new WaitForSeconds(Mathf.Max(spell.AnimationTime-3*spell.CastDelay, 0f));
+
+        }
+        else
+        {
+            yield return new WaitForSeconds(spell.AnimationTime-spell.CastDelay);
+        }
+
+        
         casting = false;
     }
     [ServerRpc]

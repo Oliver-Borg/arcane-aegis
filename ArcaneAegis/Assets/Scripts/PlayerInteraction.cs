@@ -22,11 +22,21 @@ public class PlayerInteraction : NetworkBehaviour
             Debug.Log("Hit " + hit.collider.gameObject.name);
             if (hit.collider.gameObject.TryGetComponent(out Upgrade upgrade))
             {
+                if (upgrade.upgradeType == UpgradeEnum.Catalyst) {
+                    if (GetComponent<PlayerInventory>().catalystUpgrade != ElementEnum.None) {
+                        interactionText.text = "You already have a catalyst upgrade";
+                        return;
+                    }
+                }
                 interactionText.text = upgrade.GetUpgradeText();
                 if (Input.GetKeyDown(KeyCode.E))
                 {
                     // TODO Do this properly with a server rpc to prevent multiple players picking it up
-                    GetComponent<PlayerAttack>().AddUpgrade(upgrade);
+                    if (upgrade.upgradeType == UpgradeEnum.Catalyst) {
+                        GetComponent<PlayerInventory>().catalystUpgrade = upgrade.upGradeElement;
+                    } else {
+                        GetComponent<PlayerAttack>().AddUpgrade(upgrade);
+                    }
                     upgrade.PickupUpgradeServerRpc();
                 }
             }
