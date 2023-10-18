@@ -888,11 +888,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd855b364b9f5cb4d847b971c9659f7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startKeys: 10
+  startKeys: 50
   startPoints: 500
   keyCost: 500
   pointsText: {fileID: 4188797168149593238}
   keysText: {fileID: 5623224299577211612}
+  catalystUpgrade: 4
 --- !u!136 &1984291646753022666
 CapsuleCollider:
   m_ObjectHideFlags: 0

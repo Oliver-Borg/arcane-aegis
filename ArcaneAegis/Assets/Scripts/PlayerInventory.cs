@@ -21,6 +21,8 @@ public class PlayerInventory : NetworkBehaviour
     [SerializeField] private TextMeshProUGUI pointsText;
     [SerializeField] private TextMeshProUGUI keysText;
 
+    public ElementEnum catalystUpgrade = ElementEnum.None;
+
     public override void OnNetworkSpawn() {
         if (IsServer) {
             keys.Value = startKeys;
