@@ -116,7 +116,7 @@ public class PlayerInteraction : NetworkBehaviour
                     string upgradeText = alchemist.GetUpgrade().ToString();
                     PlayerAttack attack = GetComponent<PlayerAttack>();
                     if (attack.UpgradeCount() < 6) {
-                        interactionText.text += "\n press F to equip " + upgradeText + " upgrade";
+                        interactionText.text += "\nPress F to equip " + upgradeText + " upgrade";
                         if (Input.GetKeyDown(KeyCode.F)) {
                             attack.AddUpgrade(alchemist.BuyUpgrade(), attack.UpgradeCount());
                         }
