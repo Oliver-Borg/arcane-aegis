@@ -64,8 +64,8 @@ public class PlayerController : NetworkBehaviour
         }
 
         if (!IsOwner) return;
-        // OOB damage
-        if (transform.position.y < -10f) TakeDamageServerRpc(100f);
+        // OOB respawn
+        if (transform.position.y < -100f) transform.position = new Vector3(0f, 0f, 0f);
         if (Input.GetKeyDown(KeyCode.J)) TakeDamageServerRpc(100f);
     }
 
@@ -96,6 +96,7 @@ public class PlayerController : NetworkBehaviour
         interactCollider.gameObject.layer = LayerMask.NameToLayer("Interaction");
         transform.GetComponent<Collider>().excludeLayers = LayerMask.NameToLayer("Player");
         transform.tag = "DeadPlayer";
+        transform.gameObject.layer = LayerMask.NameToLayer("DeadPlayer");
         // Disable components
         foreach (MonoBehaviour obj in disableOnDeath) {
             obj.enabled = false;
@@ -117,6 +118,7 @@ public class PlayerController : NetworkBehaviour
         interactCollider.gameObject.layer = LayerMask.NameToLayer("Player");
         transform.GetComponent<Collider>().excludeLayers = 0;
         transform.tag = "Player";
+        transform.gameObject.layer = LayerMask.NameToLayer("Player");
         foreach (MonoBehaviour obj in disableOnDeath) {
             obj.enabled = true;
         }

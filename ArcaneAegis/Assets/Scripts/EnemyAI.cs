@@ -133,15 +133,18 @@ public class EnemyAI : NetworkBehaviour
         }
 
         // Find closest player
-        float closestDistance = 100000f;
+        float closestDistance = Mathf.Infinity;
         GameObject closestPlayer = null;
         foreach (GameObject player in players) {
+            PlayerController playerController = player.GetComponent<PlayerController>();
+            if (playerController.IsDead()) continue;
             float distance = Vector3.Distance(player.transform.position, transform.position);
             if (distance < closestDistance) {
                 closestDistance = distance;
                 closestPlayer = player;
             }
         }
+        if (closestPlayer == null) return;
         agent.SetDestination(closestPlayer.transform.position);
         SetAnimationBoolClientRpc("Walking", true);
     }

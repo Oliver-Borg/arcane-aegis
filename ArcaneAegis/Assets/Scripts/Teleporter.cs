@@ -31,7 +31,7 @@ public class Teleporter : NetworkBehaviour
         return targetTransform;
     }
 
-    [ServerRpc]
+    [ServerRpc(Delivery = default, RequireOwnership = false)]
     public void TeleportServerRpc(ServerRpcParams rpcParams = default) {
         if (toSpace)
             gameManager.GetComponent<GameManager>().AddSpacePlayerServerRpc();
