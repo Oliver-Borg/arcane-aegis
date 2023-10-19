@@ -22,6 +22,14 @@ public enum UpgradeEnum
     TechRune
 }
 
+public class UpgradeEnums {
+    public UpgradeEnum upgradeType;
+    public ElementEnum element;
+
+    public override string ToString() {
+        return element.ToString() + " " + upgradeType.ToString();
+    }
+}
 
 
 public class Upgrade : NetworkBehaviour

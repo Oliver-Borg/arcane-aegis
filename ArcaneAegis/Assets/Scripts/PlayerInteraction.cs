@@ -32,6 +32,9 @@ public class PlayerInteraction : NetworkBehaviour
                         interactionText.text = "You already have a tech rune";
                         return;
                     }
+                } else if (GetComponent<PlayerInventory>().HasUpgrade()) {
+                    interactionText.text = "You already have an inactive upgrade";
+                    return;
                 }
                 
                 interactionText.text = upgrade.GetUpgradeText();
@@ -43,7 +46,10 @@ public class PlayerInteraction : NetworkBehaviour
                     } else if (upgrade.upgradeType == UpgradeEnum.TechRune) {
                         GetComponent<PlayerInventory>().AddTechRuneServerRpc();
                     } else {
-                        GetComponent<PlayerAttack>().AddUpgrade(upgrade);
+                        GetComponent<PlayerInventory>().SetUpgrade(new UpgradeEnums {
+                            upgradeType = upgrade.upgradeType,
+                            element = upgrade.upGradeElement
+                        });
                     }
                     upgrade.PickupUpgradeServerRpc();
                 }
@@ -93,10 +99,41 @@ public class PlayerInteraction : NetworkBehaviour
                     transform.rotation = targetTransform.rotation;
                 }
             }
+            else if (hit.transform.TryGetComponent(out Alchemist alchemist)) {
+                PlayerInventory inventory = GetComponent<PlayerInventory>();
+                interactionText.text = "Press E to buy a key";
+                if (Input.GetKeyDown(KeyCode.E)) {
+                    
+                    inventory.BuyKeyServerRpc();
+                }
+                if (inventory.HasUpgrade() && !alchemist.HasUpgrade()) {
+                    string upgradeText = inventory.GetUpgrade().ToString();
+                    interactionText.text += "\nPress F to activate " + upgradeText + " upgrade for " + inventory.UpgradeCost() + " points";
+                    if (Input.GetKeyDown(KeyCode.F)) {
+                        alchemist.SetUpgrade(inventory.PopUpgrade());
+                    }
+                } else if (alchemist.HasUpgrade()) {
+                    string upgradeText = alchemist.GetUpgrade().ToString();
+                    PlayerAttack attack = GetComponent<PlayerAttack>();
+                    if (attack.UpgradeCount() < 6) {
+                        interactionText.text += "\n press F to equip " + upgradeText + " upgrade";
+                        if (Input.GetKeyDown(KeyCode.F)) {
+                            attack.AddUpgrade(alchemist.BuyUpgrade(), attack.UpgradeCount());
+                        }
+                    } else {
+                        interactionText.text += "\n press 1-6 to replace upgrade with " + upgradeText;
+                        for (int i = 0; i < 6; i++) {
+                            if (Input.GetKeyDown(KeyCode.Alpha1 + i)) {
+                                attack.AddUpgrade(alchemist.BuyUpgrade(), i);
+                            }
+                        }
+                    }                 
+                }
+            }
             else
             {
                 interactionText.text = "";
-            } // TODO Add doors and alchemist
+            }
         }
         else
         {

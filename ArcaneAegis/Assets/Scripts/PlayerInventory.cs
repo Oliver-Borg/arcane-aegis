@@ -21,9 +21,11 @@ public class PlayerInventory : NetworkBehaviour
         false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server
     );
 
-
+    private UpgradeEnums upgrade = null;
 
     [SerializeField] private float keyCost = 500f;
+
+    [SerializeField] private float upgradeCost = 500f;
     [SerializeField] private TextMeshProUGUI pointsText;
     [SerializeField] private TextMeshProUGUI keysText;
 
@@ -35,6 +37,11 @@ public class PlayerInventory : NetworkBehaviour
             points.Value = startPoints;
         }
     }
+
+    public float UpgradeCost() {
+        return upgradeCost;
+    }
+
     [ServerRpc(Delivery = default, RequireOwnership = false)]
     public void AddPointsServerRpc(float amount, ServerRpcParams rpcParams = default) {
         points.Value += amount;
@@ -80,6 +87,24 @@ public class PlayerInventory : NetworkBehaviour
 
     public bool HasTechRune() {
         return techRune.Value;
+    }
+
+    public bool HasUpgrade() {
+        return upgrade != null;
+    }
+
+    public UpgradeEnums GetUpgrade() {
+        return upgrade;
+    }
+
+    public void SetUpgrade(UpgradeEnums upgrade) {
+        this.upgrade = upgrade;
+    }
+
+    public UpgradeEnums PopUpgrade() {
+        UpgradeEnums upgrade = this.upgrade;
+        this.upgrade = null;
+        return upgrade;
     }
 
     void Update() {
