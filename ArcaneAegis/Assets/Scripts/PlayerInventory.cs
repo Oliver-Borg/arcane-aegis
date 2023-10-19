@@ -104,6 +104,7 @@ public class PlayerInventory : NetworkBehaviour
     public UpgradeEnums PopUpgrade() {
         UpgradeEnums upgrade = this.upgrade;
         this.upgrade = null;
+        points.Value -= upgradeCost;
         return upgrade;
     }
 

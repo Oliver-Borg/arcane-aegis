@@ -103,13 +103,13 @@ public class PlayerInteraction : NetworkBehaviour
                 PlayerInventory inventory = GetComponent<PlayerInventory>();
                 interactionText.text = "Press E to buy a key";
                 if (Input.GetKeyDown(KeyCode.E)) {
-                    
+                    alchemist.BuyKey();
                     inventory.BuyKeyServerRpc();
                 }
                 if (inventory.HasUpgrade() && !alchemist.HasUpgrade()) {
                     string upgradeText = inventory.GetUpgrade().ToString();
                     interactionText.text += "\nPress F to activate " + upgradeText + " upgrade for " + inventory.UpgradeCost() + " points";
-                    if (Input.GetKeyDown(KeyCode.F)) {
+                    if (Input.GetKeyDown(KeyCode.F) && inventory.GetPoints() >= inventory.UpgradeCost()) {
                         alchemist.SetUpgrade(inventory.PopUpgrade());
                     }
                 } else if (alchemist.HasUpgrade()) {
