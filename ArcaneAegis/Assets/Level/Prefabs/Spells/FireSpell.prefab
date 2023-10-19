@@ -46,13 +46,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 50
   cooldown: 1
-  chargeCost: 10
+  chargeCost: 20
   hand: 1
   fullCharge: 100
-  rechargeRate: 5
-  castTime: 1.15
+  rechargeRate: 10
   castDelay: 0.1
+  animationTime: 2.08
   onCooldown: 0
+  offHandDelay: 0.1
+  offHandDamageMultiplier: 1.5
+  destroyAfter: 5
+  spawnOnFloor: 0
   effectPrefab: {fileID: 1033462822675242, guid: 43dbb3bbd1afeb24692c1d8f8b260845, type: 3}
   handEffectPrefab: {fileID: 1632418803800030, guid: 8adca8fa2391f0d40aa7a90b3beceaf4, type: 3}
   element: 0
