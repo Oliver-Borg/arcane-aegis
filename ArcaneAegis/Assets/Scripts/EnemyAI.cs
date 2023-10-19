@@ -15,6 +15,8 @@ public class EnemyAI : NetworkBehaviour
 
     [SerializeField] private float attackCooldown = 1f;
 
+    [SerializeField] private int numAttacks = 1;
+
     [SerializeField] private float maxHealth = 100f;
     private bool onCooldown = false;
 
@@ -166,6 +168,9 @@ public class EnemyAI : NetworkBehaviour
         // Check if any players in attack range
         Collider [] hitPlayers = hitPlayerList();
         if (hitPlayers.Length == 0) return;
+        // Set the attack number int
+        SetAnimationIntClientRpc("AttackNum", Random.Range(0, numAttacks));
+
         // Play attack animation
         PlayAnimationClientRpc("Attack");
 
@@ -272,7 +277,7 @@ public class EnemyAI : NetworkBehaviour
         }
         float randomDamage = Random.Range(0f, totalDamage);
         float currentDamage = 0f;
-        ElementEnum upgradeElement = ElementEnum.Fire;
+        ElementEnum upgradeElement = ElementEnum.None;
         foreach (KeyValuePair<ElementEnum, float> damage in damageTaken) {
             currentDamage += damage.Value;
             if (currentDamage > randomDamage) {
@@ -281,6 +286,15 @@ public class EnemyAI : NetworkBehaviour
             }
         }
         // Spawn upgrade
+        if (!upgradePrefabs.ContainsKey(upgradeElement)) {
+            // Choose a random element from those available
+            List<ElementEnum> availableElements = new List<ElementEnum>();
+            foreach (ElementEnum element in upgradePrefabs.Keys) {
+                availableElements.Add(element);
+            }
+            if (availableElements.Count == 0) return;
+            upgradeElement = availableElements[Random.Range(0, availableElements.Count)];
+        }
         GameObject upgradePrefab = upgradePrefabs[upgradeElement];
         GameObject upgrade = Instantiate(upgradePrefab, transform.position, Quaternion.identity);
         upgrade.GetComponent<NetworkObject>().Spawn();
@@ -295,6 +309,16 @@ public class EnemyAI : NetworkBehaviour
     [ClientRpc]
     private void SetAnimationBoolClientRpc(string animation, bool value) {
         animator.SetBool(animation, value);
+    }
+
+    [ClientRpc]
+    private void SetAnimationFloatClientRpc(string animation, float value) {
+        animator.SetFloat(animation, value);
+    }
+
+    [ClientRpc]
+    private void SetAnimationIntClientRpc(string animation, int value) {
+        animator.SetInteger(animation, value);
     }
 
     IEnumerator DespawnCoroutine() {
