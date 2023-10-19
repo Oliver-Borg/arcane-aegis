@@ -36,8 +36,19 @@ public class GameManager : NetworkBehaviour {
 
     private int round = 0;
 
+    public int GetRound() {
+        return round;
+    }
+
     private bool roundStarted = false;
-     
+
+    private NetworkVariable<int> playersInSpace = new NetworkVariable<int>(0);
+
+    [SerializeField] private GameObject wardenPrefab;
+
+    private GameObject warden;
+
+    [SerializeField] private GameObject wardenSpawnPoint;
 
     void Update()
     {
@@ -210,6 +221,30 @@ public class GameManager : NetworkBehaviour {
         // Spawn enemy on clients
         enemy.GetComponent<NetworkObject>().Spawn();
         // NetworkLog.LogInfoServer("Spawned enemy");
+    }
+
+    [ServerRpc]
+    public void SpawnWardenServerRpc(ServerRpcParams rpcParams = default) {
+        warden = Instantiate(wardenPrefab, wardenSpawnPoint.transform.position, Quaternion.identity);
+        warden.GetComponent<NetworkObject>().Spawn();
+    }
+
+    [ServerRpc]
+    public void AddSpacePlayerServerRpc(ServerRpcParams rpcParams = default) {
+        NetworkLog.LogInfoServer("Adding space player");
+        if (playersInSpace.Value == 0) {
+            SpawnWardenServerRpc();
+        }
+        playersInSpace.Value++;
+    }
+
+    [ServerRpc]
+    public void RemoveSpacePlayerServerRpc(ServerRpcParams rpcParams = default) {
+        playersInSpace.Value--;
+        if (playersInSpace.Value == 0) {
+            if (warden == null) return;
+            warden.GetComponent<NetworkObject>().Despawn(true);
+        }
     }
 
     [ServerRpc]

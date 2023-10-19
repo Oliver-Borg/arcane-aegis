@@ -9,6 +9,10 @@ public class Teleporter : NetworkBehaviour
 
     [SerializeField] private Transform targetTransform;
 
+    [SerializeField] private GameObject gameManager;
+
+    [SerializeField] private bool toSpace = true;
+
     public GameObject spaceStation;
 
     public override void OnNetworkSpawn()
@@ -29,6 +33,10 @@ public class Teleporter : NetworkBehaviour
 
     [ServerRpc]
     public void TeleportServerRpc(ServerRpcParams rpcParams = default) {
+        if (toSpace)
+            gameManager.GetComponent<GameManager>().AddSpacePlayerServerRpc();
+        else
+            gameManager.GetComponent<GameManager>().RemoveSpacePlayerServerRpc();
         if (IsServer && !isEnd) {
             if (spawnPoints.Length == 0) return;
             Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)].transform;
