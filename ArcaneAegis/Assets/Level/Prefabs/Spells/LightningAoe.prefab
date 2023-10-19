@@ -46,11 +46,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 100
   cooldown: 1
-  chargeCost: 10
+  chargeCost: 50
   hand: 2
   fullCharge: 100
   rechargeRate: 10
   castDelay: 0.15
+  animationTime: 2.08
   onCooldown: 0
   offHandDelay: 0.1
   offHandDamageMultiplier: 1.5

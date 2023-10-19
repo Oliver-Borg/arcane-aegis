@@ -46,7 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 20
   cooldown: 2
-  chargeCost: 10
+  chargeCost: 50
   hand: 2
   fullCharge: 100
   rechargeRate: 10

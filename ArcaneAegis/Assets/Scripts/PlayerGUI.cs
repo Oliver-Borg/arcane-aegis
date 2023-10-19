@@ -64,8 +64,8 @@ public class PlayerGUI : NetworkBehaviour
         for (int i = 0; i < rightSpells.Length; i++) rightSpells[i].SetActive(i == rightIndex);
         
         // Set recharge bars
-        leftRecharge.fillAmount = playerAttack.GetChargeRatio(leftIndex);
-        rightRecharge.fillAmount = playerAttack.GetChargeRatio(rightIndex);
+        leftRecharge.fillAmount = 1 - playerAttack.GetChargeRatio(leftIndex);
+        rightRecharge.fillAmount = 1 - playerAttack.GetChargeRatio(rightIndex);
 
         // Set health ball
         healthBall.fillAmount = playerController.GetHealthRatio();
