@@ -193,6 +193,10 @@ public class PlayerAttack : NetworkBehaviour {
         upgradeCount--;
     }
 
+    public UpgradeEnums [] GetUpgrades() {
+        return upgrades;
+    }
+
     public int UpgradeCount() {
         return upgradeCount;
     }

@@ -10,6 +10,13 @@ public class PlayerInteraction : NetworkBehaviour
 
     [SerializeField] private TextMeshProUGUI interactionText;
 
+    public UpgradeEnums shopUpgrade = new UpgradeEnums {
+        upgradeType = UpgradeEnum.None,
+        element = ElementEnum.None
+    };
+
+    public bool shopOpen = false;
+
     void Update()
     {
         if (!IsOwner) return;
@@ -122,6 +129,8 @@ public class PlayerInteraction : NetworkBehaviour
                         }
                     } else {
                         interactionText.text += "\n press 1-6 to replace upgrade with " + upgradeText;
+                        shopOpen = true;
+                        shopUpgrade = alchemist.GetUpgrade();
                         for (int i = 0; i < 6; i++) {
                             if (Input.GetKeyDown(KeyCode.Alpha1 + i)) {
                                 attack.AddUpgrade(alchemist.BuyUpgrade(), i);
