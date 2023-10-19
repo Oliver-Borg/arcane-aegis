@@ -56,6 +56,10 @@ public class PlayerController : NetworkBehaviour
         return isDead.Value;
     }
 
+    public float GetHealthRatio() {
+        return health.Value / 100f;
+    }
+
     void Update()
     {
         if (IsServer)
@@ -141,7 +145,7 @@ public class PlayerController : NetworkBehaviour
     // Show GUI with health
     void OnGUI() {
         if (!IsOwner) return;
-        GUI.Label(new Rect(10, 10, 100, 20), $"Health: {health.Value}");
+        // GUI.Label(new Rect(10, 10, 100, 20), $"Health: {health.Value}");
     }
     
 }

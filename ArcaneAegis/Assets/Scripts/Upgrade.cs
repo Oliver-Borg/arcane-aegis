@@ -19,7 +19,8 @@ public enum UpgradeEnum
     Cooldown,
     Cost,
     Catalyst,
-    TechRune
+    TechRune,
+    None
 }
 
 public class UpgradeEnums {
