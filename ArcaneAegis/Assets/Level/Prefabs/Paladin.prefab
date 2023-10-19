@@ -889,8 +889,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startKeys: 50
-  startPoints: 500
+  startPoints: 2000
   keyCost: 500
+  upgradeCost: 500
   pointsText: {fileID: 4188797168149593238}
   keysText: {fileID: 5623224299577211612}
   catalystUpgrade: 4
