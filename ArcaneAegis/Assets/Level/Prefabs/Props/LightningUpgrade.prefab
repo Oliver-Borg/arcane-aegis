@@ -4877,7 +4877,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   upGradeElement: 1
-  baseColour: {r: 1, g: 1, b: 0, a: 0}
+  baseColour: {r: 1, g: 0, b: 0.54923964, a: 0}
   sphere: {fileID: 7333623613012117048}
   upgradeType: 0
 --- !u!114 &3127932647088062731
