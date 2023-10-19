@@ -1,6 +1,7 @@
 using UnityEngine;
 using Unity.Netcode;
 using TMPro;
+using UnityEngine.UI;
 
 public class PlayerInventory : NetworkBehaviour
 {
@@ -26,8 +27,6 @@ public class PlayerInventory : NetworkBehaviour
     [SerializeField] private float keyCost = 500f;
 
     [SerializeField] private float upgradeCost = 500f;
-    [SerializeField] private TextMeshProUGUI pointsText;
-    [SerializeField] private TextMeshProUGUI keysText;
 
     public ElementEnum catalystUpgrade = ElementEnum.None;
 
@@ -106,11 +105,5 @@ public class PlayerInventory : NetworkBehaviour
         this.upgrade = null;
         points.Value -= upgradeCost;
         return upgrade;
-    }
-
-    void Update() {
-        if (!IsOwner) return;
-        pointsText.text = "Points: " + (int) points.Value;
-        keysText.text = "Keys: " + keys.Value;
     }
 }

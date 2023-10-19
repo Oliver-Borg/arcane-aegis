@@ -56,6 +56,10 @@ public class PlayerController : NetworkBehaviour
         return isDead.Value;
     }
 
+    public float GetHealthRatio() {
+        return health.Value / 100f;
+    }
+
     void Update()
     {
         if (IsServer)

@@ -133,6 +133,10 @@ public class Spell : MonoBehaviour
         }
     }
 
+    public float ChargeRatio() {
+        return currentCharge / fullCharge;
+    }
+
     public void Start() {
         currentCharge = fullCharge;
     }    

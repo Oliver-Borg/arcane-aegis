@@ -23,7 +23,7 @@ public class PlayerAttack : NetworkBehaviour {
 
     private bool casting = false;
 
-    private int rightIndex = 0, leftIndex = 1;
+    public int rightIndex = 0, leftIndex = 2;
     private Spell rightSpell, leftSpell;
 
 
@@ -208,30 +208,27 @@ public class PlayerAttack : NetworkBehaviour {
         return null;
     }
 
+    public float GetChargeRatio(int index) {
+        return spells[index].GetComponent<Spell>().ChargeRatio();
+    }
+
 
     void Update()
     {   
         if (!IsOwner) return;
-        // Use scroll wheel to change spell
-        int spellIndex = rightIndex;
         // Check if CastCoroutine in progress
         if (!casting) {
-            if (Input.GetAxis("Mouse ScrollWheel") > 0f) {
-                spellIndex++;
-            if (spellIndex >= spells.Length) spellIndex = 0;
-            } else if (Input.GetAxis("Mouse ScrollWheel") < 0f) {
-                spellIndex--;
-                if (spellIndex < 0) spellIndex = spells.Length-1;
+            // Use E to change rightSpell and Q to change leftSpell
+            if (Input.GetKeyDown(KeyCode.E)) {
+                rightIndex = rightIndex == 0 ? 1 : 0;
+                rightSpell = spells[rightIndex].GetComponent<Spell>();
+                // rightSpell.ChangeHand(HandEnum.Right);
             }
-            if (rightIndex != spellIndex) {
-                CreateHandEffectServerRpc();
+            else if (Input.GetKeyDown(KeyCode.Q)) {
+                leftIndex = leftIndex == 2 ? 3 : 2;
+                leftSpell = spells[leftIndex].GetComponent<Spell>();
+                // leftSpell.ChangeHand(HandEnum.Left);
             }
-            rightIndex = spellIndex;
-            leftIndex = (spellIndex+1) % spells.Length;
-            rightSpell = spells[rightIndex].GetComponent<Spell>();
-            leftSpell = spells[leftIndex].GetComponent<Spell>();
-            rightSpell.ChangeHand(HandEnum.Right);
-            leftSpell.ChangeHand(HandEnum.Left);
         }   
 
         if (Input.GetKeyDown(KeyCode.Mouse0)) {
