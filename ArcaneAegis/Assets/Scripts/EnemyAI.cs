@@ -228,6 +228,8 @@ public class EnemyAI : NetworkBehaviour
             alive = false;
             EnemyDeathServerRpc();
             killed = true;
+        } else if (alive) {
+            PlayAnimationClientRpc("Hit");
         }
         // Spawn hitmarker on clients (clients will check if they own the player)
         playerAttack.CreateHitmarkerClientRpc(damage, killed);
