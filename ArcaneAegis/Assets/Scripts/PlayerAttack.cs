@@ -9,6 +9,8 @@ public class PlayerAttack : NetworkBehaviour {
     [SerializeField] private Transform leftHandTransform;
     [SerializeField] private Camera playerCamera;
     [SerializeField] private Transform spellSlots;
+    [SerializeField] private Transform crossHair;
+    [SerializeField] private GameObject hitmarkerPrefab;
 
     private UpgradeEnums [] upgrades = new UpgradeEnums[6];
 
@@ -176,6 +178,14 @@ public class PlayerAttack : NetworkBehaviour {
         // Delete effect
         // Destroy(effect);
         
+    }
+
+    [ClientRpc]
+    public void CreateHitmarkerClientRpc(float damage, bool killed, ClientRpcParams rpcParams = default) {
+        if (!IsOwner) return;
+        Color color = killed ? Color.red : Color.white;
+        GameObject hitmarker = Instantiate(hitmarkerPrefab, crossHair);
+        hitmarker.GetComponent<Hitmarker>().Inititialise(color, Mathf.Clamp(damage/100f, 0.1f, 0.5f)+0.5f);
     }
 
     public void AddUpgrade(UpgradeEnums upgrade, int index) {

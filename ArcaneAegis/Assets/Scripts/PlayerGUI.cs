@@ -14,6 +14,7 @@ public class PlayerGUI : NetworkBehaviour
     [SerializeField] private GameObject [] leftSpells;
     [SerializeField] private GameObject [] rightSpells;
     [SerializeField] private Image healthBall;
+    [SerializeField] private Image healthSheen;
     [SerializeField] private GameObject inactiveUpgradeIcon;
     [SerializeField] private GameObject [] upgradeIcons;
     [SerializeField] private GameObject [] shopUpgradeIcons;
@@ -70,6 +71,11 @@ public class PlayerGUI : NetworkBehaviour
         // Set health ball
         healthBall.fillAmount = playerController.GetHealthRatio();
 
+        // Set health sheen
+        float healthRatio = playerController.GetHealthRatio();
+        Color healthColor = healthSheen.color;
+        healthColor.a = Mathf.Lerp(0.3f, 0f, healthRatio);
+        healthSheen.color = healthColor;
         // Set upgrade icon
 
         UpgradeEnums inactiveUpgrade = playerInventory.GetUpgrade();

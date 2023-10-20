@@ -33,6 +33,14 @@ public class PlayerController : NetworkBehaviour
 
     [SerializeField] private Collider interactCollider;
 
+    [SerializeField] private AnimationCurve cameraShakeCurve;
+
+    [SerializeField] private float cameraShakeDuration = 0.1f;
+
+    [SerializeField] private float cameraShakeBaseAmplitude = 0.1f;
+
+    [SerializeField] private float selfDamage = 100f;
+
     private Animator animator;
 
     public struct PlayerData : INetworkSerializable {
@@ -70,7 +78,7 @@ public class PlayerController : NetworkBehaviour
         if (!IsOwner) return;
         // OOB respawn
         if (transform.position.y < -100f) transform.position = new Vector3(0f, 0f, 0f);
-        if (Input.GetKeyDown(KeyCode.J)) TakeDamageServerRpc(100f);
+        if (Input.GetKeyDown(KeyCode.J)) TakeDamageServerRpc(selfDamage);
     }
 
     void RegenHealth() {
@@ -84,6 +92,7 @@ public class PlayerController : NetworkBehaviour
     [ServerRpc(Delivery = default, RequireOwnership = false)] // Runs on the server (sent by client)
     public void TakeDamageServerRpc(float damage=50f, ServerRpcParams rpcParams = default) {
         health.Value -= damage;
+        TakeDamageClientRpc(damage);
         // Die
         if (health.Value <= 0f)
         {
@@ -91,6 +100,26 @@ public class PlayerController : NetworkBehaviour
             health.Value = 0f;
             isDead.Value = true;
             DieClientRpc();
+        }
+    }
+
+    [ClientRpc]
+    public void TakeDamageClientRpc(float damage) {
+        // Do camera shake here
+        if (!IsOwner) return;
+        StartCoroutine(CameraShakeCoroutine(damage));
+    }   
+
+    IEnumerator CameraShakeCoroutine(float damage) {
+        float startTime = Time.time;
+        float damageRatio = Mathf.Clamp(damage/100f, 0.5f, 1.0f);
+        float cameraShakeDuration = this.cameraShakeDuration*damageRatio;
+        while (Time.time - startTime < cameraShakeDuration) {
+            float time = Time.time - startTime;
+            float amplitude = damageRatio*cameraShakeBaseAmplitude * cameraShakeCurve.Evaluate(time / cameraShakeDuration);
+            Vector3 offset = new Vector3(Random.Range(-amplitude, amplitude), Random.Range(-amplitude, amplitude), 0f);
+            playerCamera.transform.position += offset;
+            yield return null;
         }
     }
 
