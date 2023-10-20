@@ -44,15 +44,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25e60745d8d12b64aa3fbb7f4f79d927, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 50
+  damage: 150
   cooldown: 1
   chargeCost: 10
   hand: 1
   fullCharge: 100
   rechargeRate: 10
-  castTime: 1.15
   castDelay: 0.1
+  animationTime: 2.08
   onCooldown: 0
+  offHandDelay: 0.1
+  offHandDamageMultiplier: 1.5
+  destroyAfter: 5
+  spawnOnFloor: 0
   effectPrefab: {fileID: 1520786051656894, guid: 60f067005042016479e156d2700edf0c, type: 3}
   handEffectPrefab: {fileID: 125620, guid: 0370007f981a9c7408836062ad4d92d7, type: 3}
   element: 2
