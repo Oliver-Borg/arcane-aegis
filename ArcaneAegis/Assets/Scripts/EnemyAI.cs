@@ -201,7 +201,10 @@ public class EnemyAI : NetworkBehaviour
             }
         }
         // Check if player in damagers
-        PlayerController player = NetworkManager.Singleton.ConnectedClients[playerIndex].PlayerObject.GetComponent<PlayerController>();
+        NetworkObject playerObject = NetworkManager.Singleton.ConnectedClients[playerIndex].PlayerObject;
+        PlayerController player = playerObject.GetComponent<PlayerController>();
+        PlayerAttack playerAttack = playerObject.GetComponent<PlayerAttack>();
+        bool killed = false;
 
         if (damagers.ContainsKey(player)) {
             damagers[player] += damage;
@@ -224,7 +227,10 @@ public class EnemyAI : NetworkBehaviour
         if (health.Value <= 0 && alive) {
             alive = false;
             EnemyDeathServerRpc();
+            killed = true;
         }
+        // Spawn hitmarker on clients (clients will check if they own the player)
+        playerAttack.CreateHitmarkerClientRpc(damage, killed);
     }
 
     IEnumerator StunCoroutine() {

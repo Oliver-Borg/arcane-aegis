@@ -1919,6 +1919,8 @@ MonoBehaviour:
   leftHandTransform: {fileID: 8401907567333395789}
   playerCamera: {fileID: 739230869279755970}
   spellSlots: {fileID: 5092018959973951042}
+  crossHair: {fileID: 309068021941491549}
+  hitmarkerPrefab: {fileID: 5944732923429398477, guid: 80c9cee1de42ef84f9b79ec9662684c1, type: 3}
   rightIndex: 0
   leftIndex: 2
 --- !u!114 &8803777133893185157
@@ -10127,7 +10129,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 16, y: 16}
+  m_SizeDelta: {x: 32, y: 32}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3111643107006973970
 CanvasRenderer:
@@ -10157,7 +10159,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 2800000, guid: 145fa8a1dfcf6c3459f8df4ac782dba2, type: 3}
+  m_Texture: {fileID: 2800000, guid: 7f34125bd74c65f4c9a7d94baa47a8f7, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
