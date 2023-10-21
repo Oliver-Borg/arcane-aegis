@@ -41,6 +41,10 @@ public class PlayerInventory : NetworkBehaviour
         return upgradeCost;
     }
 
+    public float KeyCost() {
+        return keyCost;
+    }
+
     [ServerRpc(Delivery = default, RequireOwnership = false)]
     public void AddPointsServerRpc(float amount, ServerRpcParams rpcParams = default) {
         points.Value += amount;

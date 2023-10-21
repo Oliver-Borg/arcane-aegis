@@ -1,6 +1,6 @@
 using UnityEngine;
 using Unity.Netcode;
-using TMPro;
+using UnityEngine.UI;
 
 public class PlayerInteraction : NetworkBehaviour
 {
@@ -8,7 +8,10 @@ public class PlayerInteraction : NetworkBehaviour
     [SerializeField] private LayerMask interactionLayer;
     [SerializeField] private Camera playerCamera;
 
-    [SerializeField] private TextMeshProUGUI interactionText;
+    [SerializeField] private Text interactionText;
+    [SerializeField] private GameObject interactionGUI;
+    [SerializeField] private GameObject shopUpgradeCost;
+    [SerializeField] private GameObject upgradePickupIcon;
 
     public UpgradeEnums shopUpgrade = new UpgradeEnums {
         upgradeType = UpgradeEnum.None,
@@ -22,30 +25,46 @@ public class PlayerInteraction : NetworkBehaviour
         if (!IsOwner) return;
 
         Debug.DrawRay(playerCamera.transform.position, playerCamera.transform.forward * interactionRange, Color.red);
-
+        interactionGUI.SetActive(false);
+        shopOpen = false;
         if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out RaycastHit hit, interactionRange, interactionLayer))
         {
-
+            InteractGUI interactGUI = interactionGUI.GetComponent<InteractGUI>();
+            
             Debug.Log("Hit " + hit.collider.gameObject.name);
             if (hit.collider.gameObject.TryGetComponent(out Upgrade upgrade))
             {
                 if (upgrade.upgradeType == UpgradeEnum.Catalyst) {
+                    
+
                     if (GetComponent<PlayerInventory>().catalystUpgrade != ElementEnum.None) {
                         interactionText.text = "You already have a catalyst upgrade";
                         return;
                     }
+                    if (upgrade.upGradeElement == ElementEnum.Fire)
+                        interactGUI.SetInteract(InteractEnum.FireCatalyst);
+                    else if (upgrade.upGradeElement == ElementEnum.Gravity)
+                        interactGUI.SetInteract(InteractEnum.GravityCatalyst);
+                    else if (upgrade.upGradeElement == ElementEnum.Ice)
+                        interactGUI.SetInteract(InteractEnum.IceCatalyst);
+                    else if (upgrade.upGradeElement == ElementEnum.Lightning)
+                        interactGUI.SetInteract(InteractEnum.LightningCatalyst);
+                    
                 } else if (upgrade.upgradeType == UpgradeEnum.TechRune) {
                     if (GetComponent<PlayerInventory>().HasTechRune()) {
                         interactionText.text = "You already have a tech rune";
                         return;
                     }
-                } else if (GetComponent<PlayerInventory>().HasUpgrade()) {
-                    interactionText.text = "You already have an inactive upgrade";
-                    return;
+                    interactGUI.SetInteract(InteractEnum.TechRune);
+
+                } 
+                else {
+                    interactGUI.SetInteract(InteractEnum.PickupUpgrade);
                 }
                 
-                interactionText.text = upgrade.GetUpgradeText();
-                if (Input.GetKeyDown(KeyCode.E))
+                upgradePickupIcon.GetComponent<UpgradeGui>().SetUpgrade(upgrade.upgradeType, upgrade.upGradeElement);
+                interactionGUI.SetActive(true);
+                if (Input.GetKeyDown(KeyCode.F))
                 {
                     // TODO Do this properly with a server rpc to prevent multiple players picking it up
                     if (upgrade.upgradeType == UpgradeEnum.Catalyst) {
@@ -65,10 +84,13 @@ public class PlayerInteraction : NetworkBehaviour
             {
                 if (door.IsOpen()) return;
                 PlayerInventory inventory = GetComponent<PlayerInventory>();
-                interactionText.text = "Press E to open door " + inventory.GetKeys() + " / 1 key";
-                if (Input.GetKeyDown(KeyCode.E))
+                interactGUI.SetInteract(InteractEnum.DoorRevive);
+                interactionGUI.SetActive(true);
+                InteractElement interactElement = interactGUI.GetInteractElement();
+                interactElement.SetCost(1, inventory.GetKeys() > 0);
+
+                if (Input.GetKeyDown(KeyCode.F))
                 {
-                    
                     if (inventory.GetKeys() > 0)
                     {
                         inventory.UseKeyServerRpc();
@@ -82,10 +104,11 @@ public class PlayerInteraction : NetworkBehaviour
                 if (!player.IsDead()) return;
                 // TODO fix collider orientation
                 PlayerInventory inventory = GetComponent<PlayerInventory>();
-                interactionText.text = "Press E to revive player " + inventory.GetKeys() + " / 1 key";
-                if (Input.GetKeyDown(KeyCode.E))
+                interactGUI.SetInteract(InteractEnum.DoorRevive);
+                if (Input.GetKeyDown(KeyCode.F))
                 {
-                    
+                    InteractElement interactElement = interactGUI.GetInteractElement();
+                    interactElement.SetCost(1, inventory.GetKeys() > 0);
                     if (inventory.GetKeys() > 0)
                     {
                         inventory.UseKeyServerRpc();
@@ -94,8 +117,8 @@ public class PlayerInteraction : NetworkBehaviour
                 }
             }
             else if (hit.transform.TryGetComponent(out Teleporter teleporter)) {
-                interactionText.text = "Press E to teleport";
-                if (Input.GetKeyDown(KeyCode.E)) {
+                interactionText.text = "Press F to time travel";
+                if (Input.GetKeyDown(KeyCode.F)) {
                     Transform targetTransform = teleporter.GetTeleportTransform();
                     teleporter.TeleportServerRpc();
                     // Enable space station
@@ -108,39 +131,39 @@ public class PlayerInteraction : NetworkBehaviour
             }
             else if (hit.transform.TryGetComponent(out Alchemist alchemist)) {
                 PlayerInventory inventory = GetComponent<PlayerInventory>();
-                interactionText.text = "Press E to buy a key";
-                if (Input.GetKeyDown(KeyCode.E)) {
+                // interactionText.text = "Press E to buy a key";
+                
+                interactGUI.SetInteract(InteractEnum.BuyKey);
+                InteractElement interactElement = interactGUI.GetInteractElement();
+                interactElement.SetCost(inventory.KeyCost(), inventory.GetPoints() >= inventory.KeyCost());
+                bool canAffordKey = inventory.GetPoints() >= inventory.KeyCost();
+                bool canAffordUpgrade = inventory.GetPoints() >= inventory.UpgradeCost();
+                if (Input.GetKeyDown(KeyCode.F) && canAffordKey) {
                     alchemist.BuyKey();
                     inventory.BuyKeyServerRpc();
                 }
-                if (inventory.HasUpgrade() && !alchemist.HasUpgrade()) {
-                    string upgradeText = inventory.GetUpgrade().ToString();
-                    interactionText.text += "\nPress F to activate " + upgradeText + " upgrade for " + inventory.UpgradeCost() + " points";
-                    if (Input.GetKeyDown(KeyCode.F) && inventory.GetPoints() >= inventory.UpgradeCost()) {
-                        alchemist.SetUpgrade(inventory.PopUpgrade());
-                    }
-                } else if (alchemist.HasUpgrade()) {
-                    string upgradeText = alchemist.GetUpgrade().ToString();
+                if (inventory.HasUpgrade()) {
+                    InteractElement upgradeCost = shopUpgradeCost.GetComponent<InteractElement>();
+                    
                     PlayerAttack attack = GetComponent<PlayerAttack>();
-                    if (attack.UpgradeCount() < 6) {
-                        interactionText.text += "\nPress F to equip " + upgradeText + " upgrade";
-                        if (Input.GetKeyDown(KeyCode.F)) {
-                            attack.AddUpgrade(alchemist.BuyUpgrade(), attack.UpgradeCount());
-                        }
-                    } else {
-                        interactionText.text += "\n press 1-6 to replace upgrade with " + upgradeText;
-                        shopOpen = true;
-                        shopUpgrade = alchemist.GetUpgrade();
-                        for (int i = 0; i < 6; i++) {
-                            if (Input.GetKeyDown(KeyCode.Alpha1 + i)) {
-                                attack.AddUpgrade(alchemist.BuyUpgrade(), i);
-                            }
+                    shopOpen = true;
+                    shopUpgrade = inventory.GetUpgrade();
+                    upgradeCost.SetCost(inventory.UpgradeCost(), canAffordUpgrade);
+                    if (!canAffordUpgrade) return;
+                    for (int i = 0; i < 6; i++) {
+                        if (Input.GetKeyDown(KeyCode.Alpha1 + i)) {
+                            alchemist.SetUpgrade(inventory.PopUpgrade());
+                            attack.AddUpgrade(alchemist.BuyUpgrade(), i);
                         }
                     }                 
+                }
+                else {
+                    shopOpen = false;
                 }
             }
             else
             {
+                interactGUI.SetInteract(InteractEnum.None);
                 interactionText.text = "";
             }
         }

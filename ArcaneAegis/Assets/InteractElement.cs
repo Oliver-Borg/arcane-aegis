@@ -5,13 +5,9 @@ public class InteractElement : MonoBehaviour
 {
     [SerializeField] private Text costText;
 
-    public bool canAfford = false;
-
-
-    public void SetCost(int cost) {
-        costText.text = cost.ToString();
-    }
-    void Update() {
+    public void SetCost(float cost, bool canAfford) {
+        if (costText == null) return;
+        costText.text = ((int)cost).ToString();
         costText.color = canAfford ? Color.white : Color.red;
     }
 }
