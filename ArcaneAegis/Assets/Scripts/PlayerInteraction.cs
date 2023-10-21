@@ -136,6 +136,7 @@ public class PlayerInteraction : NetworkBehaviour
                 interactGUI.SetInteract(InteractEnum.BuyKey);
                 InteractElement interactElement = interactGUI.GetInteractElement();
                 interactElement.SetCost(inventory.KeyCost(), inventory.GetPoints() >= inventory.KeyCost());
+                interactionGUI.SetActive(true);
                 bool canAffordKey = inventory.GetPoints() >= inventory.KeyCost();
                 bool canAffordUpgrade = inventory.GetPoints() >= inventory.UpgradeCost();
                 if (Input.GetKeyDown(KeyCode.F) && canAffordKey) {
