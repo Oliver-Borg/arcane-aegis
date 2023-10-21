@@ -1,15 +1,12 @@
 using UnityEngine;
 using Unity.Netcode;
-using System;
-using Unity.VisualScripting;
-using UnityEngine.UI;
 
 public enum ElementEnum
 {
     Fire,
-    Lightning,
     Gravity,
     Ice, 
+    Lightning,
     None
 }
 
