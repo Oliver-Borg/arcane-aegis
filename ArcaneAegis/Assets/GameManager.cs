@@ -36,6 +36,8 @@ public class GameManager : NetworkBehaviour {
 
     private int round = 0;
 
+    public NetworkVariable<bool> gameWon = new NetworkVariable<bool>(false);
+
     public int GetRound() {
         return round;
     }
@@ -71,6 +73,19 @@ public class GameManager : NetworkBehaviour {
         if (Input.GetKeyDown(KeyCode.L)) {
             ReviveAllPlayersServerRpc();
         }
+    }
+
+    public bool GameLost() {
+        if (peaceful) return false;
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        foreach (GameObject player in players) {
+            if (!player.GetComponent<PlayerController>().IsDead()) return false;
+        }
+        return true;
+    }
+
+    public bool GameWon() {
+        return gameWon.Value;
     }
 
     private float [] SpawnWeights (int round) {
@@ -252,7 +267,7 @@ public class GameManager : NetworkBehaviour {
         // Get all game objects with tag "Enemy"
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
         foreach (GameObject enemy in enemies) {
-            enemy.GetComponent<EnemyAI>().TakeDamageServerRpc(1000000f, 0, 0);
+            enemy.GetComponent<EnemyAI>().EnemyDeathServerRpc();
         }
     }
 

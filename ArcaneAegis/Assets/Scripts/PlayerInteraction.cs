@@ -162,6 +162,24 @@ public class PlayerInteraction : NetworkBehaviour
                     shopOpen = false;
                 }
             }
+            else if (hit.transform.TryGetComponent(out TimeBomb timeBomb)) {
+                PlayerInventory inventory = GetComponent<PlayerInventory>();
+                if (!inventory.HasTechRune()) {
+                    interactionText.text = "Missing tech rune";
+                    return;
+                }
+                if (inventory.catalystUpgrade.Equals(ElementEnum.None)) {
+                    interactionText.text = "Missing catalyst";
+                    return;
+                }
+                ElementEnum catalystType = inventory.catalystUpgrade;
+                interactionText.text = "Press F to infuse with " + catalystType.ToString().ToLower() + " catalyst";
+                if (Input.GetKeyDown(KeyCode.F)) {
+                    timeBomb.AddElementRuneServerRpc((int) catalystType);
+                    inventory.catalystUpgrade = ElementEnum.None;
+                    inventory.RemoveTechRuneServerRpc();
+                }
+            }
             else
             {
                 interactGUI.SetInteract(InteractEnum.None);
