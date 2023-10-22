@@ -4,7 +4,7 @@
 Download a build from [builds](https://uctcloud-my.sharepoint.com/%253Af%253A/g/personal/wrtcam003_myuct_ac_za/EmVK3yRCfYNJnNWZ1AFtf8UBHIO28m_FMOpw0gGkEZddWA?e%253DqWalhQ) and run ArcaneAegis.exe.
 
 ## Build from source
-Clone this repo
+Clone this [repo](https://github.com/Oliver-Borg/arcane-aegis)
 
 Download the packages from [packages](https://uctcloud-my.sharepoint.com/%253Af%253A/g/personal/wrtcam003_myuct_ac_za/EhAgjH8VAuVBmAoSeMEX0r0BB7MeVwTA04UY4fDVeTtaFw?e%253DtaSOXb) and place them in ArcaneAegis/Assets/Packages.
 
