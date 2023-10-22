@@ -57,6 +57,8 @@ public class EnemyAI : NetworkBehaviour
 
     private bool slowed = false;
 
+    private float accumulatedDamage = 0f;
+    [SerializeField] private float hitmarkerThreshold = 10f;
     private Dictionary<ElementEnum, float> damageTaken = new Dictionary<ElementEnum, float>();
 
     private Dictionary<PlayerController, float> damagers = new Dictionary<PlayerController, float>();
@@ -249,8 +251,12 @@ public class EnemyAI : NetworkBehaviour
             Debug.Log("Hit");
             PlayAnimationClientRpc("Hit");
         }
-        // Spawn hitmarker on clients (clients will check if they own the player)
-        playerAttack.CreateHitmarkerClientRpc(damage, killed, criticalHit);
+        accumulatedDamage += damage;
+        if (accumulatedDamage >= hitmarkerThreshold || killed) {
+            // Spawn hitmarker on clients (clients will check if they own the player)
+            playerAttack.CreateHitmarkerClientRpc(accumulatedDamage, killed, criticalHit);
+            accumulatedDamage -= hitmarkerThreshold;
+        }
     }
 
     IEnumerator StunCoroutine() {

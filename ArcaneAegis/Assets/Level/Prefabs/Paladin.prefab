@@ -2102,7 +2102,7 @@ MonoBehaviour:
   sensitivitySlider: {fileID: 6581787918960426148}
   volumeSlider: {fileID: 4876103538865794804}
   thirdPersonOrbitCamBasic: {fileID: 3161475430017761224}
-  maxSensitivity: 100
+  maxSensitivity: 300
 --- !u!1 &739230869707695678
 GameObject:
   m_ObjectHideFlags: 0
