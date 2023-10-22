@@ -61,7 +61,7 @@ MonoBehaviour:
   hitSound: {fileID: 671407718514014716}
   breathingSound: {fileID: -7565069580711319096}
   breathingSoundMinDelay: 5
-  breathingSoundMaxDelay: 20
+  breathingSoundMaxDelay: 10
   deathSound: {fileID: -8596300671495307692}
   attackRange: 6
   hitRange: 3
@@ -360,7 +360,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 540a32804c0443b45beeb0c0bb8fa800, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 5d4b3f82228a92f4fb8a3bf8c094fa8d, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
