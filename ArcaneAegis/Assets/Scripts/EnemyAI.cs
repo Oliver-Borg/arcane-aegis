@@ -175,7 +175,7 @@ public class EnemyAI : NetworkBehaviour
 
     public IEnumerator PlayBreathingSoundCoroutine() {
         while (true) {
-            PlayBreathingSoundClientRpc();
+            if (alive) PlayBreathingSoundClientRpc();
             yield return new WaitForSeconds(Random.Range(breathingSoundMinDelay, breathingSoundMaxDelay));
         }
     }
