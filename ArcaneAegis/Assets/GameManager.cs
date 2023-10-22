@@ -170,8 +170,6 @@ public class GameManager : NetworkBehaviour {
         round.Value++;
         enemyCount = NumberOfEnemies(GetRound());
         float [] weights = SpawnWeights(GetRound());
-        //Play round start doorOpenSound
-        if (IsServer) PlayRoundStartSoundClientRpc();
         int uniqueEnemiesThisRound = Random.Range(1, maxUniqueEnemiesPerRound + 1);
 
         NetworkLog.LogInfoServer("Spawning " + enemyCount + " enemies in round " + round);
@@ -223,10 +221,16 @@ public class GameManager : NetworkBehaviour {
 
         float startEnemyMass = enemyCount*roundStartSpawnRatio;
         float remainingEnemyMass = enemyCount - startEnemyMass;
+        bool firstSpawnDone = false;
         while (startEnemyMass > 0) {
             if (GameWon()) yield break;
             yield return new WaitForSeconds(roundStartSpawnDelay);
+            float lastMass = startEnemyMass;
             startEnemyMass -= SpawnEnemy(weights);
+            if (!firstSpawnDone && startEnemyMass < lastMass) {
+                PlayRoundStartSoundClientRpc();
+                firstSpawnDone = true;
+            }
         }
 
         
