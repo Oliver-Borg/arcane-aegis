@@ -193,10 +193,12 @@ public class EnemyAI : NetworkBehaviour
         else if (element == ElementEnum.Ice) {
             StartCoroutine(SlowCoroutine());
         }
+        bool criticalHit = false;
         // Check if element in weaknesses
         foreach (ElementEnum weakness in weaknesses) {
             if (weakness == element) {
                 damage *= 1.5f;
+                criticalHit = true;
                 break;
             }
         }
@@ -232,7 +234,7 @@ public class EnemyAI : NetworkBehaviour
             PlayAnimationClientRpc("Hit");
         }
         // Spawn hitmarker on clients (clients will check if they own the player)
-        playerAttack.CreateHitmarkerClientRpc(damage, killed);
+        playerAttack.CreateHitmarkerClientRpc(damage, killed, criticalHit);
     }
 
     IEnumerator StunCoroutine() {
