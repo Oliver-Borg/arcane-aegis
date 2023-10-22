@@ -181,11 +181,12 @@ public class PlayerAttack : NetworkBehaviour {
     }
 
     [ClientRpc]
-    public void CreateHitmarkerClientRpc(float damage, bool killed, ClientRpcParams rpcParams = default) {
+    public void CreateHitmarkerClientRpc(float damage, bool killed, bool criticalHit, ClientRpcParams rpcParams = default) {
         if (!IsOwner) return;
         Color color = killed ? Color.red : Color.white;
         GameObject hitmarker = Instantiate(hitmarkerPrefab, crossHair);
-        hitmarker.GetComponent<Hitmarker>().Inititialise(color, Mathf.Clamp(damage/100f, 0.1f, 0.5f)+0.5f);
+        float damageRatio = Mathf.Clamp(damage/100f, 0.1f, 0.5f)+0.5f;
+        hitmarker.GetComponent<Hitmarker>().Inititialise(color, damageRatio, damage, criticalHit);
     }
 
     public void AddUpgrade(UpgradeEnums upgrade, int index) {
