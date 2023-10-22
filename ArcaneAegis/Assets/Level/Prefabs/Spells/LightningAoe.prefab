@@ -59,4 +59,4 @@ MonoBehaviour:
   spawnOnFloor: 0
   effectPrefab: {fileID: 190162, guid: c6342acfccda5a94bae465531baf3640, type: 3}
   handEffectPrefab: {fileID: 0}
-  element: 1
+  element: 3

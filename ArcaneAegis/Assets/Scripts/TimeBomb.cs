@@ -87,7 +87,7 @@ public class TimeBomb : NetworkBehaviour
             }
             GameManager gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
             gameManager.KillAllEnemiesServerRpc();
-            gameManager.gameWon.Value = true; 
+            gameManager.GameWonServerRpc(); 
             yield return new WaitForSeconds(10f);
             NetworkManager.Singleton.Shutdown();
         }
