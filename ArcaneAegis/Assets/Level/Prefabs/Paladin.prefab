@@ -2075,7 +2075,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 739230869707406238}
   pivotOffset: {x: 0, y: 1.7, z: 0}
-  camOffset: {x: 0, y: 0, z: -3}
+  camOffset: {x: 0.5, y: 0, z: -3}
   smooth: 10
   horizontalAimingSpeed: 30
   verticalAimingSpeed: 30
