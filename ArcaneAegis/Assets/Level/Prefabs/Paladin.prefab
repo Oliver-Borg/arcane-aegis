@@ -2070,22 +2070,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 739230869279755982}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ecc78e0f1c3bed0458eba303c5d283f0, type: 3}
+  m_Script: {fileID: 11500000, guid: 33c31359e76d9ec4b953ffb502442fba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 739230869707406238}
   pivotOffset: {x: 0, y: 1.7, z: 0}
-  camOffset: {x: 0.4, y: 0, z: -3}
-  smooth: 100
-  horizontalAimingSpeed: 150
-  verticalAimingSpeed: 150
+  camOffset: {x: 0, y: 0, z: -3}
+  smooth: 10
+  horizontalAimingSpeed: 30
+  verticalAimingSpeed: 30
   maxVerticalAngle: 30
   minVerticalAngle: -60
   XAxis: Analog X
   YAxis: Analog Y
   cameraCollisionLayerMask:
     serializedVersion: 2
-    m_Bits: 1793
+    m_Bits: 1281
   basicBehaviour: {fileID: 8452273444150617975}
 --- !u!114 &5679376557573609
 MonoBehaviour:
