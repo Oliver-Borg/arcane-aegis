@@ -62,6 +62,8 @@ MonoBehaviour:
   attackSound: {fileID: 2039861365893671946}
   hitSound: {fileID: -8530916759196819138}
   breathingSound: {fileID: 1615768548814269469}
+  breathingSoundMinDelay: 5
+  breathingSoundMaxDelay: 20
   deathSound: {fileID: 3412889970120948148}
   attackRange: 1
   hitRange: 0.5
@@ -83,13 +85,14 @@ MonoBehaviour:
   - {fileID: 5141862177401682794, guid: 87510d73fe0d8004c9dc5c716a6cc84c, type: 3}
   - {fileID: 5141862177401682794, guid: 970f9bd56c3fb8e4fa01595c974a3c10, type: 3}
   - {fileID: 5141862177401682794, guid: 5f43ff91bcadc5549938f0e6292e4520, type: 3}
-  dropChance: 0.1
+  dropChance: 0.05
   weaknesses: 0000000003000000
   stunTime: 0.5
   stunCooldown: 0.1
   slowTime: 5
   spawnEffect: {fileID: 3459056711933355828, guid: ba436dd5818501641aa4498282843648, type: 3}
   skinnedMeshRenderer: {fileID: 5369074736080849985}
+  hitmarkerThreshold: 10
   agent: {fileID: 5813056974233844056}
 --- !u!114 &6159738099404402497
 MonoBehaviour:

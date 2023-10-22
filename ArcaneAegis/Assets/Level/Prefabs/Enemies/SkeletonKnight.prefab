@@ -61,6 +61,8 @@ MonoBehaviour:
   attackSound: {fileID: -4265116051223201854}
   hitSound: {fileID: 3294557701193228940}
   breathingSound: {fileID: -2310198831442790365}
+  breathingSoundMinDelay: 5
+  breathingSoundMaxDelay: 20
   deathSound: {fileID: 6904980156263078716}
   attackRange: 1
   hitRange: 0.5
@@ -91,6 +93,7 @@ MonoBehaviour:
   slowTime: 5
   spawnEffect: {fileID: 0}
   skinnedMeshRenderer: {fileID: 3758394950317509024}
+  hitmarkerThreshold: 10
   agent: {fileID: 5813056974233844056}
 --- !u!114 &6159738099404402497
 MonoBehaviour:

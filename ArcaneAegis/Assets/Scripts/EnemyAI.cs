@@ -82,9 +82,6 @@ public class EnemyAI : NetworkBehaviour
     private Animator animator;
 
     [SerializeField] private NavMeshAgent agent;
-    private Coroutine attackCoroutine = null;
-
-    private Coroutine spawnCoroutine = null;
 
     public override void OnNetworkSpawn() {
         animator = GetComponent<Animator>();
@@ -104,7 +101,7 @@ public class EnemyAI : NetworkBehaviour
         bodyMaterial = skinnedMeshRenderer.material;
 
         // Start spawn coroutine
-        spawnCoroutine = StartCoroutine(SpawnCoroutine());
+        StartCoroutine(SpawnCoroutine());
         if (IsServer) health.Value = maxHealth;
         if (IsServer) StartCoroutine(PlayBreathingSoundCoroutine());
         if (spawnEffect == null) return;
@@ -186,12 +183,12 @@ public class EnemyAI : NetworkBehaviour
 
     void Attack() {
         if(onCooldown) return;
-        if(attackCoroutine != null) StopCoroutine(attackCoroutine);
-        attackCoroutine = StartCoroutine(AttackCoroutine());
+        StartCoroutine(AttackCoroutine());
         
     }
 
     IEnumerator AttackCoroutine() {
+        if (onCooldown) yield break;
         onCooldown = true;
         DoAttackAnimationServerRpc();
         yield return new WaitForSeconds(damageDelay);
@@ -214,13 +211,6 @@ public class EnemyAI : NetworkBehaviour
         // Check if any players in attack range
         Collider [] hitPlayers = hitPlayerList();
         if (hitPlayers.Length == 0) return;
-        // Set the attack number int
-        SetAnimationIntClientRpc("AttackNum", Random.Range(0, numAttacks));
-
-        // Play attack animation
-        PlayAnimationClientRpc("Attack");
-        
-        
         PlayAttackSoundClientRpc();
         bool hitPlayer = false;
         foreach (Collider player in hitPlayers) {
