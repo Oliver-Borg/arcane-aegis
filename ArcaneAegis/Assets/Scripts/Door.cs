@@ -8,6 +8,7 @@ public class Door : NetworkBehaviour
     [SerializeField] private Transform rightDoor = null;
     [SerializeField] private float openAngle = 90.0f;
     [SerializeField] private float openSpeed = 2.0f;
+    [SerializeField] private AudioSource doorOpenSound;
 
     NetworkVariable<bool> openState = new NetworkVariable<bool>(
         false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server
@@ -17,8 +18,14 @@ public class Door : NetworkBehaviour
     public void OpenServerRpc(ServerRpcParams rpcParams = default)
     {
         openState.Value = true;
+        OpenClientRpc();
     }
-
+    [ClientRpc]
+    public void OpenClientRpc()
+    {
+        if (doorOpenSound != null)
+            doorOpenSound.Play();
+    }
     public bool IsOpen()
     {
         return openState.Value;

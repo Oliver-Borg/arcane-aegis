@@ -32,7 +32,7 @@ public class GameManager : NetworkBehaviour {
 
     [SerializeField] private bool peaceful = false;
 
-
+    [SerializeField] private AudioSource roundStartSound;
 
     private NetworkVariable<int> round = new NetworkVariable<int>(0);
 
@@ -158,6 +158,10 @@ public class GameManager : NetworkBehaviour {
         }
         return 0;
     }
+    [ClientRpc]
+    public void PlayRoundStartSoundClientRpc() {
+        roundStartSound.Play();
+    }
 
     IEnumerator StartRound() {
         if (roundStarted || peaceful) yield break;
@@ -166,7 +170,6 @@ public class GameManager : NetworkBehaviour {
         round.Value++;
         enemyCount = NumberOfEnemies(GetRound());
         float [] weights = SpawnWeights(GetRound());
-
         int uniqueEnemiesThisRound = Random.Range(1, maxUniqueEnemiesPerRound + 1);
 
         NetworkLog.LogInfoServer("Spawning " + enemyCount + " enemies in round " + round);
@@ -218,10 +221,16 @@ public class GameManager : NetworkBehaviour {
 
         float startEnemyMass = enemyCount*roundStartSpawnRatio;
         float remainingEnemyMass = enemyCount - startEnemyMass;
+        bool firstSpawnDone = false;
         while (startEnemyMass > 0) {
             if (GameWon()) yield break;
             yield return new WaitForSeconds(roundStartSpawnDelay);
+            float lastMass = startEnemyMass;
             startEnemyMass -= SpawnEnemy(weights);
+            if (!firstSpawnDone && startEnemyMass < lastMass) {
+                PlayRoundStartSoundClientRpc();
+                firstSpawnDone = true;
+            }
         }
 
         
@@ -235,7 +244,6 @@ public class GameManager : NetworkBehaviour {
         yield return new WaitForSeconds(roundEndDelay);
         roundStarted = false;
     }
-
 
     [ServerRpc]
     public void SpawnEnemyServerRpc(int enemyModelIndex, Vector3 spawnPoint, ServerRpcParams rpcParams = default) {

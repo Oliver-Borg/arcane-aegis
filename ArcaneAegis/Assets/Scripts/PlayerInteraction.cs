@@ -105,10 +105,11 @@ public class PlayerInteraction : NetworkBehaviour
                 // TODO fix collider orientation
                 PlayerInventory inventory = GetComponent<PlayerInventory>();
                 interactGUI.SetInteract(InteractEnum.DoorRevive);
+                interactionGUI.SetActive(true);
+                InteractElement interactElement = interactGUI.GetInteractElement();
+                interactElement.SetCost(1, inventory.GetKeys() > 0);
                 if (Input.GetKeyDown(KeyCode.F))
                 {
-                    InteractElement interactElement = interactGUI.GetInteractElement();
-                    interactElement.SetCost(1, inventory.GetKeys() > 0);
                     if (inventory.GetKeys() > 0)
                     {
                         inventory.UseKeyServerRpc();

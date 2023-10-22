@@ -9,6 +9,10 @@ public class EnemyAI : NetworkBehaviour
     [SerializeField] private AudioSource attackSound;
     [SerializeField] private AudioSource hitSound;
     [SerializeField] private AudioSource breathingSound;
+
+    [SerializeField] private float breathingSoundMinDelay = 5f;
+
+    [SerializeField] private float breathingSoundMaxDelay = 20f;
     [SerializeField] private AudioSource deathSound;
 
     // Range used for detection
@@ -78,9 +82,6 @@ public class EnemyAI : NetworkBehaviour
     private Animator animator;
 
     [SerializeField] private NavMeshAgent agent;
-    private Coroutine attackCoroutine = null;
-
-    private Coroutine spawnCoroutine = null;
 
     public override void OnNetworkSpawn() {
         animator = GetComponent<Animator>();
@@ -100,11 +101,13 @@ public class EnemyAI : NetworkBehaviour
         bodyMaterial = skinnedMeshRenderer.material;
 
         // Start spawn coroutine
-        spawnCoroutine = StartCoroutine(SpawnCoroutine());
+        StartCoroutine(SpawnCoroutine());
         if (IsServer) health.Value = maxHealth;
+        if (IsServer) StartCoroutine(PlayBreathingSoundCoroutine());
         if (spawnEffect == null) return;
         GameObject effectInstance = Instantiate(spawnEffect, transform.position, Quaternion.identity);
         Destroy(effectInstance, 5f);
+        
     }
 
     IEnumerator SpawnCoroutine() {
@@ -166,21 +169,26 @@ public class EnemyAI : NetworkBehaviour
         agent.SetDestination(closestPlayer.transform.position);
         SetAnimationBoolClientRpc("Walking", true);
 
-        //randomly play breathing sound
-        if (Random.Range(0f, 1f) > 0.99f) {
-            breathingSound.Play();
+        //randomly play breathing sound with coroutine
+        
+    }
+
+    public IEnumerator PlayBreathingSoundCoroutine() {
+        while (true) {
+            if (alive) PlayBreathingSoundClientRpc();
+            yield return new WaitForSeconds(Random.Range(breathingSoundMinDelay, breathingSoundMaxDelay));
         }
     }
 
 
     void Attack() {
         if(onCooldown) return;
-        if(attackCoroutine != null) StopCoroutine(attackCoroutine);
-        attackCoroutine = StartCoroutine(AttackCoroutine());
+        StartCoroutine(AttackCoroutine());
         
     }
 
     IEnumerator AttackCoroutine() {
+        if (onCooldown) yield break;
         onCooldown = true;
         DoAttackAnimationServerRpc();
         yield return new WaitForSeconds(damageDelay);
@@ -203,22 +211,38 @@ public class EnemyAI : NetworkBehaviour
         // Check if any players in attack range
         Collider [] hitPlayers = hitPlayerList();
         if (hitPlayers.Length == 0) return;
-        // Set the attack number int
-        SetAnimationIntClientRpc("AttackNum", Random.Range(0, numAttacks));
-
-        // Play attack animation
-        PlayAnimationClientRpc("Attack");
-        //Play attack sound
-        attackSound.Play();
-        //Play hit marker sound
-        hitSound.Play();
-
+        PlayAttackSoundClientRpc();
+        bool hitPlayer = false;
         foreach (Collider player in hitPlayers) {
             PlayerController playerController = player.GetComponent<PlayerController>();
             if(playerController == null) continue;
+            hitPlayer = true;
             playerController.TakeDamageServerRpc(attackDamage);
         }
+        if (hitPlayer) {
+            PlayHitSoundClientRpc();
+        }
 
+    }
+
+    [ClientRpc]
+    public void PlayAttackSoundClientRpc() {
+        attackSound.Play();
+    }
+
+    [ClientRpc]
+    public void PlayHitSoundClientRpc() {
+        hitSound.Play();
+    }
+
+    [ClientRpc]
+    public void PlayBreathingSoundClientRpc() {
+        breathingSound.Play();
+    }
+
+    [ClientRpc]
+    public void PlayDeathSoundClientRpc() {
+        deathSound.Play();
     }
 
     
@@ -277,7 +301,7 @@ public class EnemyAI : NetworkBehaviour
         if (accumulatedDamage >= hitmarkerThreshold || killed) {
             // Spawn hitmarker on clients (clients will check if they own the player)
             playerAttack.CreateHitmarkerClientRpc(accumulatedDamage, killed, criticalHit);
-            accumulatedDamage -= hitmarkerThreshold;
+            accumulatedDamage = 0;
         }
     }
 
@@ -321,8 +345,6 @@ public class EnemyAI : NetworkBehaviour
         alive = false;
         PlayAnimationClientRpc("Die");
         SetAnimationBoolClientRpc("isDead", true);
-        //Play death sound
-        deathSound.Play();
         GetComponent<NavMeshAgent>().enabled = false;
         GetComponent<Collider>().enabled = false; // TODO Create ragdoll
         DropUpgradeServerRpc();

@@ -13,6 +13,8 @@ public class Teleporter : NetworkBehaviour
 
     [SerializeField] private bool toSpace = true;
 
+    [SerializeField] private AudioSource teleportSound;
+
     public GameObject spaceStation;
 
     public override void OnNetworkSpawn()
@@ -37,11 +39,18 @@ public class Teleporter : NetworkBehaviour
             gameManager.GetComponent<GameManager>().AddSpacePlayerServerRpc();
         else
             gameManager.GetComponent<GameManager>().RemoveSpacePlayerServerRpc();
+        //Play sound
+        PlayTeleportSoundClientRpc();
         if (IsServer && !isEnd) {
             if (spawnPoints.Length == 0) return;
             Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)].transform;
             transform.position = spawnPoint.position;
             transform.rotation = spawnPoint.rotation;
         }
+    }
+
+    [ClientRpc]
+    public void PlayTeleportSoundClientRpc() {
+        teleportSound.Play();
     }
 }

@@ -324,6 +324,7 @@ MonoBehaviour:
   rightDoor: {fileID: 6139662822395314799}
   openAngle: -90
   openSpeed: 2
+  doorOpenSound: {fileID: -1329074237811311281}
 --- !u!114 &-3547786785887034758
 MonoBehaviour:
   m_ObjectHideFlags: 0
