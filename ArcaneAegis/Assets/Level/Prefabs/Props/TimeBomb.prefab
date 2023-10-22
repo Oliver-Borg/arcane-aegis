@@ -57,6 +57,8 @@ MonoBehaviour:
   - {fileID: 8176527646113650011}
   - {fileID: 8091126376050862801}
   - {fileID: 5412167357719607476}
+  explosion: {fileID: 3459056711933355828, guid: fac8485fe620a8c40adb646a33702649, type: 3}
+  debug: 0
 --- !u!114 &2870720254297804277
 MonoBehaviour:
   m_ObjectHideFlags: 0

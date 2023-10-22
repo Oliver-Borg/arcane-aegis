@@ -34,12 +34,12 @@ public class GameManager : NetworkBehaviour {
 
 
 
-    private int round = 0;
+    private NetworkVariable<int> round = new NetworkVariable<int>(0);
 
     private NetworkVariable<bool> gameWon = new NetworkVariable<bool>(false);
 
     public int GetRound() {
-        return round;
+        return round.Value;
     }
 
     private bool roundStarted = false;
@@ -163,9 +163,9 @@ public class GameManager : NetworkBehaviour {
         if (roundStarted || peaceful) yield break;
         roundStarted = true;
         yield return new WaitForSeconds(roundStartDelay);
-        round++;
-        enemyCount = NumberOfEnemies(round);
-        float [] weights = SpawnWeights(round);
+        round.Value++;
+        enemyCount = NumberOfEnemies(GetRound());
+        float [] weights = SpawnWeights(GetRound());
 
         int uniqueEnemiesThisRound = Random.Range(1, maxUniqueEnemiesPerRound + 1);
 
