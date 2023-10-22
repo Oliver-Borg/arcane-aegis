@@ -5,6 +5,12 @@ using UnityEngine;
 using UnityEngine.AI;
 public class EnemyAI : NetworkBehaviour
 {
+        //AudioSource attackSound;
+    [SerializeField] private AudioSource attackSound;
+    [SerializeField] private AudioSource hitSound;
+    [SerializeField] private AudioSource breathingSound;
+    [SerializeField] private AudioSource deathSound;
+
     // Range used for detection
     [SerializeField] private float attackRange = 2f;
 
@@ -147,6 +153,11 @@ public class EnemyAI : NetworkBehaviour
         if (closestPlayer == null) return;
         agent.SetDestination(closestPlayer.transform.position);
         SetAnimationBoolClientRpc("Walking", true);
+
+        //randomly play breathing sound
+        if (Random.Range(0f, 1f) > 0.99f) {
+            breathingSound.Play();
+        }
     }
 
 
@@ -176,12 +187,17 @@ public class EnemyAI : NetworkBehaviour
 
         // Play attack animation
         PlayAnimationClientRpc("Attack");
+        //Play attack sound
+        attackSound.Play();
+        //Play hit marker sound
+        hitSound.Play();
 
         foreach (Collider player in hitPlayers) {
             PlayerController playerController = player.GetComponent<PlayerController>();
             if(playerController == null) continue;
             playerController.TakeDamageServerRpc(attackDamage);
         }
+
     }
 
     [ServerRpc(Delivery = default, RequireOwnership = false)]
@@ -266,6 +282,8 @@ public class EnemyAI : NetworkBehaviour
     private void EnemyDeathServerRpc() {
         // Play death animation
         PlayAnimationClientRpc("Die");
+        //Play death sound
+        deathSound.Play();
         GetComponent<NavMeshAgent>().enabled = false;
         GetComponent<Collider>().enabled = false; // TODO Create ragdoll
         DropUpgradeServerRpc();
