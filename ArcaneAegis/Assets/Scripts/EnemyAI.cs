@@ -45,6 +45,7 @@ public class EnemyAI : NetworkBehaviour
     [SerializeField] private float stunCooldown = 0.05f;
 
     [SerializeField] private float slowTime = 5f;
+    [SerializeField] private GameObject spawnEffect;
 
     
 
@@ -89,6 +90,9 @@ public class EnemyAI : NetworkBehaviour
         // Start spawn coroutine
         spawnCoroutine = StartCoroutine(SpawnCoroutine());
         if (IsServer) health.Value = maxHealth;
+        if (spawnEffect == null) return;
+        GameObject effectInstance = Instantiate(spawnEffect, transform.position, Quaternion.identity);
+        Destroy(effectInstance, 5f);
     }
 
     IEnumerator SpawnCoroutine() {

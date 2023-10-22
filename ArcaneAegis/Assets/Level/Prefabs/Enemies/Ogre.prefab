@@ -74,10 +74,11 @@ MonoBehaviour:
   - {fileID: 5141862177401682794, guid: 970f9bd56c3fb8e4fa01595c974a3c10, type: 3}
   - {fileID: 5141862177401682794, guid: 5f43ff91bcadc5549938f0e6292e4520, type: 3}
   dropChance: 0.75
-  weaknesses: 0000000002000000
+  weaknesses: 0000000003000000
   stunTime: 0.5
   stunCooldown: 1
   slowTime: 5
+  spawnEffect: {fileID: 3459056711933355828, guid: ba436dd5818501641aa4498282843648, type: 3}
   agent: {fileID: 5813056974233844056}
 --- !u!114 &6159738099404402497
 MonoBehaviour:

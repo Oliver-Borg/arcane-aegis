@@ -180,7 +180,8 @@ public class PlayerController : NetworkBehaviour
 
     [ClientRpc]
     private void TeleportClientRpc(Vector3 position) {
-        Instantiate(teleportEffect, position, Quaternion.identity);
+        GameObject effectInstance = Instantiate(teleportEffect, position, Quaternion.identity);
+        Destroy(effectInstance, 5f);
     }
 
     // Show GUI with health

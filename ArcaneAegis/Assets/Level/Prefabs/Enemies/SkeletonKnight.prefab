@@ -58,6 +58,8 @@ MonoBehaviour:
   hitRange: 0.2
   attackDamage: 20
   attackCooldown: 0.5
+  damageDelay: 0.1
+  numAttacks: 1
   maxHealth: 100
   spawnTime: 5
   spawnWeight: 1
@@ -75,10 +77,11 @@ MonoBehaviour:
   - {fileID: 5141862177401682794, guid: 970f9bd56c3fb8e4fa01595c974a3c10, type: 3}
   - {fileID: 5141862177401682794, guid: 5f43ff91bcadc5549938f0e6292e4520, type: 3}
   dropChance: 0.05
-  weaknesses: 0300000002000000
+  weaknesses: 0100000002000000
   stunTime: 0.5
   stunCooldown: 0.1
   slowTime: 5
+  spawnEffect: {fileID: 0}
   agent: {fileID: 5813056974233844056}
 --- !u!114 &6159738099404402497
 MonoBehaviour:
@@ -208,7 +211,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14dac72a073d61a48accd6011905bbd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TransitionStateInfoList: []
+  TransitionStateInfoList:
+  - IsCrossFadeExit: 0
+    Layer: 1
+    OriginatingState: -499022955
+    DestinationState: -1005968581
+    TransitionDuration: 0
+    TriggerNameHash: 1654612129
+    TransitionIndex: 0
   m_Animator: {fileID: 2052458678638499745}
 --- !u!54 &8584050576719060870
 Rigidbody:
