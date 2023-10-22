@@ -55,7 +55,7 @@ MonoBehaviour:
   onCooldown: 0
   offHandDelay: 0.1
   offHandDamageMultiplier: 1.5
-  destroyAfter: 10
+  destroyAfter: 60
   spawnOnFloor: 0
   effectPrefab: {fileID: 190162, guid: c6342acfccda5a94bae465531baf3640, type: 3}
   handEffectPrefab: {fileID: 0}

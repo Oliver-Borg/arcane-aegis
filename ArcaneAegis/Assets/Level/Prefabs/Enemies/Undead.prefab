@@ -70,7 +70,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackRange: 1
-  hitRange: 0.2
+  hitRange: 0.5
   attackDamage: 20
   attackCooldown: 1
   damageDelay: 0.15

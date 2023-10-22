@@ -121,8 +121,8 @@ public class PlayerAttack : NetworkBehaviour {
             Instantiate(spell.handEffectPrefab, handTransform);
         GameObject effect = Instantiate(spell.effectPrefab, position, rotation);
         RFX4_PhysicsMotion physicsMotion = effect.GetComponentInChildren<RFX4_PhysicsMotion>(true);
-        RFX4_RaycastCollision physicsRaycast = effect.GetComponentInChildren<RFX4_RaycastCollision>(true);
-        if (physicsRaycast != null) {
+        RFX4_RaycastCollision [] physicsRaycasts = effect.GetComponentsInChildren<RFX4_RaycastCollision>(true);
+        foreach (RFX4_RaycastCollision physicsRaycast in physicsRaycasts) {
             physicsRaycast.CollisionEnter += CollisionEnter;
             physicsRaycast.Damage = spell.Damage;
             physicsRaycast.Element = spell.element;
