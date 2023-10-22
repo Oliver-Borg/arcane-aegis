@@ -30,6 +30,7 @@ We have implemented most feedback items, namely:
 
 > End game functionality
 	~> added the Time Bomb which can only be activated by collecting the tech runes (killing the warden in the future map) and the 4 catalysts (each correspond to a spell and give a huge boost to that spell)
+ 	~> added custom death message (Credit to Ciaran Manca)
 	
 > Play testing tweaks
 	~> We adjusted the monster spawn rate and delays. Now monsters spawn in constantly throughout the round instead of all at once
