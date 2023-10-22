@@ -2312,6 +2312,7 @@ MonoBehaviour:
   cube: {fileID: 8443241918570745709, guid: 03e8c2a6cd1947e4eaa73b3307d74411, type: 3}
   playerCamera: {fileID: 739230869279755970}
   regenRate: 10
+  teleportEffect: {fileID: 3459056711933355828, guid: ba436dd5818501641aa4498282843648, type: 3}
   disableOnDeath:
   - {fileID: 7440399181864701900}
   - {fileID: 8803777133893185157}
