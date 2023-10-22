@@ -36,7 +36,7 @@ public class GameManager : NetworkBehaviour {
 
     private int round = 0;
 
-    public NetworkVariable<bool> gameWon = new NetworkVariable<bool>(false);
+    private NetworkVariable<bool> gameWon = new NetworkVariable<bool>(false);
 
     public int GetRound() {
         return round;
@@ -86,6 +86,11 @@ public class GameManager : NetworkBehaviour {
 
     public bool GameWon() {
         return gameWon.Value;
+    }
+
+    [ServerRpc(Delivery = default, RequireOwnership = false)]
+    public void GameWonServerRpc(ServerRpcParams rpcParams = default) {
+        gameWon.Value = true;
     }
 
     private float [] SpawnWeights (int round) {

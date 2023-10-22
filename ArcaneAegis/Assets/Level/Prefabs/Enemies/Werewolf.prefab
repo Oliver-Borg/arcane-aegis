@@ -57,8 +57,10 @@ MonoBehaviour:
   hitRange: 0.5
   attackDamage: 30
   attackCooldown: 1
+  damageDelay: 0.2
+  numAttacks: 1
   maxHealth: 300
-  spawnTime: 5
+  spawnTime: 0
   spawnWeight: 3
   despawnDelay: 5
   playerLayer:

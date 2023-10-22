@@ -15,6 +15,8 @@ public class EnemyAI : NetworkBehaviour
 
     [SerializeField] private float attackCooldown = 1f;
 
+    [SerializeField] private float damageDelay = 0.1f;
+
     [SerializeField] private int numAttacks = 1;
 
     [SerializeField] private float maxHealth = 100f;
@@ -154,16 +156,25 @@ public class EnemyAI : NetworkBehaviour
         if(onCooldown) return;
         if(attackCoroutine != null) StopCoroutine(attackCoroutine);
         attackCoroutine = StartCoroutine(AttackCoroutine());
-        DoAttackServerRpc();
+        
     }
 
     IEnumerator AttackCoroutine() {
         onCooldown = true;
+        DoAttackAnimationServerRpc();
+        yield return new WaitForSeconds(damageDelay);
+        DoAttackServerRpc();
         yield return new WaitForSeconds(attackCooldown);
         onCooldown = false;
     }
 
-
+    [ServerRpc]
+    public void DoAttackAnimationServerRpc() {
+        // Set the attack number int
+        SetAnimationIntClientRpc("AttackNum", Random.Range(0, numAttacks));
+        // Play attack animation
+        PlayAnimationClientRpc("Attack");
+    }
 
     [ServerRpc]
     public void DoAttackServerRpc() {
@@ -171,18 +182,14 @@ public class EnemyAI : NetworkBehaviour
         // Check if any players in attack range
         Collider [] hitPlayers = hitPlayerList();
         if (hitPlayers.Length == 0) return;
-        // Set the attack number int
-        SetAnimationIntClientRpc("AttackNum", Random.Range(0, numAttacks));
-
-        // Play attack animation
-        PlayAnimationClientRpc("Attack");
-
         foreach (Collider player in hitPlayers) {
             PlayerController playerController = player.GetComponent<PlayerController>();
             if(playerController == null) continue;
             playerController.TakeDamageServerRpc(attackDamage);
         }
     }
+
+    
 
     [ServerRpc(Delivery = default, RequireOwnership = false)]
     public void TakeDamageServerRpc(float damage, int elementIndex, ulong playerIndex, ServerRpcParams rpcParams = default) {
@@ -231,6 +238,7 @@ public class EnemyAI : NetworkBehaviour
             EnemyDeathServerRpc();
             killed = true;
         } else if (alive) {
+            Debug.Log("Hit");
             PlayAnimationClientRpc("Hit");
         }
         // Spawn hitmarker on clients (clients will check if they own the player)
@@ -269,6 +277,7 @@ public class EnemyAI : NetworkBehaviour
         // Play death animation
         alive = false;
         PlayAnimationClientRpc("Die");
+        SetAnimationBoolClientRpc("isDead", true);
         GetComponent<NavMeshAgent>().enabled = false;
         GetComponent<Collider>().enabled = false; // TODO Create ragdoll
         DropUpgradeServerRpc();

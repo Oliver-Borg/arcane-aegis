@@ -8,25 +8,25 @@ namespace HelloWorld
     public class HelloWorldManager : MonoBehaviour
     { 
         [SerializeField] private GameObject mainMenu;
-        [SerializeField] private Text ipText;
+        [SerializeField] private InputField ipInput;
 
         public void Host()
         {
-            SetIP(ipText.text);
+            SetIP(ipInput.text);
             NetworkManager.Singleton.StartHost();
             mainMenu.SetActive(false);
         }
 
         public void Client()
         {
-            SetIP(ipText.text);
+            SetIP(ipInput.text);
             NetworkManager.Singleton.StartClient();
             mainMenu.SetActive(false);
         }
 
         public void Server()
         {
-            SetIP(ipText.text);
+            SetIP(ipInput.text);
             NetworkManager.Singleton.StartServer();
             mainMenu.SetActive(false);
         }
