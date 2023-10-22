@@ -45,6 +45,9 @@ public class EnemyAI : NetworkBehaviour
     [SerializeField] private float stunCooldown = 0.05f;
 
     [SerializeField] private float slowTime = 5f;
+    [SerializeField] private GameObject spawnEffect;
+    private Material bodyMaterial;
+    [SerializeField] private SkinnedMeshRenderer skinnedMeshRenderer;
 
     
 
@@ -54,6 +57,8 @@ public class EnemyAI : NetworkBehaviour
 
     private bool slowed = false;
 
+    private float accumulatedDamage = 0f;
+    [SerializeField] private float hitmarkerThreshold = 10f;
     private Dictionary<ElementEnum, float> damageTaken = new Dictionary<ElementEnum, float>();
 
     private Dictionary<PlayerController, float> damagers = new Dictionary<PlayerController, float>();
@@ -86,9 +91,14 @@ public class EnemyAI : NetworkBehaviour
             upgradePrefabs[upgradeScript.upGradeElement] = upgrade;
         }
 
+        bodyMaterial = skinnedMeshRenderer.material;
+
         // Start spawn coroutine
         spawnCoroutine = StartCoroutine(SpawnCoroutine());
         if (IsServer) health.Value = maxHealth;
+        if (spawnEffect == null) return;
+        GameObject effectInstance = Instantiate(spawnEffect, transform.position, Quaternion.identity);
+        Destroy(effectInstance, 5f);
     }
 
     IEnumerator SpawnCoroutine() {
@@ -241,8 +251,12 @@ public class EnemyAI : NetworkBehaviour
             Debug.Log("Hit");
             PlayAnimationClientRpc("Hit");
         }
-        // Spawn hitmarker on clients (clients will check if they own the player)
-        playerAttack.CreateHitmarkerClientRpc(damage, killed, criticalHit);
+        accumulatedDamage += damage;
+        if (accumulatedDamage >= hitmarkerThreshold || killed) {
+            // Spawn hitmarker on clients (clients will check if they own the player)
+            playerAttack.CreateHitmarkerClientRpc(accumulatedDamage, killed, criticalHit);
+            accumulatedDamage -= hitmarkerThreshold;
+        }
     }
 
     IEnumerator StunCoroutine() {
@@ -266,10 +280,17 @@ public class EnemyAI : NetworkBehaviour
         agent.speed /= 2;
         slowed = true;
         animator.speed /= 2;
+        // C1F8F5
+        bodyMaterial.color = new Color(193f/255f, 248f/255f, 245f/255f);
         yield return new WaitForSeconds(slowTime);
+        bodyMaterial.color = Color.white;
         agent.speed *= 2;
         animator.speed *= 2;
         slowed = false;
+    }
+    [ClientRpc]
+    public void DoSlowClientRpc() {
+        StartCoroutine(SlowCoroutine());
     }
 
     [ServerRpc(Delivery = default, RequireOwnership = false)]

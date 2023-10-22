@@ -121,8 +121,8 @@ public class PlayerAttack : NetworkBehaviour {
             Instantiate(spell.handEffectPrefab, handTransform);
         GameObject effect = Instantiate(spell.effectPrefab, position, rotation);
         RFX4_PhysicsMotion physicsMotion = effect.GetComponentInChildren<RFX4_PhysicsMotion>(true);
-        RFX4_RaycastCollision physicsRaycast = effect.GetComponentInChildren<RFX4_RaycastCollision>(true);
-        if (physicsRaycast != null) {
+        RFX4_RaycastCollision [] physicsRaycasts = effect.GetComponentsInChildren<RFX4_RaycastCollision>(true);
+        foreach (RFX4_RaycastCollision physicsRaycast in physicsRaycasts) {
             physicsRaycast.CollisionEnter += CollisionEnter;
             physicsRaycast.Damage = spell.Damage;
             physicsRaycast.Element = spell.element;
@@ -232,7 +232,7 @@ public class PlayerAttack : NetworkBehaviour {
     {   
         if (!IsOwner) return;
         // Check if CastCoroutine in progress
-        if (!casting) {
+        // if (!casting) {
             // Use E to change rightSpell and Q to change leftSpell
             if (Input.GetKeyDown(KeyCode.E)) {
                 rightIndex = rightIndex == 0 ? 1 : 0;
@@ -244,9 +244,9 @@ public class PlayerAttack : NetworkBehaviour {
                 leftSpell = spells[leftIndex].GetComponent<Spell>();
                 // leftSpell.ChangeHand(HandEnum.Left);
             }
-        }   
+        // }   
 
-        if (Input.GetKeyDown(KeyCode.Mouse0)) {
+        if (Input.GetKey(KeyCode.Mouse0)) {
             // Spawn effect
             // Create raycast and set rotation to the direction from the player to the raycast hit point
             // Cast forward ray from camera in camera direction
@@ -261,7 +261,7 @@ public class PlayerAttack : NetworkBehaviour {
             // TODO Increase animation speed based on upgrades
             }
         
-        else if (Input.GetKeyDown(KeyCode.Mouse1)) {
+        else if (Input.GetKey(KeyCode.Mouse1)) {
             // Spawn effect
             // Create raycast and set rotation to the direction from the player to the raycast hit point
             // Cast forward ray from camera in camera direction

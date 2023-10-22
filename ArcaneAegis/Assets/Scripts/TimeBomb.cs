@@ -5,6 +5,7 @@ using UnityEngine;
 public class TimeBomb : NetworkBehaviour
 {
     [SerializeField] Light [] lights;
+    [SerializeField] GameObject explosion;
 
     NetworkVariable<bool> fireRune = new NetworkVariable<bool>(
         false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server
@@ -73,10 +74,15 @@ public class TimeBomb : NetworkBehaviour
         float startTime = Time.time;
         while (Time.time - startTime < 5f) {
             foreach (Light light in lights) {
-                light.intensity += 0.1f;
+                light.enabled = !light.enabled;
+                yield return new WaitForSeconds(0.2f);
             }
-            yield return new WaitForSeconds(0.1f);
         }
+        // Disable all lights
+        foreach (Light light in lights) {
+            light.enabled = false;
+        }
+        Instantiate(explosion, transform.position, Quaternion.identity);
         if(IsServer) {
             // Do camera shake on all PlayerControllers
             foreach (NetworkClient player in NetworkManager.Singleton.ConnectedClientsList) {

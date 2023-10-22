@@ -13,6 +13,8 @@ public class PlayerController : NetworkBehaviour
 
     [SerializeField] private float regenRate = 10f;
 
+    [SerializeField] private GameObject teleportEffect;
+
     // private Vector3 velocity = Vector3.zero;
 
     private NetworkVariable<PlayerData> playerData = new NetworkVariable<PlayerData>(
@@ -170,6 +172,17 @@ public class PlayerController : NetworkBehaviour
         yield return new WaitForSeconds(1f);
         projectile.GetComponent<NetworkObject>().Despawn();
     }    
+
+    [ServerRpc]
+    public void TeleportServerRpc(Vector3 position, ServerRpcParams rpcParams = default) {
+        TeleportClientRpc(position);
+    }
+
+    [ClientRpc]
+    private void TeleportClientRpc(Vector3 position) {
+        GameObject effectInstance = Instantiate(teleportEffect, position, Quaternion.identity);
+        Destroy(effectInstance, 5f);
+    }
 
     // Show GUI with health
     void OnGUI() {

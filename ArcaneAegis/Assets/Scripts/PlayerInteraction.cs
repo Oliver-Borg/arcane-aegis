@@ -125,8 +125,12 @@ public class PlayerInteraction : NetworkBehaviour
                     if (teleporter.spaceStation != null) {
                         teleporter.spaceStation.SetActive(true);
                     }
+                    PlayerController playerController = GetComponent<PlayerController>();
+                    // These spawn teleport effects at the player and target locations
+                    playerController.TeleportServerRpc(transform.position);
                     transform.position = targetTransform.position;
-                    transform.rotation = targetTransform.rotation;
+                    // transform.rotation = targetTransform.rotation;
+                    playerController.TeleportServerRpc(transform.position);
                 }
             }
             else if (hit.transform.TryGetComponent(out Alchemist alchemist)) {

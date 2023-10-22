@@ -44,14 +44,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25e60745d8d12b64aa3fbb7f4f79d927, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 100
+  damage: 50
   cooldown: 2
   chargeCost: 50
   hand: 2
   fullCharge: 100
   rechargeRate: 10
   castDelay: 0.75
-  animationTime: 2.08
+  animationTime: 2.5
   onCooldown: 0
   offHandDelay: 0.1
   offHandDamageMultiplier: 1.5

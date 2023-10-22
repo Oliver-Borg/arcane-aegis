@@ -54,7 +54,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackRange: 6
-  hitRange: 2
+  hitRange: 3
   attackDamage: 75
   attackCooldown: 2
   damageDelay: 0.5
@@ -74,6 +74,8 @@ MonoBehaviour:
   stunTime: 0.5
   stunCooldown: 1
   slowTime: 5
+  spawnEffect: {fileID: 0}
+  skinnedMeshRenderer: {fileID: 4806101119702818003}
   agent: {fileID: 5813056974233844056}
 --- !u!114 &6159738099404402497
 MonoBehaviour:
