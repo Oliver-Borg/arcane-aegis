@@ -39,8 +39,8 @@ public class PlayerAttack : NetworkBehaviour {
         }
         if (IsOwner)
             CreateHandEffectServerRpc();
-        rightSpell = spells[0].GetComponent<Spell>();
-        leftSpell = spells[1].GetComponent<Spell>();
+        rightSpell = spells[rightIndex].GetComponent<Spell>();
+        leftSpell = spells[leftIndex].GetComponent<Spell>();
     }
 
     [ServerRpc]

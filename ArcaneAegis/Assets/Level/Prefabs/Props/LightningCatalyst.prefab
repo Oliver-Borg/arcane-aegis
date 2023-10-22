@@ -4878,8 +4878,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84539f72298843b4090fc3681aae66a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  upGradeElement: 1
-  baseColour: {r: 1, g: 1, b: 0, a: 0}
+  upGradeElement: 3
+  baseColour: {r: 1, g: 0.043137256, b: 0.79215693, a: 1}
   sphere: {fileID: 7742534136174058914}
   upgradeType: 3
 --- !u!114 &3127932647088062731

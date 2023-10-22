@@ -1,15 +1,12 @@
 using UnityEngine;
 using Unity.Netcode;
-using System;
-using Unity.VisualScripting;
-using UnityEngine.UI;
 
 public enum ElementEnum
 {
     Fire,
-    Lightning,
     Gravity,
     Ice, 
+    Lightning,
     None
 }
 
@@ -51,8 +48,8 @@ public class Upgrade : NetworkBehaviour
 
     public string GetUpgradeText() {
         if (upGradeElement == ElementEnum.None)
-            return upgradeType.ToString() + " Upgrade\nPress E to pick up";
-        return upGradeElement.ToString() + " " + upgradeType.ToString() + " Upgrade\nPress E to pick up";
+            return upgradeType.ToString() + " Upgrade\nPress F to pick up";
+        return upGradeElement.ToString() + " " + upgradeType.ToString() + " Upgrade\nPress F to pick up";
     }
 
     [ServerRpc(Delivery = default, RequireOwnership = false)]

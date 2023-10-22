@@ -110,7 +110,7 @@ public class PlayerController : NetworkBehaviour
         StartCoroutine(CameraShakeCoroutine(damage));
     }   
 
-    IEnumerator CameraShakeCoroutine(float damage) {
+    public IEnumerator CameraShakeCoroutine(float damage) {
         float startTime = Time.time;
         float damageRatio = Mathf.Clamp(damage/100f, 0.5f, 1.0f);
         float cameraShakeDuration = this.cameraShakeDuration*damageRatio;

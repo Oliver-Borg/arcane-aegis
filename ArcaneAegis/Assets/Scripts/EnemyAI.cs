@@ -263,8 +263,9 @@ public class EnemyAI : NetworkBehaviour
     }
 
     [ServerRpc(Delivery = default, RequireOwnership = false)]
-    private void EnemyDeathServerRpc() {
+    public void EnemyDeathServerRpc() {
         // Play death animation
+        alive = false;
         PlayAnimationClientRpc("Die");
         GetComponent<NavMeshAgent>().enabled = false;
         GetComponent<Collider>().enabled = false; // TODO Create ragdoll

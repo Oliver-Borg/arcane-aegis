@@ -39,18 +39,18 @@ public class Alchemist : NetworkBehaviour
         BuyKeyServerRpc();
     }
 
-    [ServerRpc]
+    [ServerRpc(Delivery = default, RequireOwnership = false)]
     public void SetUpgradeServerRpc(ServerRpcParams rpcParams = default) {
         SetTriggerClientRpc("SetUpgrade");
     }
 
 
-    [ServerRpc]
+    [ServerRpc(Delivery = default, RequireOwnership = false)]
     public void BuyKeyServerRpc(ServerRpcParams rpcParams = default) {
         SetTriggerClientRpc("BuyKey");
     }
 
-    [ServerRpc]
+    [ServerRpc(Delivery = default, RequireOwnership = false)]
     public void BuyUpgradeServerRpc(ServerRpcParams rpcParams = default) {
         SetTriggerClientRpc("BuyUpgrade");
     }

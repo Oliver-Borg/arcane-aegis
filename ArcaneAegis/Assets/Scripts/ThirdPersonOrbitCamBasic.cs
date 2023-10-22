@@ -14,6 +14,8 @@ public class ThirdPersonOrbitCamBasic : MonoBehaviour
 	public string XAxis = "Analog X";                                  // The default horizontal axis input name.
 	public string YAxis = "Analog Y";                                  // The default vertical axis input name.
 
+	public LayerMask cameraCollisionLayerMask;                          // Camera collision layers.
+
 	private float angleH = 0;                                          // Float to store camera horizontal angle related to mouse movement.
 	private float angleV = 0;                                          // Float to store camera vertical angle related to mouse movement.
 	private Transform cam;                                             // This transform.
@@ -168,7 +170,7 @@ public class ThirdPersonOrbitCamBasic : MonoBehaviour
 		Vector3 target = player.position + pivotOffset;
 		Vector3 direction = target - checkPos;
 		// If a raycast from the check position to the player hits something...
-		if (Physics.SphereCast(checkPos, 0.2f, direction, out RaycastHit hit, direction.magnitude))
+		if (Physics.SphereCast(checkPos, 0.2f, direction, out RaycastHit hit, direction.magnitude, cameraCollisionLayerMask))
 		{
 			// ... if it is not the player...
 			if(hit.transform != player && !hit.transform.GetComponent<Collider>().isTrigger)
@@ -187,7 +189,7 @@ public class ThirdPersonOrbitCamBasic : MonoBehaviour
 		// Cast origin and direction.
 		Vector3 origin = player.position + pivotOffset;
 		Vector3 direction = checkPos - origin;
-		if (Physics.SphereCast(origin, 0.2f, direction, out RaycastHit hit, direction.magnitude))
+		if (Physics.SphereCast(origin, 0.2f, direction, out RaycastHit hit, direction.magnitude, cameraCollisionLayerMask))
 		{
 			if(hit.transform != player && hit.transform != transform && !hit.transform.GetComponent<Collider>().isTrigger)
 			{

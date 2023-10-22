@@ -7550,7 +7550,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ParticlesBudget: 0.1
   UseLightShadows: 0
-  UseFastFlatDecalsForMobiles: 0
+  UseFastFlatDecalsForMobiles: 1
   UseCustomColor: 0
   EffectColor: {r: 1, g: 0, b: 0, a: 1}
   IsVisible: 1
@@ -56280,7 +56280,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3533442400984629153}
   - component: {fileID: 2659514264585681938}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: collision
   m_TagString: Untagged
   m_Icon: {fileID: 0}

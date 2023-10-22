@@ -36,6 +36,8 @@ public class GameManager : NetworkBehaviour {
 
     private int round = 0;
 
+    public NetworkVariable<bool> gameWon = new NetworkVariable<bool>(false);
+
     public int GetRound() {
         return round;
     }
@@ -62,7 +64,7 @@ public class GameManager : NetworkBehaviour {
         //     // Spawn enemy
         //     SpawnEnemyServerRpc(spawnPoint.position);
         // }
-        if (!roundStarted && enemies.Length == 0) {
+        if (!roundStarted && enemies.Length == 0 && !GameLost() && !GameWon()) {
             StartCoroutine(StartRound());
         }
         if (Input.GetKeyDown(KeyCode.K)) {
@@ -71,6 +73,19 @@ public class GameManager : NetworkBehaviour {
         if (Input.GetKeyDown(KeyCode.L)) {
             ReviveAllPlayersServerRpc();
         }
+    }
+
+    public bool GameLost() {
+        if (peaceful) return false;
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        foreach (GameObject player in players) {
+            if (!player.GetComponent<PlayerController>().IsDead()) return false;
+        }
+        return true;
+    }
+
+    public bool GameWon() {
+        return gameWon.Value;
     }
 
     private float [] SpawnWeights (int round) {
@@ -119,6 +134,7 @@ public class GameManager : NetworkBehaviour {
     }
 
     private float SpawnEnemy(float [] weights) {
+        if (GameWon()) return 0;
         float random = Random.Range(0f, 1f);
         float sum = 0;
         
@@ -198,6 +214,7 @@ public class GameManager : NetworkBehaviour {
         float startEnemyMass = enemyCount*roundStartSpawnRatio;
         float remainingEnemyMass = enemyCount - startEnemyMass;
         while (startEnemyMass > 0) {
+            if (GameWon()) yield break;
             yield return new WaitForSeconds(roundStartSpawnDelay);
             startEnemyMass -= SpawnEnemy(weights);
         }
@@ -205,6 +222,7 @@ public class GameManager : NetworkBehaviour {
         
 
         while (remainingEnemyMass > 0) {
+            if (GameWon()) yield break;
             yield return new WaitForSeconds(roundTime/enemyCount);
             remainingEnemyMass -= SpawnEnemy(weights);
         }
@@ -252,7 +270,7 @@ public class GameManager : NetworkBehaviour {
         // Get all game objects with tag "Enemy"
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
         foreach (GameObject enemy in enemies) {
-            enemy.GetComponent<EnemyAI>().TakeDamageServerRpc(1000000f, 0, 0);
+            enemy.GetComponent<EnemyAI>().EnemyDeathServerRpc();
         }
     }
 

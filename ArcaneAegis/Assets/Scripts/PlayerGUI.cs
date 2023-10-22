@@ -23,12 +23,15 @@ public class PlayerGUI : NetworkBehaviour
     [SerializeField] private GameObject hintGui;
     [SerializeField] private GameObject techRuneIcon;
     [SerializeField] private GameObject [] catalystIcons;
+    [SerializeField] private Text roundText;
+    [SerializeField] private GameObject gameLostGui;
+    [SerializeField] private GameObject gameWonGui;
 
     private PlayerAttack playerAttack;
     private PlayerInventory playerInventory;
     private PlayerInteraction playerInteraction;
-
     private PlayerController playerController;
+    private GameManager gameManager;
 
     private bool paused = false;
     
@@ -41,6 +44,8 @@ public class PlayerGUI : NetworkBehaviour
         playerInventory = GetComponent<PlayerInventory>();
         playerInteraction = GetComponent<PlayerInteraction>();
         playerController = GetComponent<PlayerController>();
+        GameObject gameManagerObject = GameObject.Find("GameManager");
+        gameManager = gameManagerObject.GetComponent<GameManager>();
     }
 
 
@@ -118,5 +123,14 @@ public class PlayerGUI : NetworkBehaviour
         for (int i = 0; i < catalystIcons.Length; i++) {
             catalystIcons[i].SetActive(i == (int) catalystUpgrade);
         }
+
+        // Set round text
+        roundText.text = "Round " + gameManager.GetRound();
+
+        // Set game lost gui
+        gameLostGui.SetActive(gameManager.GameLost());
+
+        // Set game won gui
+        gameWonGui.SetActive(gameManager.GameWon());
     }
 }

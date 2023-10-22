@@ -41,6 +41,10 @@ public class PlayerInventory : NetworkBehaviour
         return upgradeCost;
     }
 
+    public float KeyCost() {
+        return keyCost;
+    }
+
     [ServerRpc(Delivery = default, RequireOwnership = false)]
     public void AddPointsServerRpc(float amount, ServerRpcParams rpcParams = default) {
         points.Value += amount;
@@ -58,6 +62,12 @@ public class PlayerInventory : NetworkBehaviour
         }
     }
 
+    [ServerRpc(Delivery = default, RequireOwnership = false)]
+    public void BuyUpgradeServerRpc(ServerRpcParams rpcParams = default) {
+        if (points.Value >= upgradeCost) {
+            points.Value -= upgradeCost;
+        }
+    }
     public int GetKeys() {
         return keys.Value;
     }
@@ -103,7 +113,7 @@ public class PlayerInventory : NetworkBehaviour
     public UpgradeEnums PopUpgrade() {
         UpgradeEnums upgrade = this.upgrade;
         this.upgrade = null;
-        points.Value -= upgradeCost;
+        BuyUpgradeServerRpc();
         return upgrade;
     }
 }
