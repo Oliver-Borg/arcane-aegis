@@ -64,7 +64,7 @@ public class GameManager : NetworkBehaviour {
         //     // Spawn enemy
         //     SpawnEnemyServerRpc(spawnPoint.position);
         // }
-        if (!roundStarted && enemies.Length == 0) {
+        if (!roundStarted && enemies.Length == 0 && !GameLost() && !GameWon()) {
             StartCoroutine(StartRound());
         }
         if (Input.GetKeyDown(KeyCode.K)) {
@@ -134,6 +134,7 @@ public class GameManager : NetworkBehaviour {
     }
 
     private float SpawnEnemy(float [] weights) {
+        if (GameWon()) return 0;
         float random = Random.Range(0f, 1f);
         float sum = 0;
         
@@ -213,6 +214,7 @@ public class GameManager : NetworkBehaviour {
         float startEnemyMass = enemyCount*roundStartSpawnRatio;
         float remainingEnemyMass = enemyCount - startEnemyMass;
         while (startEnemyMass > 0) {
+            if (GameWon()) yield break;
             yield return new WaitForSeconds(roundStartSpawnDelay);
             startEnemyMass -= SpawnEnemy(weights);
         }
@@ -220,6 +222,7 @@ public class GameManager : NetworkBehaviour {
         
 
         while (remainingEnemyMass > 0) {
+            if (GameWon()) yield break;
             yield return new WaitForSeconds(roundTime/enemyCount);
             remainingEnemyMass -= SpawnEnemy(weights);
         }

@@ -19,9 +19,18 @@ public class TimeBomb : NetworkBehaviour
         false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server
     );
 
+    [SerializeField] private bool debug;
+
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
+        if (IsServer) {
+            fireRune.Value = debug;
+            gravityRune.Value = debug;
+            iceRune.Value = debug;
+            lightningRune.Value = debug;
+            AddElementRuneServerRpc(0);
+        }
         foreach (Light light in lights) {
             light.enabled = false;
         }
@@ -78,6 +87,8 @@ public class TimeBomb : NetworkBehaviour
             GameManager gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
             gameManager.KillAllEnemiesServerRpc();
             gameManager.gameWon.Value = true; 
+            yield return new WaitForSeconds(10f);
+            NetworkManager.Singleton.Shutdown();
         }
         
     }
