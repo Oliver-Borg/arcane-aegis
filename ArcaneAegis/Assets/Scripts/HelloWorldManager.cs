@@ -1,35 +1,40 @@
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace HelloWorld
 {
     public class HelloWorldManager : MonoBehaviour
-    {
-        void OnGUI()
-        {
-            GUILayout.BeginArea(new Rect(10, 10, 300, 300));
-            if (!NetworkManager.Singleton.IsClient && !NetworkManager.Singleton.IsServer)
-            {
-                // Create text box for IP address
-                IPTextBox();
-                StartButtons();
-            }
+    { 
+        [SerializeField] private GameObject mainMenu;
+        [SerializeField] private Text ipText;
 
-            GUILayout.EndArea();
+        public void Host()
+        {
+            SetIP(ipText.text);
+            NetworkManager.Singleton.StartHost();
+            mainMenu.SetActive(false);
         }
 
-        static void StartButtons()
+        public void Client()
         {
-            if (GUILayout.Button("Host")) NetworkManager.Singleton.StartHost();
-            if (GUILayout.Button("Client")) NetworkManager.Singleton.StartClient();
-            if (GUILayout.Button("Server")) NetworkManager.Singleton.StartServer();
+            SetIP(ipText.text);
+            NetworkManager.Singleton.StartClient();
+            mainMenu.SetActive(false);
         }
 
-        static void IPTextBox()
+        public void Server()
+        {
+            SetIP(ipText.text);
+            NetworkManager.Singleton.StartServer();
+            mainMenu.SetActive(false);
+        }
+
+        public void SetIP(string ip)
         {
             UnityTransport transport = NetworkManager.Singleton.GetComponent<UnityTransport>();
-            transport.ConnectionData.Address = GUILayout.TextField(transport.ConnectionData.Address);
-        } 
+            transport.ConnectionData.Address = ip;
+        }
     }
 }

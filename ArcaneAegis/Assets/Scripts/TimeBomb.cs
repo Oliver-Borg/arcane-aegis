@@ -25,11 +25,12 @@ public class TimeBomb : NetworkBehaviour
     {
         base.OnNetworkSpawn();
         if (IsServer) {
-            fireRune.Value = debug;
-            gravityRune.Value = debug;
-            iceRune.Value = debug;
-            lightningRune.Value = debug;
-            AddElementRuneServerRpc(0);
+            if (debug) {
+                AddElementRuneServerRpc(0);
+                AddElementRuneServerRpc(1);
+                AddElementRuneServerRpc(2);
+                AddElementRuneServerRpc(3);
+            }  
         }
         foreach (Light light in lights) {
             light.enabled = false;
