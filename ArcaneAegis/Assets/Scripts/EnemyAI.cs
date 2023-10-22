@@ -46,6 +46,8 @@ public class EnemyAI : NetworkBehaviour
 
     [SerializeField] private float slowTime = 5f;
     [SerializeField] private GameObject spawnEffect;
+    private Material bodyMaterial;
+    [SerializeField] private SkinnedMeshRenderer skinnedMeshRenderer;
 
     
 
@@ -86,6 +88,8 @@ public class EnemyAI : NetworkBehaviour
             Upgrade upgradeScript = upgrade.GetComponent<Upgrade>();
             upgradePrefabs[upgradeScript.upGradeElement] = upgrade;
         }
+
+        bodyMaterial = skinnedMeshRenderer.material;
 
         // Start spawn coroutine
         spawnCoroutine = StartCoroutine(SpawnCoroutine());
@@ -270,10 +274,17 @@ public class EnemyAI : NetworkBehaviour
         agent.speed /= 2;
         slowed = true;
         animator.speed /= 2;
+        // C1F8F5
+        bodyMaterial.color = new Color(193f/255f, 248f/255f, 245f/255f);
         yield return new WaitForSeconds(slowTime);
+        bodyMaterial.color = Color.white;
         agent.speed *= 2;
         animator.speed *= 2;
         slowed = false;
+    }
+    [ClientRpc]
+    public void DoSlowClientRpc() {
+        StartCoroutine(SlowCoroutine());
     }
 
     [ServerRpc(Delivery = default, RequireOwnership = false)]

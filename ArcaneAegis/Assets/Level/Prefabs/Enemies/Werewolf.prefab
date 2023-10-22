@@ -78,6 +78,7 @@ MonoBehaviour:
   stunCooldown: 0.1
   slowTime: 5
   spawnEffect: {fileID: 3459056711933355828, guid: ba436dd5818501641aa4498282843648, type: 3}
+  skinnedMeshRenderer: {fileID: 2171440825468176235}
   agent: {fileID: 5813056974233844056}
 --- !u!114 &6159738099404402497
 MonoBehaviour:
