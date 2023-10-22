@@ -51,7 +51,7 @@ MonoBehaviour:
   fullCharge: 100
   rechargeRate: 10
   castDelay: 0.1
-  animationTime: 2.08
+  animationTime: 2.5
   onCooldown: 0
   offHandDelay: 0.1
   offHandDamageMultiplier: 1.5
