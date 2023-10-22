@@ -61,8 +61,8 @@ MonoBehaviour:
   attackSound: {fileID: -4265116051223201854}
   hitSound: {fileID: 3294557701193228940}
   breathingSound: {fileID: -2310198831442790365}
-  breathingSoundMinDelay: 5
-  breathingSoundMaxDelay: 20
+  breathingSoundMinDelay: 10
+  breathingSoundMaxDelay: 30
   deathSound: {fileID: 6904980156263078716}
   attackRange: 1
   hitRange: 0.5
