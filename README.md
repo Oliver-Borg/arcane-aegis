@@ -23,7 +23,7 @@ We have implemented most feedback items, namely:
 	~> Blue tint covers monster when a slow effect is applied from the ice spell
 
 > Sounds
-	~> 4 sound effects per monster: Attack, hit sound, random growl/breath, death sound
+	~> 4 sound effects per monster: Attack, hit sound, random growl/breath, death sound (Credit to Liam Dormehl and Sam Kurgan for custom goblin sound effects)
 	~> round start sound
 	~> time machine sound
 	~> door opening sound
