@@ -6,7 +6,7 @@ Download a build from [builds](https://uctcloud-my.sharepoint.com/:f:/g/personal
 ## Build from source
 Clone this [repo](https://github.com/Oliver-Borg/arcane-aegis)
 
-Download the packages from [packages](https://uctcloud-my.sharepoint.com/:f:/g/personal/wrtcam003_myuct_ac_za/EhAgjH8VAuVBmAoSeMEX0r0BB7MeVwTA04UY4fDVeTtaFw?e=kEApzu) and place them in ArcaneAegis/Assets/Packages.
+Download the packages from [packages](https://uctcloud-my.sharepoint.com/:f:/g/personal/wrtcam003_myuct_ac_za/EhAgjH8VAuVBmAoSeMEX0r0BmJvv2I-7k0PFlUBSBaZbnA?email=jgain%40cs.uct.ac.za&e=dCQp9T) and place them in ArcaneAegis/Assets/Packages.
 
 Open the Unity Project at ArcaneAegis
 
